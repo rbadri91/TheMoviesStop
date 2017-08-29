@@ -3,11 +3,31 @@
 
 <head>
     <title>The Movies Stop</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <!-- include: "type": "css", "files": "**/*.css" -->
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <!-- /include -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
+    <!-- include: "type": "js", "files": "**/*.js" -->
+    <script src="/javascripts/theMovieStop.js"></script>
+    <script src="/common/services/authentication.service.js"></script>
+    <script src="/controllers/login.controller.js"></script>
+    <script src="/controllers/register.controller.js"></script>
+    <script src="/controllers/home.controller.js"></script>
+    <script src="/common/directives/navigation/navigation.controller.js"></script>
+    <script src="/common/directives/navigation/navigation.directive.js"></script>
+    <!-- /include -->
+
 </head>
 
 <body ng-app="themoviesStop">
-    <ui-view></ui-view>
+    <navigation></navigation>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <ui-view></ui-view>
+        </div>
+    </div>
 </body>
 
 </html>

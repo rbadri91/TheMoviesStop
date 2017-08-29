@@ -1,0 +1,8 @@
+<nav class="navbar navbar-default navbar-fixed-top " ng-controller="NavCtrl">
+    <ul class="nav navbar-nav pull-right">
+        <li ng-show="navvm.isLoggedIn"><a>{{ currentUser() }}</a></li>
+        <li ng-show="navvm.isLoggedIn"><a href="" ng-click="logOut()">Log Out</a></li>
+        <li ng-hide="navvm.isLoggedIn"><a href="/#/login">Log In</a></li>
+        <li ng-hide="navvm.isLoggedIn"><a href="/#/register">Register</a></li>
+    </ul>
+</nav>
