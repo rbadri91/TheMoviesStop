@@ -29,7 +29,6 @@
         }
         var getTopRated = function() {
             return $http.get('/movies/top').then(function(data) {
-                console.log("data here:", data);
                 angular.copy(JSON.parse(data.data).results, movies);
                 return movies;
             });

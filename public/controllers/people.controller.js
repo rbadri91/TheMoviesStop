@@ -8,7 +8,7 @@
 
     function peopleCtrl($scope, people, authentication) {
         var vm = this;
-        $scope.shows = movies;
+        $scope.people = people;
     }
 
 })();
