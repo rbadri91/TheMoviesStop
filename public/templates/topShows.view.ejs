@@ -1,0 +1,35 @@
+<div class="page-header">
+    <h3 class="titleHeader">
+        Top Rated Shows
+    </h3>
+    <div class="searchResults">
+        <div ng-repeat="show in shows" class="list cardView">
+            <div class="cardimageWrapper">
+                <a id="show_{{show.id}}" href="#" alt={{show.original_name}}>
+                    <img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{show.poster_path}}">
+                </a>
+            </div>
+            <div class="resultInfo">
+                <div class="title">
+                    <a id="show_{{show.id}}" class="resultTitle" title="{{show.original_name}}" href="#"> 
+                                            {{show.original_name}}
+                                    </a>
+                    <span class="vote_avg">
+                                        {{show.vote_average}} <i class="fa fa-star" aria-hidden="true"></i>
+                                </span>
+                </div>
+                <div>
+                    <span class="dateInfo">
+                                <i class="fa fa-calendar" aria-hidden="true"></i> &nbsp; {{show.first_air_date}}
+                                </span>
+                </div>
+                <div class="result_desc">
+                    {{show.overview}}
+                </div>
+                <div class="moreInfoWrapper text-center">
+                    <a href="#" class="moreDetails"> More Info</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

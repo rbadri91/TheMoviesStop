@@ -4,17 +4,28 @@
 <head>
     <title>The Movies Stop</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:600" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- include: "type": "css", "files": "**/*.css" -->
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <!-- /include -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.min.js"></script>
     <!-- include: "type": "js", "files": "**/*.js" -->
     <script src="/javascripts/theMovieStop.js"></script>
     <script src="/common/services/authentication.service.js"></script>
+    <script src="/common/services/movies.service.js"></script>
+    <script src="/common/services/shows.service.js"></script>
+    <script src="/common/services/people.service.js"></script>
     <script src="/controllers/login.controller.js"></script>
     <script src="/controllers/register.controller.js"></script>
     <script src="/controllers/home.controller.js"></script>
+    <script src="/controllers/movie.controller.js"></script>
+    <script src="/controllers/shows.controller.js"></script>
+    <script src="/controllers/people.controller.js"></script>
     <script src="/common/directives/navigation/navigation.controller.js"></script>
     <script src="/common/directives/navigation/navigation.directive.js"></script>
     <!-- /include -->
@@ -24,9 +35,7 @@
 <body ng-app="themoviesStop">
     <navigation></navigation>
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <ui-view></ui-view>
-        </div>
+        <ui-view></ui-view>
     </div>
 </body>
 
