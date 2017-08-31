@@ -73,6 +73,13 @@ router.get('/movies/showingnow', function(req, res, next) {
     });
 });
 
+router.get('/movies/:movie', function(req, res, next) {
+    var movieId = req.params.movie;
+    getMovieInfo(movieId).then((movieInfo) => {
+        res.json(movieInfo);
+    });
+});
+
 function getPopularMovies() {
     return new Promise((resolve) => {
         var options = {
@@ -82,21 +89,8 @@ function getPopularMovies() {
             "path": "/3/movie/popular?page=1&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
             "headers": {}
         };
-        var req = http.request(options, function(res) {
-            var chunks = [];
 
-            res.on("data", function(chunk) {
-                chunks.push(chunk);
-            });
-
-            res.on("end", function() {
-                var body = Buffer.concat(chunks);
-                resolve(body.toString());
-            });
-        });
-
-        req.write("{}");
-        req.end();
+        getdata(options, resolve);
     });
 }
 
@@ -109,21 +103,7 @@ function getTopMovies() {
             "path": "/3/movie/top_rated?page=1&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
             "headers": {}
         };
-        var req = http.request(options, function(res) {
-            var chunks = [];
-
-            res.on("data", function(chunk) {
-                chunks.push(chunk);
-            });
-
-            res.on("end", function() {
-                var body = Buffer.concat(chunks);
-                resolve(body.toString());
-            });
-        });
-
-        req.write("{}");
-        req.end();
+        getdata(options, resolve);
     });
 }
 
@@ -137,21 +117,7 @@ function getUpcomingMovies() {
             "headers": {}
         };
 
-        var req = http.request(options, function(res) {
-            var chunks = [];
-
-            res.on("data", function(chunk) {
-                chunks.push(chunk);
-            });
-
-            res.on("end", function() {
-                var body = Buffer.concat(chunks);
-                resolve(body.toString());
-            });
-        });
-
-        req.write("{}");
-        req.end();
+        getdata(options, resolve);
     });
 }
 
@@ -164,21 +130,7 @@ function getNowShowingMovies() {
             "path": "/3/movie/now_playing?page=1&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
             "headers": {}
         };
-        var req = http.request(options, function(res) {
-            var chunks = [];
-
-            res.on("data", function(chunk) {
-                chunks.push(chunk);
-            });
-
-            res.on("end", function() {
-                var body = Buffer.concat(chunks);
-                resolve(body.toString());
-            });
-        });
-
-        req.write("{}");
-        req.end();
+        getdata(options, resolve);
     });
 }
 
@@ -216,21 +168,7 @@ function getPopularShows() {
             "headers": {}
         };
 
-        var req = http.request(options, function(res) {
-            var chunks = [];
-
-            res.on("data", function(chunk) {
-                chunks.push(chunk);
-            });
-
-            res.on("end", function() {
-                var body = Buffer.concat(chunks);
-                resolve(body.toString());
-            });
-        });
-
-        req.write("{}");
-        req.end();
+        getdata(options, resolve);
     });
 }
 
@@ -243,21 +181,7 @@ function getTopShows() {
             "path": "/3/tv/top_rated?page=1&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
             "headers": {}
         };
-        var req = http.request(options, function(res) {
-            var chunks = [];
-
-            res.on("data", function(chunk) {
-                chunks.push(chunk);
-            });
-
-            res.on("end", function() {
-                var body = Buffer.concat(chunks);
-                resolve(body.toString());
-            });
-        });
-
-        req.write("{}");
-        req.end();
+        getdata(options, resolve);
     });
 }
 
@@ -270,21 +194,7 @@ function getonTVShows() {
             "path": "/3/tv/on_the_air?page=1&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
             "headers": {}
         };
-        var req = http.request(options, function(res) {
-            var chunks = [];
-
-            res.on("data", function(chunk) {
-                chunks.push(chunk);
-            });
-
-            res.on("end", function() {
-                var body = Buffer.concat(chunks);
-                resolve(body.toString());
-            });
-        });
-
-        req.write("{}");
-        req.end();
+        getdata(options, resolve);
     });
 }
 
@@ -297,21 +207,7 @@ function getAiringTodayShows() {
             "path": "/3/tv/airing_today?page=1&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
             "headers": {}
         };
-        var req = http.request(options, function(res) {
-            var chunks = [];
-
-            res.on("data", function(chunk) {
-                chunks.push(chunk);
-            });
-
-            res.on("end", function() {
-                var body = Buffer.concat(chunks);
-                resolve(body.toString());
-            });
-        });
-
-        req.write("{}");
-        req.end();
+        getdata(options, resolve);
     });
 }
 
@@ -331,23 +227,39 @@ function getPopularPeople() {
             "headers": {}
         };
 
-        var req = http.request(options, function(res) {
-            var chunks = [];
-
-            res.on("data", function(chunk) {
-                chunks.push(chunk);
-            });
-
-            res.on("end", function() {
-                var body = Buffer.concat(chunks);
-                resolve(body.toString());
-            });
-        });
-
-        req.write("{}");
-        req.end();
+        getdata(options, resolve);
     });
 }
 
+function getdata(options, resolve) {
+    var req = http.request(options, function(res) {
+        var chunks = [];
+
+        res.on("data", function(chunk) {
+            chunks.push(chunk);
+        });
+
+        res.on("end", function() {
+            var body = Buffer.concat(chunks);
+            resolve(body.toString());
+        });
+    });
+    req.write("{}");
+    req.end();
+}
+
+function getMovieInfo(id) {
+    return new Promise((resolve) => {
+        var options = {
+            "method": "GET",
+            "hostname": "api.themoviedb.org",
+            "port": null,
+            "path": "/3/movie/" + id + "?append_to_response=images%2Cvideos%2Calternative_titles%2Ccredits%2Creviews%2Creleases%2Csimilar%2Crecommendations&api_key=646a10c0084204abfff75a025d3c4539",
+            "headers": {}
+        };
+
+        getdata(options, resolve);
+    });
+}
 
 module.exports = router;

@@ -1,4 +1,4 @@
-<div class="page-header">
+<div class="MoviesWrapper">
     <h3 class="titleHeader">
         Popular People
     </h3>
@@ -6,7 +6,7 @@
         <div ng-repeat="person in people" class="list profileView">
             <div class="profileImageWrapper">
                 <a id="person_{{person.id}}" href="#" alt={{person.title}}>
-                    <img class="profileimageSettings" src="https://image.tmdb.org/t/p/w300/{{person.profile_path}}">
+                    <img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{person.profile_path}}">
                 </a>
             </div>
             <a class="infoWrapper" href="#">

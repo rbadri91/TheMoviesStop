@@ -10,7 +10,6 @@
         for (var i = 0; i < arr.length; i += size) {
             newArr.push(arr.slice(i, i + size));
         }
-        console.log("new Arr here:", newArr);
         return newArr;
     }
 
@@ -45,11 +44,19 @@
                 return movies;
             });
         }
+        var getMovieDetails = function(id) {
+            return $http.get('/movies/' + id).then(function(data) {
+                angular.copy(JSON.parse(data.data), movies);
+                console.log("movies here:", JSON.parse(data.data));
+                return JSON.parse(data.data);
+            });
+        }
         return {
             getPopular: getPopular,
             getTopRated: getTopRated,
             getUpcoming: getUpcoming,
-            getShowingNow: getShowingNow
+            getShowingNow: getShowingNow,
+            getMovieDetails: getMovieDetails
         };
     }
 })();

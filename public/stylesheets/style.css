@@ -2,6 +2,7 @@ body {
     padding: 50px;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
     background: #efefef;
+    height: 100%;
 }
 
 a {
@@ -10,6 +11,21 @@ a {
 
 .navbar {
     z-index: 9;
+    background: #332b2b;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.navbar-default .navbar-brand,
+.navbar-default .navbar-nav>li>a {
+    color: #f1e7e7;
+}
+
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-nav>li>a:hover {
+    color: #3EC02F;
 }
 
 .titleHeader {
@@ -21,6 +37,15 @@ a {
     margin: 0 auto;
     margin-top: 50px;
     margin-bottom: 50px;
+}
+
+.MovieInfoWraper {
+    width: 900px;
+    margin: 0 auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    position: relative;
+    overflow: hidden;
 }
 
 .searchResults {
@@ -48,9 +73,9 @@ a {
 }
 
 .profileView {
-    webkit-box-shadow: 0 2px 0 0 rgba(230, 230, 230, 0.5);
-    -moz-box-shadow: 0 2px 0 0 rgba(230, 230, 230, 0.5);
-    box-shadow: 0 2px 0 0 rgba(230, 230, 230, 0.5);
+    webkit-box-shadow: 0 2px 2px 0 rgba(191, 153, 153, 1);
+    -moz-box-shadow: 0 2px 2px 0 rgba(191, 153, 153, 0.5);
+    box-shadow: 0 2px 2px 0 rgba(191, 153, 153, 1);
     -webkit-transition: box-shadow 0.5s ease;
     -moz-transition: box-shadow 0.5s ease;
     -o-transition: box-shadow 0.5s ease;
@@ -96,6 +121,7 @@ div.resultList.flex {
 
 div.resultList {
     margin-top: 20px;
+    width: 100%;
 }
 
 div.list.profileView:nth-child(odd) {
@@ -120,7 +146,7 @@ div.list.cardView:nth-child(odd) {
     position: absolute;
 }
 
-.peopleImageWrapper {
+.people {
     width: 40%;
     height: 200px;
     line-height: 0;
@@ -138,12 +164,10 @@ div.list.cardView:nth-child(odd) {
     line-height: 0;
 }
 
-.profileimageSettings {
+.posterImageSettings {
     width: 100%;
-    height: 80%;
+    height: 100%;
     opacity: 1;
-    top: 0;
-    position: absolute;
     transition: opacity 200ms;
     line-height: 0;
 }
@@ -156,6 +180,7 @@ div.list.cardView:nth-child(odd) {
     height: 20%;
     overflow: hidden;
     color: #524747;
+    opacity: 0.9;
 }
 
 .infoWrapper:hover {
@@ -170,6 +195,7 @@ div.list.cardView:nth-child(odd) {
     flex-direction: column;
     height: 100%;
     width: 100%;
+    background: #fbfafa;
 }
 
 .knownForDesc {
@@ -308,4 +334,414 @@ div.list div:last-of-type {
 div.list.cardView div.view_more a {
     font-size: 0.9em;
     font-weight: 400;
+}
+
+.main-section {
+    background-color: transparent;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+.section-wrapper .poster-wrapper {
+    height: 300px;
+    overflow: hidden;
+}
+
+.section-wrapper .poster {
+    float: left;
+    display: inline-block;
+    height: 300px;
+    width: 30%;
+}
+
+.section-wrapper .watchSection {
+    float: right;
+    position: relative;
+    display: inline-block;
+    width: 70%;
+    height: 300px;
+}
+
+div.watchSection {
+    line-height: 18px;
+}
+
+.videoLoader {
+    height: 100%;
+    width: 100%;
+}
+
+.section-wrapper .section_desc {
+    padding: 20px 0;
+    background: #fff;
+}
+
+.section-wrapper .section_desc:after {
+    clear: both;
+}
+
+.section-wrapper .titleBar {
+    position: relative;
+    padding: 0 20px;
+    display: inline-flex;
+    width: 100%;
+}
+
+.section-titleWrapper {
+    min-height: 60px;
+    width: 80%;
+}
+
+.section-wrapper .titleYear {
+    font-family: 'Lato', sans-serif;
+    font-size: 25px;
+    line-height: 100%;
+}
+
+.section-wrapper .section-info {
+    font-size: 14px;
+}
+
+.section-wrapper .ratings_Wrapper {
+    float: right;
+    position: relative;
+    margin-left: 5px;
+    width: 20%;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.section-wrapper .userRatings {
+    font-size: 11px;
+    height: 40px;
+    line-height: 13px;
+    padding: 2px 0 0 34px;
+    width: 58px;
+}
+
+.section-wrapper .ratings_Wrapper .ratingValue {
+    margin-bottom: -2px;
+    white-space: nowrap;
+}
+
+.section-wrapper .rating-widget {
+    height: 42px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 92px;
+}
+
+.section-wrapper .rating-button {
+    height: 42px;
+    width: 91px;
+}
+
+.section-wrapper .rating-button button {
+    border: 2px solid #ffffff;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, .15);
+    border-radius: 50%;
+    width: 46px;
+    height: 46px;
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+}
+
+.section-wrapper .avgVote {
+    font-size: 1.5rem;
+}
+
+.section-wrapper .countVote {
+    width: 100%;
+    white-space: nowrap;
+    margin-top: 20%;
+    font-size: 1.5rem;
+}
+
+.section-wrapper .summaryWrapper {
+    padding: 18px 20px;
+    width: 100%;
+    display: block;
+    position: relative;
+}
+
+.section-wrapper .summary_info {
+    width: 100%;
+}
+
+.section-wrapper .summary_info .featured_info {
+    margin-top: 30px;
+}
+
+.featured_info {
+    font-family: 'Josefin Slab', serif;
+    font-weight: 600;
+}
+
+.summary {
+    width: 100%;
+}
+
+.SampleClass {
+    position: relative;
+}
+
+.bgfix {
+    width: 100%;
+    height: 100%;
+}
+
+.featured_people {
+    margin-top: 0;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    list-style-type: none;
+    list-style-position: inside;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.featured_people li {
+    background-color: transparent;
+    height: auto;
+    margin-bottom: 0;
+    width: 33%;
+    text-align: left;
+    margin-right: 0;
+    box-sizing: border-box;
+    padding-right: 20px;
+    padding-bottom: 20px;
+}
+
+ol.featured_people li p {
+    font-size: 1em;
+    line-height: 1.4em;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.profile_job {
+    font-size: 0.9rem;
+}
+
+.ms-row {
+    margin-left: 0px;
+    margin-right: 0px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.optionsNav {
+    background: white;
+    height: 7%;
+    position: relative;
+    display: block;
+    border-bottom: 1px solid grey;
+}
+
+.menuNavSection {
+    padding: 0 30px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.CastsNav,
+.ReviewsNav,
+.VideosNav,
+.RecommendedNav,
+.BoxOfficeNav,
+.CreditsNav,
+.DetailsNav {
+    height: 100%;
+    padding: 10px 0;
+    display: inline-flex;
+    font-family: 'Playfair Display', serif;
+    color: grey;
+    cursor: pointer;
+    margin-right: 15px;
+    margin-bottom: 0;
+}
+
+.CastsNav.active,
+.ReviewsNav.active,
+.VideosNav.active,
+.RecommendedNav.active,
+.BoxOfficeNav.active,
+.CreditsNav.active,
+.DetailsNav.active {
+    border-bottom: 3px solid #104010;
+    color: black;
+}
+
+section.panel {
+    box-sizing: border-box;
+    width: 100%;
+    display: block;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    border-top: 1px solid #d7d7d7;
+}
+
+p.full_view_button {
+    margin: 20px 0 0 0;
+    display: inline-block;
+}
+
+ol.featured_people li.profileView {
+    height: 300px;
+    margin: 0 25px 20px 0;
+    width: 20%;
+}
+
+ol.featured_people li>a>img {
+    height: 80%;
+}
+
+ol.featured_people li div.castInfoWrapper {
+    height: 20%;
+    bottom: 0;
+    position: absolute;
+    text-overflow: ellipsis;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background: #fbfafa;
+}
+
+section.panel ol.featured_people li p:first-of-type {
+    padding: 10px 10px 0 10px;
+}
+
+.ReviewWrapper {
+    padding-top: 10px;
+    padding-left: 10%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.ReviewWrapper::before {
+    clear: both;
+    content: '';
+    display: block;
+}
+
+.creditsTag {
+    padding-top: 10px;
+    padding-left: 10%;
+}
+
+section.ReviewSection div.cardView {
+    padding: 20px;
+}
+
+p.full_view_button a {
+    font-size: 2rem;
+    color: #000;
+    font-family: 'Josefin Slab', serif;
+    font-weight: 600;
+}
+
+p.full_view_button a:hover {
+    text-decoration: none;
+}
+
+section.VideosSection>div.section-content {
+    height: 300px;
+    width: 100%;
+    overflow: hidden;
+    overflow-x: scroll;
+    white-space: nowrap;
+    box-sizing: border-box;
+    font-size: 0;
+}
+
+section.VideosSection>div.section-content div.watchSection {
+    width: 70%;
+    height: 300px;
+}
+
+section.VideosSection>div.section-content div.section-inner-content {
+    display: inline-block;
+    width: 100%;
+}
+
+section.VideosSection>div.section-content div {
+    display: inline-block;
+}
+
+section.RecommendedSection>div.scollable {
+    width: 100%;
+    overflow: hidden;
+    overflow-x: scroll;
+    white-space: nowrap;
+    box-sizing: border-box;
+    font-size: 0;
+    padding-bottom: 20px;
+}
+
+section.RecommendedSection div.scollable div.list {
+    display: inline-block;
+    float: none;
+}
+
+section.RecommendedSection div.scollable div.miniPhoto {
+    width: 30%;
+    margin: 0 15px 0 0;
+    height: 250px;
+    position: relative;
+}
+
+div.list.miniPhoto div.imageWrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+section.RecommendedSection>div.scollable div.infoInnerWrapper {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.recoNameWrapper {
+    margin: 1%;
+    font-size: 1.3rem;
+    flex: 0 0 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.reco_vote_avg {
+    align-items: center;
+    line-height: 24px;
+    flex: 0 0 40%;
+    text-align: right;
+    font-size: 1.3rem;
+}
+
+.recoReleaseInfo {
+    font-size: 1.3rem;
+    flex: 0 0 50%;
+}
+
+section.DetailsSection div.cardView div.detailsInfoWrapper span.movieLang {
+    margin: 0 5%;
+}
+
+.detailsInfoWrapper {
+    margin: 3% 0 3% 10%;
+}
+
+.detailsInfoWrapper a:hover {
+    text-decoration: none;
 }

@@ -75,6 +75,19 @@ app.config([
                 },
                 title: 'Showing Now Movies'
             })
+            .state('movieDetails', {
+                url: '/movies/{id}',
+                templateUrl: 'templates/movieDetails.view.ejs',
+                controller: 'moviesCtrl',
+                resolve: {
+                    movies: ['$stateParams', 'movies', function($stateParams, movies) {
+                        // var moviesDetails = movies.getMovieDetails($stateParams.id);
+                        // console.log("moviesDetails here:", moviesDetails);
+                        return movies.getMovieDetails($stateParams.id);
+                    }]
+                },
+                title: 'Movie Information'
+            })
             .state('popularShows', {
                 url: '/tv/popular',
                 templateUrl: 'templates/popularShows.view.ejs',
@@ -138,3 +151,10 @@ app.config([
 app.config(['$locationProvider', function($locationProvider) {
     $locationProvider.hashPrefix('');
 }]);
+
+app.config(function($sceDelegateProvider) {
+    $sceDelegateProvider.resourceUrlWhitelist([
+        'self',
+        'https://www.youtube.com/**'
+    ]);
+});
