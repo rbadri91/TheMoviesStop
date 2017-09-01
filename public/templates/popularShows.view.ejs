@@ -5,7 +5,7 @@
     <div class="searchResults">
         <div ng-repeat="show in shows" class="list cardView">
             <div class="cardimageWrapper">
-                <a id="show_{{show.id}}" href="#" alt={{show.original_name}}>
+                <a id="show_{{show.id}}" href="/#/tv/desc/{{show.id}}" alt={{show.original_name}}>
                     <img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{show.poster_path}}">
                 </a>
             </div>

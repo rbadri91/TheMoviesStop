@@ -59,6 +59,7 @@ app.config([
                 controller: 'moviesCtrl',
                 resolve: {
                     movies: ['movies', function(movies) {
+                        console.log("in up coming movies");
                         return movies.getUpcoming();
                     }]
                 },
@@ -76,13 +77,12 @@ app.config([
                 title: 'Showing Now Movies'
             })
             .state('movieDetails', {
-                url: '/movies/{id}',
+                url: '/movies/desc/{id}',
                 templateUrl: 'templates/movieDetails.view.ejs',
                 controller: 'moviesCtrl',
                 resolve: {
                     movies: ['$stateParams', 'movies', function($stateParams, movies) {
-                        // var moviesDetails = movies.getMovieDetails($stateParams.id);
-                        // console.log("moviesDetails here:", moviesDetails);
+                        console.log("it comes here");
                         return movies.getMovieDetails($stateParams.id);
                     }]
                 },
@@ -131,6 +131,17 @@ app.config([
                     }]
                 },
                 title: 'Airing Today Shows'
+            })
+            .state('showDetails', {
+                url: '/tv/desc/{id}',
+                templateUrl: 'templates/showDetails.view.ejs',
+                controller: 'showsCtrl',
+                resolve: {
+                    shows: ['$stateParams', 'shows', function($stateParams, shows) {
+                        return shows.getShowDetails($stateParams.id);
+                    }]
+                },
+                title: 'Show Information'
             })
             .state('popularPeople', {
                 url: '/people/popular',

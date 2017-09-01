@@ -1,0 +1,207 @@
+<div class="bgDisplay"></div>
+<div class="ShowInfoWraper">
+    <div class="resultList flex">
+        <div class="main-section">
+            <div class="section-overview">
+                <div class="section-wrapper">
+                    <div class="poster-wrapper">
+                        <div class="poster">
+                            <a href="#">
+                                <img class="posterImageSettings" src="https://image.tmdb.org/t/p/w300/{{shows.poster_path}}" title={{shows.original_name}}/>
+                            </a>
+                        </div>
+                        <div class="summaryWrapper">
+                            <div class="summary_info">
+                                <h3 class="featured_info">Overview</h3>
+                                <div class="summary">
+                                    {{shows.overview}}
+                                </div>
+                                <h3 class="featured_info">Featured Crew</h3>
+                                <ol class="featured_people">
+                                    <li class="people_info" ng-repeat="crew in shows.credits.crew | limitTo:3">
+                                        <p>{{crew.name}}</p>
+                                        <p class="profile_job">{{crew.job}}</p>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section_desc">
+                        <div class="section-headerWrapper">
+                            <div class="titleBar">
+                                <div class="section-titleWrapper">
+                                    <h2>{{shows.original_name}} &nbsp;
+                                        <span class="titleYear">({{getReleaseYear(shows.first_air_date)}})</span>
+                                    </h2>
+                                    <div class="section-info">
+                                        <time>
+                                            <span ng-repeat="episodeTime in shows.episode_run_time">{{getTime(episodeTime)}},
+                                            </span></time>
+                                        <span> | </span>
+                                        <a ng-repeat="genere in shows.genres" id="genere_genere.id" href="#">
+                                                {{genere.name}} &nbsp;
+                                            </a>
+                                        <span> | </span>
+                                        <span>TV Series({{getReleaseYear(shows.first_air_date)}} - {{getReleaseYear(shows.last_air_date)}})</span>
+                                        <span> | </span>
+                                        <span>{{getCertificate(shows.content_ratings.results)}}</span>
+                                    </div>
+                                </div>
+                                <div class="ratings_Wrapper">
+                                    <div class="userRatings">
+                                        <div class="ratingValue">
+                                            <strong class="avgVote">Rating: {{shows.vote_average}}</strong>
+                                        </div>
+                                        <div class="countVote"><strong>Count: {{shows.vote_count}}<strong></div>
+                                        </div>
+                                        <div ng-show="isLoggedIn()" class="rating-widget">
+                                            <div class="rating-button">
+                                                <button><span class="glyphicons glyphicons-star x1">
+                                                </span></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ms-row optionsNav">
+                                <div class="menuNavSection">
+                                    <span class="CastsNav active" ng-click ="handleOptionsClick($event)">Cast</span>
+                                    <span class="SeasonReviewsNav" ng-click ="handleOptionsClick($event)">Season Reviews</span>
+                                    <span class="VideosNav" ng-click ="handleOptionsClick($event)">Videos</span>
+                                    <span ng-show="shows.recommendations.results.length!=0" class="RecommendedNav" ng-click ="handleOptionsClick($event)">Recommended</span>
+                                    <span class="DetailsNav" ng-click ="handleOptionsClick($event)">Details</span>
+                                    <span class="CreditsNav" ng-click ="handleOptionsClick($event)">Prodution Credits</span>
+                                </div>
+                        </div>
+                        <section class="panel CastLists">
+                                <h3 class="featured_info">Top Casts</h3>
+                                <ol class="featured_people">
+                                    <li class="list profileView setFullHeight" ng-repeat="cast in shows.credits.cast | limitTo:4">
+                                        <a href="#"><img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{cast.profile_path}}"></img></a>
+                                        <div class="castInfoWrapper">
+                                            <p>{{cast.name}}</p>
+                                            <p class="profile_job">{{cast.character}}</p>
+                                        </div>
+                                    </li>
+                                </ol>
+                                <p class="full_view_button">
+                                    <a href="#">View Full Cast</a>
+                                </p>
+                        </section>
+                        <section class="panel SeasonReviewSection">
+                                <h3 class="featured_info">Last Season</h3>
+                                <div class="cardView">
+                                        <div class="ReviewWrapper">
+                                                <div class="poster">
+                                                    <a href="#">
+                                                            <img class="posterImageSettings" src="https://image.tmdb.org/t/p/w300/{{shows.poster_path}}" title={{shows.original_name}}/>
+                                                    </a>
+                                                </div>
+                                                <div class="summaryWrapper">
+                                                        <div class="summary_info">
+                                                            <h3 class="featured_info">Season {{shows.last_seasonInfo.season_number}}</h3>
+                                                            <div class="airWrapper">
+                                                            <span class="dateInfo">  {{getReleaseYear(shows.last_seasonInfo.air_date)}}</span>
+                                                            <span> | </span>
+                                                            <span> Episodes {{shows.last_seasonInfo.episodes.length}}</span>
+                                                            </div>
+                                                            <div class="summary">
+                                                                {{shows.overview}}
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </div>
+                                <p class="full_view_button">
+                                    <a href="#">View All Seasons</a>
+                                </p>
+                        </section>
+                        <section class="panel VideosSection">
+                                <h3 class="featured_info">Videos</h3>
+                                <div class="section-content">
+                                        <div class="section-inner-content">
+                                            <div class="watchSection" ng-repeat="video in shows.videos.results">
+                                                <iframe class="videoLoader" ng-src="{{getIframeSrc(video.key)}}"></iframe>
+                                            </div>
+                                        </div>
+                                </div>
+                        </section>
+                        <section  ng-show="{{shows.recommendations.results.length}}!=0" class="panel RecommendedSection">
+                                <h3 class="featured_info">Recommendations</h3>
+                            <div class="scollable">
+                                        <div class="list miniPhoto" ng-repeat="show in shows.recommendations.results | limitTo:7" title ={{show.title}}>
+                                            <div class="imageWrapper">
+                                                    <a id="show_{{show.id}}" href="/#/tv/{{show.id}}" alt={{show.title}}>
+                                                        <img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{show.poster_path}}">
+                                                    </a>
+                                            </div>
+                                            <a class="infoWrapper" href="/#/tv/{{show.id}}">
+                                                    <div class="infoInnerWrapper">
+                                                        <div class="recoNameWrapper">{{show.original_name}}</div>
+                                                        <span class="reco_vote_avg">
+                                                                {{show.vote_average}} <i class="fa fa-star" aria-hidden="true"></i>
+                                                        </span>
+                                                        <div class="recoReleaseInfo">
+                                                                <i class="fa fa-calendar" aria-hidden="true"></i> {{getReleaseYear(show.first_air_date)}}
+                                                        </div>
+                                                    </div>
+                                            </a>
+                                        </div>
+                                </div>
+                        </section>
+                        <section  class="panel DetailsSection">
+                                <h3 class="featured_info" >Details</h3>
+                                <div class="cardView">
+                                        <div class="detailsInfoWrapper">
+                                            <span ng-show=shows.homepage!=''>
+                                                    <strong>Official Site:</strong>
+                                            <a target="_blank" href="{{shows.homepage}}">{{shows.homepage}}</a>
+                                            </span>
+                                        </div>
+                                        <div class="detailsInfoWrapper">
+                                            <span><strong>Country: </strong></span>
+                                            <span>{{shows.origin_country}}</span>
+                                        </div>
+                                        <div class="detailsInfoWrapper">
+                                            <span><strong>Languages: </strong></span>
+                                            <span class="movieLang" ng-repeat="lang in shows.languages ">{{lang}}</span>
+                                        </div>
+                                        <div class="detailsInfoWrapper">
+                                            <span><strong>Also Known As: </strong></span>
+                                            <span>{{shows.alternative_titles.results[0].title}}</span>
+                                            <a href="#">View All titles</a>
+                                        </div>
+                                    </div>
+                                    </section>
+                                    <section class="panel ProdCreditsSection">
+                                        <h3 class="featured_info">Production Credits</h3>
+                                        <div class="cardView">
+                                            <div class="detailsInfoWrapper">
+                                                <span><strong>Production Company</strong></span>
+                                                <a href="#" ng-repeat="comp in shows.production_companies | limitTo:3">{{comp.name}}</span>
+                                                    <a href="#"> View All Companies</a>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <style>
+                    .bgDisplay::after {
+                        background-image:url(https://image.tmdb.org/t/p/w1280{{shows.backdrop_path}});
+                        content: "";
+                        opacity: 0.5;
+                        z-index: -1;
+                        top: 0;
+                        left: 0;
+                        bottom: 0;
+                        right: 0;
+                        position: absolute;
+                        height: 100%;
+                        background-repeat: repeat-y;
+                        background-position: center center;
+                    }
+                </style>

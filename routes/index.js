@@ -158,6 +158,23 @@ router.get('/tv/airingToday', function(req, res, next) {
     });
 });
 
+router.get('/tv/:show', function(req, res, next) {
+    var showId = req.params.show;
+    getShowInfo(showId).then((showInfo) => {
+        var showDetails = showInfo;
+        getLastSeasonInfo(showId, JSON.parse(showInfo).seasons.length).then((showData) => {
+            console.log("typeOf showData:", typeof(showData));
+            var addShowInfo = JSON.parse(showInfo);
+            addShowInfo["last_seasonInfo"] = JSON.parse(showData);
+            addShowInfo = JSON.stringify(addShowInfo);
+            console.log("addShowInfo here:", addShowInfo);
+
+            res.json(addShowInfo);
+        });
+
+    });
+});
+
 function getPopularShows() {
     return new Promise((resolve) => {
         var options = {
@@ -258,6 +275,32 @@ function getMovieInfo(id) {
             "headers": {}
         };
 
+        getdata(options, resolve);
+    });
+}
+
+function getShowInfo(id) {
+    return new Promise((resolve) => {
+        var options = {
+            "method": "GET",
+            "hostname": "api.themoviedb.org",
+            "port": null,
+            "path": "/3/tv/" + id + "?append_to_response=images%2Cvideos%2Calternative_titles%2Ccontent_ratings%2Ccredits%2Creviews%2Creleases%2Csimilar%2Crecommendations%2Ccertifications&api_key=646a10c0084204abfff75a025d3c4539",
+            "headers": {}
+        };
+        getdata(options, resolve);
+    });
+}
+
+function getLastSeasonInfo(id, seasonNumber) {
+    return new Promise((resolve) => {
+        var options = {
+            "method": "GET",
+            "hostname": "api.themoviedb.org",
+            "port": null,
+            "path": "/3/tv/" + id + "/season/7?api_key=646a10c0084204abfff75a025d3c4539",
+            "headers": {}
+        };
         getdata(options, resolve);
     });
 }

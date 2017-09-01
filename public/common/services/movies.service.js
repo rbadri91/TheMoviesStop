@@ -46,8 +46,6 @@
         }
         var getMovieDetails = function(id) {
             return $http.get('/movies/' + id).then(function(data) {
-                angular.copy(JSON.parse(data.data), movies);
-                console.log("movies here:", JSON.parse(data.data));
                 return JSON.parse(data.data);
             });
         }

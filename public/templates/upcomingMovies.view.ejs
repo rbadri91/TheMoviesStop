@@ -5,7 +5,7 @@
     <div class="searchResults">
         <div ng-repeat="movie in movies" class="list cardView">
             <div class="cardimageWrapper">
-                <a id="movie_{{movie.id}}" href="/#/movies/{{movie.id}}" alt={{movie.title}}>
+                <a id="movie_{{movie.id}}" href="/#/movies/desc/{{movie.id}}" alt={{movie.title}}>
                     <img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{movie.poster_path}}">
                 </a>
             </div>

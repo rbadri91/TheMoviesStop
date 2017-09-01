@@ -21,9 +21,7 @@
             return hours + " h " + mins + " m";
         };
         $scope.getReleaseDate = function(date) {
-            var monthNames = ["January", "February", "March", "April", "May", "June",
-                "July", "August", "September", "October", "November", "December"
-            ];
+
             var d = new Date(date);
             locale = "en-us";
             var dt = d.getDate();
@@ -38,6 +36,7 @@
                     cetificate = countries[i].certification;
                 }
             }
+            if (cetificate === "" && countries.length > 0) cetificate = countries[0].certification;
             return (cetificate === "") ? "N/A" : cetificate;
         };
         $scope.isLoggedIn = function() {

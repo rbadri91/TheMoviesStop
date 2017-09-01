@@ -39,7 +39,8 @@ a {
     margin-bottom: 50px;
 }
 
-.MovieInfoWraper {
+.MovieInfoWraper,
+ShowInfoWraper {
     width: 900px;
     margin: 0 auto;
     margin-top: 50px;
@@ -472,6 +473,11 @@ div.watchSection {
     position: relative;
 }
 
+div.ShowInfoWraper div.section-wrapper .summaryWrapper {
+    width: 70%;
+    display: inline-block;
+}
+
 .section-wrapper .summary_info {
     width: 100%;
 }
@@ -489,11 +495,11 @@ div.watchSection {
     width: 100%;
 }
 
-.SampleClass {
+.movieStopWrapper {
     position: relative;
 }
 
-.bgfix {
+.bgDisplay {
     width: 100%;
     height: 100%;
 }
@@ -562,7 +568,8 @@ ol.featured_people li p {
 .RecommendedNav,
 .BoxOfficeNav,
 .CreditsNav,
-.DetailsNav {
+.DetailsNav,
+.SeasonReviewsNav {
     height: 100%;
     padding: 10px 0;
     display: inline-flex;
@@ -579,7 +586,8 @@ ol.featured_people li p {
 .RecommendedNav.active,
 .BoxOfficeNav.active,
 .CreditsNav.active,
-.DetailsNav.active {
+.DetailsNav.active,
+.SeasonReviewsNav.active {
     border-bottom: 3px solid #104010;
     color: black;
 }
@@ -624,7 +632,6 @@ section.panel ol.featured_people li p:first-of-type {
 }
 
 .ReviewWrapper {
-    padding-top: 10px;
     padding-left: 10%;
     width: 100%;
     box-sizing: border-box;
@@ -744,4 +751,28 @@ section.DetailsSection div.cardView div.detailsInfoWrapper span.movieLang {
 
 .detailsInfoWrapper a:hover {
     text-decoration: none;
+}
+
+..section-wrapper .posterAndPlotWrapper {
+    height: 300px;
+    overflow: hidden;
+}
+
+.ReviewWrapper .poster {
+    float: left;
+    display: inline-block;
+    height: 198px;
+    width: 30%;
+}
+
+section.SeasonReviewSection div.cardView {
+    height: 200px;
+}
+
+section.SeasonReviewSection div.summaryWrapper div.summary_info div.airWrapper {
+    padding-bottom: 2%;
+}
+
+section.SeasonReviewSection div.cardView div.summary_info .featured_info {
+    margin-top: 0;
 }

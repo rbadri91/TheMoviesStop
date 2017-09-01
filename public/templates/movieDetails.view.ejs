@@ -1,35 +1,5 @@
-<div class="bgfix"></div>
-<script>
-    // function handleOptionsClick(el) {
-    //     console.log("it comes inside");
-    //     var className;
-    //     $(".menuNavSection li").removeClass("active");
-    //     $(el).addClass("active");
-    //     if (el.textContent == "Cast") {
-    //         className = ".CastLists";
-    //     } else if (el.textContent == "Reviews") {
-    //         className = ".ReviewsSection";
-    //     } else if (el.textContent == "Videos") {
-    //         className = ".VideosSection";
-    //     } else if (el.textContent == "Recommended") {
-    //         className = ".RecommendedSection";
-    //     } else if (el.textContent == "Details") {
-    //         className = ".DetailsSection";
-    //     } else if (el.textContent == "Box Office") {
-    //         className = ".BoxOfficeSection";
-    //     } else if (el.textContent == "Prodution Credits") {
-    //         className = ".ProdCreditsSection";
-    //     }
-    //     $('html,body').animate({
-    //             scrollTop: $(className).offset().top
-    //         },
-    //         'slow');
-    // }
-</script>
+<div class="bgDisplay"></div>
 <div class="MovieInfoWraper">
-    <h3 class="titleHeader">
-        Movie Details
-    </h3>
     <div class="resultList flex">
         <div class="main-section">
             <div class="section-overview">
@@ -173,7 +143,7 @@
                         <h3 class="featured_info" >Details</h3>
                         <div class="cardView">
                             <div class="detailsInfoWrapper">
-                                <span ng-show="{{movies.homepage}}"><strong>Official Site:</strong>
+                                <span ng-show={{movies.homepage}}!=''><strong>Official Site:</strong>
                                             </span>
                                             <a target="_blank" href="{{movies.homepage}}">{{movies.homepage}}</a>
                                         </div>
@@ -221,7 +191,7 @@
                         </div>
                     </div>
                     <style>
-                        .bgfix::after {
+                        .bgDisplay::after {
                             background-image:url(https://image.tmdb.org/t/p/w1280/{{movies.backdrop_path}}),
                             url(https://image.tmdb.org/t/p/w1280/{{movies.backdrop_path}});
                             content: "";
