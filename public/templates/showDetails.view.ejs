@@ -121,7 +121,7 @@
                                 <h3 class="featured_info">Videos</h3>
                                 <div class="section-content">
                                         <div class="section-inner-content">
-                                            <div class="watchSection" ng-repeat="video in shows.videos.results">
+                                            <div class="watchSection" ng-class="{alignContentleft:shows.videos.results.length == 1}" ng-repeat="video in shows.videos.results">
                                                 <iframe class="videoLoader" ng-src="{{getIframeSrc(video.key)}}"></iframe>
                                             </div>
                                         </div>

@@ -40,7 +40,7 @@ a {
 }
 
 .MovieInfoWraper,
-ShowInfoWraper {
+.ShowInfoWraper {
     width: 900px;
     margin: 0 auto;
     margin-top: 50px;
@@ -342,6 +342,7 @@ div.list.cardView div.view_more a {
     float: left;
     margin: 0;
     padding: 0;
+    width: 100%;
 }
 
 .section-wrapper .poster-wrapper {
@@ -476,6 +477,7 @@ div.watchSection {
 div.ShowInfoWraper div.section-wrapper .summaryWrapper {
     width: 70%;
     display: inline-block;
+    height: 300px;
 }
 
 .section-wrapper .summary_info {
@@ -493,6 +495,16 @@ div.ShowInfoWraper div.section-wrapper .summaryWrapper {
 
 .summary {
     width: 100%;
+}
+
+div.ShowInfoWraper div.section-wrapper div.poster-wrapper .summaryWrapper .summary {
+    height: 40%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+div.ShowInfoWraper div.section-wrapper div.poster-wrapper div.summaryWrapper .featured_people {
+    height: 30%;
 }
 
 .movieStopWrapper {
@@ -761,12 +773,12 @@ section.DetailsSection div.cardView div.detailsInfoWrapper span.movieLang {
 .ReviewWrapper .poster {
     float: left;
     display: inline-block;
-    height: 198px;
+    height: 250px;
     width: 30%;
 }
 
 section.SeasonReviewSection div.cardView {
-    height: 200px;
+    height: 250px;
 }
 
 section.SeasonReviewSection div.summaryWrapper div.summary_info div.airWrapper {
@@ -775,4 +787,25 @@ section.SeasonReviewSection div.summaryWrapper div.summary_info div.airWrapper {
 
 section.SeasonReviewSection div.cardView div.summary_info .featured_info {
     margin-top: 0;
+}
+
+div.ShowInfoWraper div.section-wrapper div.poster-wrapper div.summaryWrapper .summary_info {
+    display: flex;
+    flex-direction: column;
+}
+
+div.ShowInfoWraper div.section-wrapper div.poster-wrapper {
+    height: 400px;
+}
+
+div.ShowInfoWraper div.section-wrapper div.poster-wrapper>div.poster {
+    height: 400px;
+}
+
+div.ShowInfoWraper section.VideosSection div.watchSection {
+    float: none;
+}
+
+.alignContentleft {
+    float: left !important;
 }
