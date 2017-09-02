@@ -49,12 +49,16 @@
                 return JSON.parse(data.data);
             });
         }
+        var getMovies = function() {
+            return movies;
+        }
         return {
             getPopular: getPopular,
             getTopRated: getTopRated,
             getUpcoming: getUpcoming,
             getShowingNow: getShowingNow,
-            getMovieDetails: getMovieDetails
+            getMovieDetails: getMovieDetails,
+            getMovies: getMovies
         };
     }
 })();

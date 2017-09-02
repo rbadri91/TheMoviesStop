@@ -1,0 +1,76 @@
+<div class="bgDisplay"></div>
+<div class="MoviesWrapper">
+    <div class="section-wrapper">
+        <div class="poster-wrapper shortView">
+            <div class="poster shortView">
+                <a href="#">
+                    <img class="posterImageSettings" src="https://image.tmdb.org/t/p/w300/{{poster_path}}" title={{name}}/>
+                </a>
+            </div>
+            <div class="summaryWrapper">
+                <div class="summary_info">
+                    <h2 class="featured_info">{{name}} ({{year}})</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="crew_teamWrapper">
+        <div class="colSplit">
+            <h3 class="titleHeader">Cast ({{getCastCount()}})</h3>
+            <ol class="person creditWrapper">
+                <li ng-repeat="actor in cast">
+                    <a href="/#/people/desc/{{actor.id}}" title={{actor.name}}>
+                        <img class="castProfileWrapper" src="https://image.tmdb.org/t/p/w300/{{actor.profile_path}}" />
+                    </a>
+                    <div>
+                        <div class="castInfo">
+                            <p>
+                                <a href="/#/people/desc/{{actor.id}}" title={{actor.name}}>{{actor.name}}</a>
+                                <br>
+                                <span class="cast_actor">{{actor.character}}</span>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+            </ol>
+        </div>
+        <div class="colSplit">
+            <h3 class="titleHeader">Crew ({{getCrewCount()}})</h3>
+            <div ng-repeat="(key, value) in crewMap" class="crewWrapper">
+                <h4>{{key}}</h4>
+                <ol class="person creditWrapper">
+                    <li ng-repeat="people in value">
+                        <a href="/#/people/desc/{{people.id}}" title={{people.name}}>
+                            <img class="castProfileWrapper" src="https://image.tmdb.org/t/p/w300/{{people.profile_path}}" />
+                        </a>
+                        <div>
+                            <div class="castInfo">
+                                <p>
+                                    <a href="/#/people/desc/{{people.id}}" title={{people.name}}>{{people.name}}</a>
+                                    <br>
+                                    <span class="cast_actor">{{people.job}}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </li>
+                    <ol>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .bgDisplay::after {
+        background-image:url(https://image.tmdb.org/t/p/w1280/{{backdrop_path}});
+        content: "";
+        opacity: 0.3;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        height: 100%;
+        background-repeat: repeat-y;
+        background-position: center center;
+    }
+</style>

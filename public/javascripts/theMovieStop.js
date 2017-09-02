@@ -1,4 +1,4 @@
-var app = angular.module('themoviesStop', ['ui.router', 'ui.bootstrap', 'ngSanitize']);
+var app = angular.module('themoviesStop', ['ui.router', 'ui.bootstrap', 'ngSanitize', 'ngStorage']);
 
 app.config([
     '$stateProvider',
@@ -88,6 +88,12 @@ app.config([
                 },
                 title: 'Movie Information'
             })
+            .state('fullCast', {
+                url: '/movies/desc/{id}/fullCast',
+                templateUrl: 'templates/fullCast.view.ejs',
+                controller: 'fullCastCtrl',
+                title: 'Full Cast'
+            })
             .state('popularShows', {
                 url: '/tv/popular',
                 templateUrl: 'templates/popularShows.view.ejs',
@@ -165,7 +171,8 @@ app.config([
                     }]
                 },
                 title: 'People Information'
-            });
+            })
+
 
         $urlRouterProvider.otherwise('home');
     }

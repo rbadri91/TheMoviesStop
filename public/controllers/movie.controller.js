@@ -4,16 +4,29 @@
         .module('themoviesStop')
         .controller('moviesCtrl', movieCtrl);
 
-    movieCtrl.$inject = ['$scope', 'movies', 'authentication'];
+    movieCtrl.$inject = ['$scope', 'movies', 'authentication', '$location', '$localStorage'];
 
-    function movieCtrl($scope, movies, authentication) {
+    function movieCtrl($scope, movies, authentication, $location, $localStorage) {
         var vm = this;
         $scope.movies = movies;
+        console.log("movies here:", movies);
+        if (movies.credits) {
+            $localStorage.cast = movies.credits.cast;
+            $localStorage.crew = movies.credits.crew;
+            $localStorage.backdrop_path = movies.backdrop_path;
+            $localStorage.poster_path = movies.poster_path;
+            $localStorage.name = movies.title;
+
+            console.log("backdrop_path here:", $localStorage.backdrop_path);
+        }
+
         $scope.getIframeSrc = function(videoId) {
             return 'https://www.youtube.com/embed/' + videoId;
         };
         $scope.getReleaseYear = function(date) {
-            return date.substring(0, date.indexOf("-"));
+            var year = date.substring(0, date.indexOf("-"))
+            $localStorage.year = year;
+            return year;
         };
         $scope.getTime = function(time) {
             var hours = Math.floor(time / 60);
@@ -71,7 +84,10 @@
         };
         $scope.numberWithCommas = function(x) {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
+        };
+        $scope.getNewLocation = function() {
+            return "#" + $location.url() + '/fullCast';
+        };
 
     }
 

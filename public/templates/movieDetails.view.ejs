@@ -88,7 +88,7 @@
                             </li>
                         </ol>
                         <p class="full_view_button">
-                            <a href="#">View Full Cast</a>
+                            <a href="{{getNewLocation()}}">View Full Cast</a>
                         </p>
                 </section>
                 <section class="panel ReviewsSection">
@@ -142,7 +142,7 @@
                         <h3 class="featured_info" >Details</h3>
                         <div class="cardView">
                             <div class="detailsInfoWrapper">
-                                <span ng-show={{movies.homepage}}!=''><strong>Official Site:</strong>
+                                <span ng-show=movies.homepage!=''><strong>Official Site:</strong>
                                             </span>
                                             <a target="_blank" href="{{movies.homepage}}">{{movies.homepage}}</a>
                                         </div>

@@ -910,3 +910,90 @@ section.FilmographySection div.cardView div.jobWrapper {
     color: #000;
     font-size: 1.8rem;
 }
+
+.colSplit {
+    width: 50%;
+}
+
+.crew_teamWrapper {
+    min-height: calc(100vh - 980px);
+    width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    align-content: flex-start;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+ol.creditWrapper {
+    width: 100%;
+    list-style-type: none;
+    list-style-position: outside;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.castProfileWrapper {
+    width: 60px;
+    height: 60px;
+    border-radius: 4px;
+    will-change: opacity;
+    transition: opacity 200ms;
+}
+
+ol.creditWrapper li:first-child {
+    margin-top: 0;
+}
+
+ol.creditWrapper li {
+    width: 100%;
+    flex: 0 0 auto;
+    text-align: left;
+    margin-right: 0;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+ol.creditWrapper li>div {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    min-height: 70px;
+    text-align: left;
+}
+
+ol.creditWrapper li div.castInfo {
+    display: flex;
+    align-items: center;
+    padding-left: 14px;
+    padding-right: 20px;
+    width: 100%;
+}
+
+ol.creditWrapper li div.castInfo p {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    box-sizing: border-box;
+    font-size: 1em;
+    line-height: 1.4em;
+    margin: 0;
+    padding: 0;
+}
+
+ol.creditWrapper li div.castInfo p a {
+    color: #000;
+    text-decoration: none;
+    font-size: 1.8rem;
+    font-family: 'Lato', sans-serif;
+}
+
+.shortView {
+    height: 200px !important;
+}
