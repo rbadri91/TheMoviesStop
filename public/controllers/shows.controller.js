@@ -4,9 +4,9 @@
         .module('themoviesStop')
         .controller('showsCtrl', showsCtrl);
 
-    showsCtrl.$inject = ['$scope', 'shows', 'authentication'];
+    showsCtrl.$inject = ['$scope', 'shows', 'authentication', '$location', '$localStorage'];
 
-    function showsCtrl($scope, shows, authentication) {
+    function showsCtrl($scope, shows, authentication, $location, $localStorage) {
         var vm = this;
         console.log("shows in controller:", shows);
         $scope.shows = shows;
@@ -37,12 +37,19 @@
             if (rating === "" && list.length > 0) rating = list[0]["iso_3166_1"] + " " + list[0].rating;
             return (rating === "") ? "N/A" : rating;
         };
+        if (shows.credits) {
+            $localStorage.cast = shows.credits.cast;
+            $localStorage.crew = shows.credits.crew;
+            $localStorage.backdrop_path = shows.backdrop_path;
+            $localStorage.poster_path = shows.poster_path;
+            $localStorage.name = shows.original_name;
+            $localStorage.year = $scope.getReleaseYear(shows.first_air_date);
+        }
+
         $scope.handleOptionsClick = function($event) {
             var className;
-            console.log("$event.target here:", $event.target);
             var el = $event.target;
             $(".menuNavSection span").removeClass("active");
-            console.log("el here:", el);
             $(el).addClass("active");
             if (el.textContent == "Cast") {
                 className = ".CastLists";
@@ -64,10 +71,9 @@
                 },
                 'slow');
         };
-    }
-
-    function chunk(shows) {
-
+        $scope.getNewLocation = function() {
+            return "#" + $location.url() + '/fullCast';
+        };
     }
 
 })();

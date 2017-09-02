@@ -16,8 +16,6 @@
             $localStorage.backdrop_path = movies.backdrop_path;
             $localStorage.poster_path = movies.poster_path;
             $localStorage.name = movies.title;
-
-            console.log("backdrop_path here:", $localStorage.backdrop_path);
         }
 
         $scope.getIframeSrc = function(videoId) {

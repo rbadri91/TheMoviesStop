@@ -149,6 +149,12 @@ app.config([
                 },
                 title: 'Show Information'
             })
+            .state('ShowsfullCast', {
+                url: '/tv/desc/{id}/fullCast',
+                templateUrl: 'templates/fullCast.view.ejs',
+                controller: 'fullCastCtrl',
+                title: 'Full Cast'
+            })
             .state('popularPeople', {
                 url: '/people/popular',
                 templateUrl: 'templates/popularPeople.view.ejs',
