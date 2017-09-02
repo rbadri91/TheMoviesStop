@@ -106,8 +106,7 @@
                                                             <span> | </span>
                                                             <span> Episodes {{shows.last_seasonInfo.episodes.length}}</span>
                                                             </div>
-                                                            <div class="summary">
-                                                                {{shows.overview}}
+                                                            <div class="summary" ng-bind-html="shows.overview | htmlize">
                                                             </div>
                                                         </div>
                                                 </div>
@@ -132,11 +131,11 @@
                             <div class="scollable">
                                         <div class="list miniPhoto" ng-repeat="show in shows.recommendations.results | limitTo:7" title ={{show.title}}>
                                             <div class="imageWrapper">
-                                                    <a id="show_{{show.id}}" href="/#/tv/{{show.id}}" alt={{show.title}}>
+                                                    <a target ="_blank" id="show_{{show.id}}" href="/#/tv/desc/{{show.id}}" alt={{show.title}}>
                                                         <img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{show.poster_path}}">
                                                     </a>
                                             </div>
-                                            <a class="infoWrapper" href="/#/tv/{{show.id}}">
+                                            <a class="infoWrapper" href="/#/tv/desc/{{show.id}}">
                                                     <div class="infoInnerWrapper">
                                                         <div class="recoNameWrapper">{{show.original_name}}</div>
                                                         <span class="reco_vote_avg">
@@ -161,7 +160,7 @@
                                         </div>
                                         <div class="detailsInfoWrapper">
                                             <span><strong>Country: </strong></span>
-                                            <span>{{shows.origin_country}}</span>
+                                            <span>{{shows.origin_country[0]}}</span>
                                         </div>
                                         <div class="detailsInfoWrapper">
                                             <span><strong>Languages: </strong></span>

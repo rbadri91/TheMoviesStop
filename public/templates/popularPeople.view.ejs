@@ -5,7 +5,7 @@
     <div class="resultList flex">
         <div ng-repeat="person in people" class="list profileView">
             <div class="profileImageWrapper">
-                <a id="person_{{person.id}}" href="#" alt={{person.title}}>
+                <a id="person_{{person.id}}" href="/#/people/desc/{{person.id}}" alt={{person.title}}>
                     <img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{person.profile_path}}">
                 </a>
             </div>

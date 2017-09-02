@@ -163,11 +163,9 @@ router.get('/tv/:show', function(req, res, next) {
     getShowInfo(showId).then((showInfo) => {
         var showDetails = showInfo;
         getLastSeasonInfo(showId, JSON.parse(showInfo).seasons.length).then((showData) => {
-            console.log("typeOf showData:", typeof(showData));
             var addShowInfo = JSON.parse(showInfo);
-            addShowInfo["last_seasonInfo"] = JSON.parse(showData);
+            addShowInfo.last_seasonInfo = JSON.parse(showData);
             addShowInfo = JSON.stringify(addShowInfo);
-            console.log("addShowInfo here:", addShowInfo);
 
             res.json(addShowInfo);
         });
@@ -231,6 +229,13 @@ function getAiringTodayShows() {
 router.get('/people/popular', function(req, res, next) {
     getPopularPeople().then((people) => {
         res.json(people);
+    });
+});
+router.get('/people/:person', function(req, res, next) {
+    var peopleId = req.params.person;
+    getPeopleInfo(peopleId).then((peopleInfo) => {
+        peopleInfo = sortCastsAndCrews(JSON.parse(peopleInfo));
+        res.json(peopleInfo);
     });
 });
 
@@ -303,6 +308,50 @@ function getLastSeasonInfo(id, seasonNumber) {
         };
         getdata(options, resolve);
     });
+}
+
+function getPeopleInfo(id) {
+    return new Promise((resolve) => {
+        var options = {
+            "method": "GET",
+            "hostname": "api.themoviedb.org",
+            "port": null,
+            "path": "/3/person/" + id + "?append_to_response=images%2Cchanges%2Ccombined_credits%2Ctagged_images%2Crecommendations%2Csimilar&api_key=646a10c0084204abfff75a025d3c4539",
+            "headers": {}
+        };
+        getdata(options, resolve);
+    });
+}
+
+function getReleaseYear(show) {
+    console.log("show here:", show);
+    if (show.media_type == "movie") {
+        return ((show.release_date) ? show.release_date.substring(0, show.release_date.indexOf("-")) : "");
+    } else {
+        return ((show.first_air_date) ? show.first_air_date.substring(0, show.first_air_date.indexOf("-")) : "");
+    }
+}
+
+function sortCastsAndCrews(peopleInfo) {
+    for (var i = 0; i < peopleInfo.combined_credits.cast.length; i++) {
+        var releaseYear = getReleaseYear(peopleInfo.combined_credits.cast[i]);
+        peopleInfo.combined_credits.cast[i].releaseYear = releaseYear;
+    }
+    for (var j = 0; j < peopleInfo.combined_credits.crew.length; j++) {
+        var rYear = getReleaseYear(peopleInfo.combined_credits.crew[j]);
+        peopleInfo.combined_credits.crew[j].releaseYear = rYear;
+    }
+    var casting = peopleInfo.combined_credits.cast;
+    casting.sort(function(a, b) {
+        return parseInt(b.releaseYear) - parseInt(a.releaseYear);
+    });
+    peopleInfo.combined_credits.cast = casting;
+    var crews = peopleInfo.combined_credits.crew;
+    crews.sort(function(a, b) {
+        return parseInt(b.releaseYear) - parseInt(a.releaseYear);
+    });
+    peopleInfo.combined_credits.crew = crews;
+    return JSON.stringify(peopleInfo);
 }
 
 module.exports = router;

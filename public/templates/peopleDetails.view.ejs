@@ -1,0 +1,180 @@
+<div class="bgDisplay"></div>
+<div class="ShowInfoWraper">
+    <div class="resultList flex">
+        <div class="main-section">
+            <div class="section-overview">
+                <div class="section-wrapper">
+                    <div class="poster-wrapper">
+                        <div class="poster">
+                            <a href="#">
+                                <img class="posterImageSettings" src="https://image.tmdb.org/t/p/w300/{{people.profile_path}}" title={{people.name}}/>
+                            </a>
+                        </div>
+                        <div class="summaryWrapper">
+                            <div class="summary_info">
+                                <h2 class="featured_info">{{people.name}}</h2>
+                                <h3 class="featured_info">BioGraphy</h3>
+                                <div class="summary" ng-bind-html="people.biography | htmlize">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ms-row optionsNav">
+                    <div class="menuNavSection">
+                        <span class="PersonalDetailsNav active" ng-click="handleOptionsClick($event)">Personal Info</span>
+                        <span class="ImagesNav" ng-click="handleOptionsClick($event)">Profile Images</span>
+                        <span class="KnownForNav" ng-click="handleOptionsClick($event)">Known For</span>
+                        <span class="TaggedImagesNav" ng-click="handleOptionsClick($event)">Tagged Images</span>
+                        <span class="FilmoGraphyNav" ng-click="handleOptionsClick($event)">FilmoGraphy</span>
+                    </div>
+                </div>
+                <section class="panel DetailsSection">
+                    <h3 class="featured_info">Personal Details</h3>
+                    <div class="cardView">
+                        <div class="detailsInfoWrapper">
+                            <span><strong>Gender: </strong></span>
+                            <span>{{getGender(people.gender)}}</span>
+                        </div>
+                        <div class="detailsInfoWrapper">
+                            <span><strong>Birthday: </strong></span>
+                            <span>{{people.birthday}}</span>
+                        </div>
+                        <div class="detailsInfoWrapper">
+                            <span><strong>Place Of Birth: </strong></span>
+                            <span>{{people.place_of_birth}}</span>
+                        </div>
+                        <div ng-show="people.also_known_as.length!=0" class="detailsInfoWrapper">
+                            <span><strong>Also Known As: </strong></span>
+                            <span ng-repeat="alias in people.also_known_as ">{{alias}}</span>
+                        </div>
+                        <div class="detailsInfoWrapper">
+                            <span><strong>IMDB ID </strong></span>
+                            <a target="_blank" href="http://www.imdb.com/{{people.imdb_id}}/">http://www.imdb.com/{{people.imdb_id}}/</a>
+                        </div>
+                    </div>
+                </section>
+                <section ng-show="{{people.images.profiles.length}}!=0" class="panel ProfileSection">
+                    <h3 class="featured_info">Profile Images</h3>
+                    <div class="scollable">
+                        <div class="list miniPhoto" ng-repeat="profile in people.images.profiles | limitTo:7" title={{people.name}}>
+                            <div class="imageWrapper">
+                                <img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{profile.file_path}}">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="panel RecommendedSection">
+                    <h3 class="featured_info">Known For</h3>
+                    <div class="scollable">
+                        <div class="list miniPhoto" ng-repeat="show in people.combined_credits.cast | limitTo:7" title={{getTitle(show)}}>
+                            <div class="imageWrapper">
+                                <a target="_blank" id=" show_{{show.id}}" href="{{getShowLink(show)}}" alt={{getTitle(show)}}>
+                                    <img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{show.poster_path}}">
+                                </a>
+                            </div>
+                            <a class="infoWrapper" href="{{getShowLink(show)}}">
+                                <div class="infoInnerWrapper">
+                                    <div class="recoNameWrapper">{{getTitle(show)}}</div>
+                                    <span class="reco_vote_avg">
+                                                        {{show.vote_average}} <i class="fa fa-star" aria-hidden="true"></i>
+                                                </span>
+                                    <div class="recoReleaseInfo">
+                                        <i class="fa fa-calendar" aria-hidden="true"></i> {{getReleaseDateOrYear(show)}}
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+                <section class="panel TaggedImagesSection">
+                    <h3 class="featured_info">Tagged Images</h3>
+                    <div class="scollable">
+                        <div class="list miniPhoto" ng-repeat="show in people.tagged_images.results | limitTo:7" title={{getTitle(show.media)}}>
+                            <div class="imageWrapper">
+                                <a target="_blank" id="show_{{show.media.id}}" href="{{getShowLink(show,'tagged')}}" alt={{getTitle(show)}}>
+                                    <img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{show.file_path}}">
+                                </a>
+                            </div>
+                            <a class="infoWrapper" href="{{getShowLink(show,'tagged')}}">
+                                <div class="infoInnerWrapper">
+                                    <div class="recoNameWrapper">{{getTitle(show,'tagged')}}</div>
+                                    <span class="reco_vote_avg">
+                                            {{show.media.vote_average}} <i class="fa fa-star" aria-hidden="true"></i>
+                                    </span>
+                                    <div class="recoReleaseInfo">
+                                        <i class="fa fa-calendar" aria-hidden="true"></i> {{getReleaseDateOrYear(show,'tagged')}}
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+                <section class="panel FilmographySection">
+                    <span class="mediaTypeButtons">
+                            <div class="btn-group colors" data-toggle="buttons">
+                                    <label class="btn btn-primary active">
+                                            <input type="radio" ng-model="value" value="Movies" ng-change='newValue(value)'> Movies
+                                    </label>
+                                    <label class="btn btn-primary">
+                                            <input type="radio" ng-model="value" value="TV Shows" ng-change='newValue(value)'> TV Shows
+                                    </label>
+                            </div>
+                    </span>
+                    <div ng-show="value=='Movies'" class="cardView setMarginTop">
+                        <h3 class="featured_info text-center" ng-if="people.combined_credits.cast.length!=0">Acting</h3>
+                        <div ng-repeat="act in people.combined_credits.cast" ng-show="people.combined_credits.cast.length>0 && act.media_type=='movie'" class="detailsInfoWrapper" ng-class-odd="'odd'" ng-class-even="'even'">
+                            <div class="jobWrapper">
+                                <span><strong>{{getReleaseYear(act)}}</strong> &nbsp;</span>
+                                <span><a target="_blank" id="show_{{act.id}}" href="{{getShowLink(act)}}" alt={{getTitle(act)}}>{{getTitle(act)}}</a></span>&nbsp;
+                                <span ng-if="act.character!=''">as {{act.character}}</span>
+                            </div>
+                        </div>
+                        <h3 class="featured_info text-center" ng-if="people.combined_credits.crew.length!=0">Production</h3>
+                        <div ng-repeat="act in people.combined_credits.crew" ng-show="people.combined_credits.crew.length>0 && act.media_type=='movie'" class="detailsInfoWrapper">
+                            <div class="jobWrapper">
+                                <span><strong>{{getReleaseYear(act)}}           </strong></span>
+                                <span><a target="_blank" id="show_{{act.id}}" href="{{getShowLink(act)}}" alt={{getTitle(act)}}>     {{getTitle(act)}}     </a></span>&nbsp;
+                                <span ng-if="act.job!=''">        ... {{act.job}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="value=='TV Shows'" class="cardView setMarginTop">
+                        <h3 class="featured_info text-center" ng-if="people.combined_credits.cast.length!=0">Acting</h3>
+                        <div ng-repeat="act in people.combined_credits.cast" ng-show="people.combined_credits.cast.length>0 && act.media_type=='tv'" class="detailsInfoWrapper">
+                            <div class="jobWrapper">
+                                <span><strong>{{getReleaseYear(act)}}</strong> &nbsp;</span>
+                                <span><a target="_blank" id="show_{{act.id}}" href="{{getShowLink(act)}}" alt={{getTitle(act)}}>{{getTitle(act)}}</a></span>&nbsp;
+                                <span ng-if="act.character!=''">as {{act.character}}</span>
+                            </div>
+                        </div>
+                        <h3 class="featured_info text-center" ng-if="people.combined_credits.crew.length!=0">Production</h3>
+                        <div ng-repeat="act in people.combined_credits.crew" ng-show="people.combined_credits.crew.length>0 && act.media_type=='tv'" class="detailsInfoWrapper">
+                            <div class="jobWrapper">
+                                <span><strong>{{getReleaseYear(act)}}           </strong></span>
+                                <span><a target="_blank" id="show_{{act.id}}" href="{{getShowLink(act)}}" alt={{getTitle(act)}}>     {{getTitle(act)}}     </a></span>&nbsp;
+                                <span ng-if="act.job!=''">        ... {{act.job}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .bgDisplay::after {
+        background-image:url(https://image.tmdb.org/t/p/w1280{{people.images.profiles[0].file_path}});
+        content: "";
+        opacity: 0.5;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        height: 100%;
+        background-repeat: repeat-y;
+        background-position: center center;
+    }
+</style>

@@ -29,9 +29,16 @@
                 return people;
             });
         }
+        var getPeopleDetails = function(id) {
+            return $http.get('/people/' + id).then(function(data) {
+                console.log("data here:", data);
+                return JSON.parse(data.data);
+            });
+        }
 
         return {
-            getPopular: getPopular
+            getPopular: getPopular,
+            getPeopleDetails: getPeopleDetails
         };
     }
 })();

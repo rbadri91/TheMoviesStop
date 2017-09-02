@@ -581,7 +581,12 @@ ol.featured_people li p {
 .BoxOfficeNav,
 .CreditsNav,
 .DetailsNav,
-.SeasonReviewsNav {
+.SeasonReviewsNav,
+.PersonalDetailsNav,
+.ImagesNav,
+.KnownForNav,
+.TaggedImagesNav,
+.FilmoGraphyNav {
     height: 100%;
     padding: 10px 0;
     display: inline-flex;
@@ -599,7 +604,12 @@ ol.featured_people li p {
 .BoxOfficeNav.active,
 .CreditsNav.active,
 .DetailsNav.active,
-.SeasonReviewsNav.active {
+.SeasonReviewsNav.active,
+.PersonalDetailsNav.active,
+.ImagesNav.active,
+.KnownForNav.active,
+.TaggedImagesNav.active,
+.FilmoGraphyNav.active {
     border-bottom: 3px solid #104010;
     color: black;
 }
@@ -699,7 +709,9 @@ section.VideosSection>div.section-content div {
     display: inline-block;
 }
 
-section.RecommendedSection>div.scollable {
+section.RecommendedSection>div.scollable,
+section.ProfileSection>div.scollable,
+section.TaggedImagesSection>div.scollable {
     width: 100%;
     overflow: hidden;
     overflow-x: scroll;
@@ -709,12 +721,16 @@ section.RecommendedSection>div.scollable {
     padding-bottom: 20px;
 }
 
-section.RecommendedSection div.scollable div.list {
+section.RecommendedSection div.scollable div.list,
+section.ProfileSection div.scollable div.list,
+section.TaggedImagesSection div.scollable div.list {
     display: inline-block;
     float: none;
 }
 
-section.RecommendedSection div.scollable div.miniPhoto {
+section.RecommendedSection div.scollable div.miniPhoto,
+section.ProfileSection div.scollable div.miniPhoto,
+section.TaggedImagesSection div.scollable div.miniPhoto {
     width: 30%;
     margin: 0 15px 0 0;
     height: 250px;
@@ -727,7 +743,8 @@ div.list.miniPhoto div.imageWrapper {
     position: relative;
 }
 
-section.RecommendedSection>div.scollable div.infoInnerWrapper {
+section.RecommendedSection>div.scollable div.infoInnerWrapper,
+section.TaggedImagesSection>div.scollable div.infoInnerWrapper {
     flex-direction: row;
     flex-wrap: wrap;
 }
@@ -808,4 +825,88 @@ div.ShowInfoWraper section.VideosSection div.watchSection {
 
 .alignContentleft {
     float: left !important;
+}
+
+.dialogdemoBasicUsage #popupContainer {
+    position: relative;
+}
+
+.dialogdemoBasicUsage .footer {
+    width: 100%;
+    text-align: center;
+    margin-left: 20px;
+}
+
+.dialogdemoBasicUsage .footer,
+.dialogdemoBasicUsage .footer>code {
+    font-size: 0.8em;
+    margin-top: 50px;
+}
+
+.dialogdemoBasicUsage button {
+    width: 200px;
+}
+
+.dialogdemoBasicUsage div#status {
+    color: #c60008;
+}
+
+.dialogdemoBasicUsage .dialog-demo-prerendered md-checkbox {
+    margin-bottom: 0;
+}
+
+.rounded {
+    border: 2px solid #fff;
+    border-radius: 5px;
+    padding: 8px 16px;
+    transition: linear .1s;
+}
+
+section.FilmographySection span.mediaTypeButtons {
+    font-size: 0.9em;
+    line-height: 1em;
+    margin-bottom: 5%;
+}
+
+section.FilmographySection div.setMarginTop {
+    margin-top: 5%;
+}
+
+section.FilmographySection span.mediaTypeButtons label.mediaType {
+    background: linear-gradient(#dcdcdc, #eeeeee);
+    background: -webkit-linear-gradient(#dcdcdc, #eeeeee);
+    background: -o-linear-gradient(#dcdcdc, #eeeeee);
+    background: -moz-linear-gradient(#dcdcdc, #eeeeee);
+    font-weight: 400;
+    border-color: #ccc;
+    font-size: 0.7em;
+    padding: 8px 12px;
+    margin-top: 0;
+    background-color: #ccc;
+    border-width: 1px;
+    color: #000;
+    display: inline-block;
+    line-height: 1.2em;
+}
+
+section.FilmographySection span.mediaTypeButtons label.left_side {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+section.FilmographySection span.mediaTypeButtons label.right_side {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left-width: 0;
+}
+
+.even {
+    border-top: 2px solid #f1e4e4;
+    background-color: #ece6e6;
+}
+
+section.FilmographySection div.cardView div.jobWrapper {
+    text-decoration: none;
+    color: #000;
+    font-size: 1.8rem;
 }

@@ -1,4 +1,4 @@
-var app = angular.module('themoviesStop', ['ui.router', 'ui.bootstrap']);
+var app = angular.module('themoviesStop', ['ui.router', 'ui.bootstrap', 'ngSanitize']);
 
 app.config([
     '$stateProvider',
@@ -153,6 +153,18 @@ app.config([
                     }]
                 },
                 title: 'Popular People'
+            })
+            .state('peopleDetails', {
+                url: '/people/desc/{id}',
+                templateUrl: 'templates/peopleDetails.view.ejs',
+                controller: 'peopleCtrl',
+                resolve: {
+                    people: ['$stateParams', 'people', function($stateParams, people) {
+                        console.log("id here:", $stateParams.id);
+                        return people.getPeopleDetails($stateParams.id);
+                    }]
+                },
+                title: 'People Information'
             });
 
         $urlRouterProvider.otherwise('home');
@@ -168,4 +180,15 @@ app.config(function($sceDelegateProvider) {
         'self',
         'https://www.youtube.com/**'
     ]);
+});
+app.value('HTMLIZE_CONVERSIONS', [
+    { expr: /\n+?/g, value: '<br>' }
+]);
+
+app.filter('htmlize', function(HTMLIZE_CONVERSIONS) {
+    return function(string) {
+        return HTMLIZE_CONVERSIONS.reduce(function(result, conversion) {
+            return result.replace(conversion.expr, conversion.value);
+        }, string || '');
+    };
 });

@@ -53,8 +53,7 @@
                     <div class="summaryWrapper">
                         <div class="summary_info">
                             <h3 class="featured_info">Overview</h3>
-                            <div class="summary">
-                                {{movies.overview}}
+                            <div class="summary" ng-bind-html="movies.overview | htmlize">
                             </div>
                             <h3 class="featured_info">Featured Crew</h3>
                             <ol class="featured_people">
@@ -121,11 +120,11 @@
                     <div class="scollable">
                                 <div class="list miniPhoto" ng-repeat="movie in movies.recommendations.results | limitTo:7" title ={{movie.title}}>
                                     <div class="imageWrapper">
-                                            <a id="movie_{{movie.id}}" href="/#/movies/{{movie.id}}" alt={{movie.title}}>
+                                            <a target ="_blank" id="movie_{{movie.id}}" href="/#/movies/desc/{{movie.id}}" alt={{movie.title}}>
                                                 <img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{movie.poster_path}}">
                                             </a>
                                     </div>
-                                    <a class="infoWrapper" href="/#/movies/{{movie.id}}">
+                                    <a class="infoWrapper" href="/#/movies/desc/{{movie.id}}">
                                             <div class="infoInnerWrapper">
                                                 <div class="recoNameWrapper">{{movie.original_title}}</div>
                                                 <span class="reco_vote_avg">
