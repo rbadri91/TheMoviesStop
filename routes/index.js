@@ -5,6 +5,8 @@ var router = express.Router();
 var passport = require('passport');
 var jwt = require('express-jwt');
 var http = require("https");
+var Memcached = require('memcached');
+var memcached = new Memcached('127.0.0.1:11211');
 
 var auth = jwt({ secret: 'SECRET', userProperty: 'payload' });
 var mongoose = require('mongoose');
@@ -162,7 +164,11 @@ router.get('/tv/:show', function(req, res, next) {
     var showId = req.params.show;
     getShowInfo(showId).then((showInfo) => {
         var showDetails = showInfo;
-        getLastSeasonInfo(showId, JSON.parse(showInfo).seasons.length).then((showData) => {
+        memcached.set("numShows", JSON.parse(showInfo).seasons.length);
+        req.session.numSeasons = JSON.parse(showInfo).seasons.length;
+        req.session.hasSeason0 = (JSON.parse(showInfo).seasons[0].season_number == 0);
+
+        getSeasonInfo(showId, JSON.parse(showInfo).seasons.length).then((showData) => {
             var addShowInfo = JSON.parse(showInfo);
             addShowInfo.last_seasonInfo = JSON.parse(showData);
             addShowInfo = JSON.stringify(addShowInfo);
@@ -171,6 +177,27 @@ router.get('/tv/:show', function(req, res, next) {
         });
 
     });
+});
+
+router.get('/tv/:show/allseason', function(req, res, next) {
+    var showId = req.params.show;
+    var results = [];
+    var count = req.session.numSeasons;
+    var hasSeason0 = req.session.hasSeason0;
+
+    // memcached.get('numShows', (err, count) => {
+
+    for (var i = 0; i < count; i++) {
+        getSeasonInfo(showId, ((hasSeason0) ? i : i + 1)).then((showData) => {
+            results.push(JSON.parse(showData));
+            console.log("add show added");
+            if (results.length == count) {
+                results = sortSeasonDetails(results);
+                res.json(results);
+            }
+        });
+    }
+    // });
 });
 
 function getPopularShows() {
@@ -297,15 +324,16 @@ function getShowInfo(id) {
     });
 }
 
-function getLastSeasonInfo(id, seasonNumber) {
+function getSeasonInfo(id, seasonNumber) {
     return new Promise((resolve) => {
         var options = {
             "method": "GET",
             "hostname": "api.themoviedb.org",
             "port": null,
-            "path": "/3/tv/" + id + "/season/7?api_key=646a10c0084204abfff75a025d3c4539",
+            "path": "/3/tv/" + id + "/season/" + seasonNumber + "?api_key=646a10c0084204abfff75a025d3c4539",
             "headers": {}
         };
+        console.log("it comes to getSeasonInfo");
         getdata(options, resolve);
     });
 }
@@ -352,6 +380,13 @@ function sortCastsAndCrews(peopleInfo) {
     });
     peopleInfo.combined_credits.crew = crews;
     return JSON.stringify(peopleInfo);
+}
+
+function sortSeasonDetails(seasonDetails) {
+    seasonDetails.sort(function(a, b) {
+        return parseInt(a.season_number) - parseInt(b.season_number);
+    });
+    return seasonDetails;
 }
 
 module.exports = router;

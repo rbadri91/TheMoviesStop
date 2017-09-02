@@ -3,11 +3,10 @@
         .module('themoviesStop')
         .controller('fullCastCtrl', fullCastCtrl);
 
-    fullCastCtrl.$inject = ['$scope', 'movies', 'shows', 'casts', '$location', '$localStorage'];
+    fullCastCtrl.$inject = ['$scope', '$localStorage'];
 
-    function fullCastCtrl($scope, movies, shows, cast, $location, $localStorage) {
+    function fullCastCtrl($scope, $localStorage) {
         var vm = this;
-        var url = $location.url();
         if ($localStorage.cast) {
             $scope.cast = $localStorage.cast;
             $scope.crew = $localStorage.crew;

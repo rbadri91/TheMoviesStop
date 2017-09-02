@@ -68,8 +68,8 @@
                                 <div class="menuNavSection">
                                     <span class="CastsNav active" ng-click ="handleOptionsClick($event)">Cast</span>
                                     <span class="SeasonReviewsNav" ng-click ="handleOptionsClick($event)">Season Reviews</span>
-                                    <span class="VideosNav" ng-click ="handleOptionsClick($event)">Videos</span>
-                                    <span ng-show="shows.recommendations.results.length!=0" class="RecommendedNav" ng-click ="handleOptionsClick($event)">Recommended</span>
+                                    <span class="VideosNav" ng-if="shows.videos.results.length>0" ng-click ="handleOptionsClick($event)">Videos</span>
+                                    <span ng-if="shows.recommendations.results.length!=0" class="RecommendedNav" ng-click ="handleOptionsClick($event)">Recommended</span>
                                     <span class="DetailsNav" ng-click ="handleOptionsClick($event)">Details</span>
                                     <span class="CreditsNav" ng-click ="handleOptionsClick($event)">Prodution Credits</span>
                                 </div>
@@ -86,7 +86,7 @@
                                     </li>
                                 </ol>
                                 <p class="full_view_button">
-                                    <a href="{{getNewLocation()}}">View Full Cast</a>
+                                    <a href="{{getFullCastLocation()}}">View Full Cast</a>
                                 </p>
                         </section>
                         <section class="panel SeasonReviewSection">
@@ -113,10 +113,10 @@
                                         </div>
                                 </div>
                                 <p class="full_view_button">
-                                    <a href="#">View All Seasons</a>
+                                    <a href="{{getAllSeasonLocation()}}">View All Seasons</a>
                                 </p>
                         </section>
-                        <section class="panel VideosSection">
+                        <section ng-if="shows.videos.results.length>0" class="panel VideosSection">
                                 <h3 class="featured_info">Videos</h3>
                                 <div class="section-content">
                                         <div class="section-inner-content">

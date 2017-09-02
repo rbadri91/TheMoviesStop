@@ -71,8 +71,12 @@
                 },
                 'slow');
         };
-        $scope.getNewLocation = function() {
+        $scope.getFullCastLocation = function() {
             return "#" + $location.url() + '/fullCast';
+        };
+        $scope.getAllSeasonLocation = function() {
+            console.log("in getAllSeasonLocation");
+            return "#" + $location.url() + '/allseason';
         };
     }
 

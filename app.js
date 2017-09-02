@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var db = require('./config/database');
 var mongoose = require('mongoose');
-
+var session = require('express-session');
 var index = require('./routes/index');
 var users = require('./routes/users');
 
@@ -24,8 +24,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({ secret: 'dlikhoiuhwaf', resave: false, saveUninitialized: false }));
+
 app.use('/', index);
 app.use('/users', users);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -63,5 +66,7 @@ mongoose.connection.on('error', function(err) {
 mongoose.connection.on('disconnected', function() {
     console.log('Mongoose default connection disconnected');
 });
+
+
 
 module.exports = app;

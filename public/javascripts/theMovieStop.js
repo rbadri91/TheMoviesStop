@@ -94,6 +94,12 @@ app.config([
                 controller: 'fullCastCtrl',
                 title: 'Full Cast'
             })
+            .state('moviesAllReviews', {
+                url: '/movies/desc/{id}/reviews',
+                templateUrl: 'templates/Reviews.view.ejs',
+                controller: 'reviewsCtrl',
+                title: 'All Reviews'
+            })
             .state('popularShows', {
                 url: '/tv/popular',
                 templateUrl: 'templates/popularShows.view.ejs',
@@ -154,6 +160,23 @@ app.config([
                 templateUrl: 'templates/fullCast.view.ejs',
                 controller: 'fullCastCtrl',
                 title: 'Full Cast'
+            })
+            .state('showsAllReviews', {
+                url: '/tv/desc/{id}/reviews',
+                templateUrl: 'templates/Reviews.view.ejs',
+                controller: 'reviewsCtrl',
+                title: 'All Reviews'
+            })
+            .state('showsAllSeason', {
+                url: '/tv/desc/{id}/allseason',
+                templateUrl: 'templates/SeasonReviews.view.ejs',
+                controller: 'seasonsCtrl',
+                resolve: {
+                    seasons: ['$stateParams', 'seasons', function($stateParams, seasons) {
+                        return seasons.getAllSeasonDetails($stateParams.id);
+                    }]
+                },
+                title: 'All Seasons'
             })
             .state('popularPeople', {
                 url: '/people/popular',

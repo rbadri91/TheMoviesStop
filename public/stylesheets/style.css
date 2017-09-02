@@ -477,7 +477,13 @@ div.watchSection {
 div.ShowInfoWraper div.section-wrapper .summaryWrapper {
     width: 70%;
     display: inline-block;
-    height: 300px;
+    height: 250px;
+    overflow: auto;
+}
+
+div.ShowInfoWraper div.section-wrapper div.poster-wrapper div.summaryWrapper {
+    height: 400px;
+    overflow: visible;
 }
 
 .section-wrapper .summary_info {
@@ -626,6 +632,7 @@ section.panel {
 p.full_view_button {
     margin: 20px 0 0 0;
     display: inline-block;
+    width: 100%;
 }
 
 ol.featured_people li.profileView {
@@ -657,6 +664,7 @@ section.panel ol.featured_people li p:first-of-type {
     padding-left: 10%;
     width: 100%;
     box-sizing: border-box;
+    color: #565252;
 }
 
 .ReviewWrapper::before {
@@ -668,6 +676,7 @@ section.panel ol.featured_people li p:first-of-type {
 .creditsTag {
     padding-top: 10px;
     padding-left: 10%;
+    color: #565252;
 }
 
 section.ReviewSection div.cardView {
@@ -792,10 +801,13 @@ section.DetailsSection div.cardView div.detailsInfoWrapper span.movieLang {
     display: inline-block;
     height: 250px;
     width: 30%;
+    padding-right: 2%;
 }
 
 section.SeasonReviewSection div.cardView {
-    height: 250px;
+    height: 100%;
+    display: inline-block;
+    width: 94%;
 }
 
 section.SeasonReviewSection div.summaryWrapper div.summary_info div.airWrapper {
@@ -996,4 +1008,20 @@ ol.creditWrapper li div.castInfo p a {
 
 .shortView {
     height: 200px !important;
+}
+
+.setAllMargin {
+    margin: 3%;
+}
+
+div.cardView div.reviewInfoWrapper {
+    margin-top: 2%;
+}
+
+.setLeftMargin {
+    margin-left: 2%;
+}
+
+.setRightPadding {
+    padding-right: 2%;
 }

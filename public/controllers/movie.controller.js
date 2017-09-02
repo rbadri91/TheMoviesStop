@@ -16,6 +16,7 @@
             $localStorage.backdrop_path = movies.backdrop_path;
             $localStorage.poster_path = movies.poster_path;
             $localStorage.name = movies.title;
+            $localStorage.reviews = movies.reviews.results;
         }
 
         $scope.getIframeSrc = function(videoId) {
@@ -83,8 +84,11 @@
         $scope.numberWithCommas = function(x) {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         };
-        $scope.getNewLocation = function() {
+        $scope.getFullCastLocation = function() {
             return "#" + $location.url() + '/fullCast';
+        };
+        $scope.getAllReviewLocation = function() {
+            return "#" + $location.url() + '/reviews';
         };
 
     }
