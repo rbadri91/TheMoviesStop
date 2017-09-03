@@ -6,9 +6,7 @@
                 <div class="section-wrapper">
                     <div class="poster-wrapper">
                         <div class="poster">
-                            <a href="#">
-                                <img class="posterImageSettings" src="https://image.tmdb.org/t/p/w300/{{shows.poster_path}}" title={{shows.original_name}}/>
-                            </a>
+                            <img class="posterImageSettings" src="https://image.tmdb.org/t/p/w300/{{shows.poster_path}}" title={{shows.original_name}}/>
                         </div>
                         <div class="summaryWrapper">
                             <div class="summary_info">
@@ -78,7 +76,7 @@
                                 <h3 class="featured_info">Top Casts</h3>
                                 <ol class="featured_people">
                                     <li class="list profileView setFullHeight" ng-repeat="cast in shows.credits.cast | limitTo:4">
-                                        <a href="#"><img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{cast.profile_path}}"></img></a>
+                                        <a ng-href="#/people/desc/{{cast.id}}"><img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{cast.profile_path}}"></img></a>
                                         <div class="castInfoWrapper">
                                             <p>{{cast.name}}</p>
                                             <p class="profile_job">{{cast.character}}</p>
@@ -94,9 +92,7 @@
                                 <div class="cardView">
                                         <div class="ReviewWrapper">
                                                 <div class="poster">
-                                                    <a href="#">
-                                                            <img class="posterImageSettings" src="https://image.tmdb.org/t/p/w300/{{shows.poster_path}}" title={{shows.original_name}}/>
-                                                    </a>
+                                                    <img class="posterImageSettings" src="https://image.tmdb.org/t/p/w300/{{shows.poster_path}}" title={{shows.original_name}}/>
                                                 </div>
                                                 <div class="summaryWrapper">
                                                         <div class="summary_info">

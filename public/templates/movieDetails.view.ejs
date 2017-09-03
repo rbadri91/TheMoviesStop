@@ -6,9 +6,7 @@
                 <div class="section-wrapper">
                     <div class="poster-wrapper">
                         <div class="poster">
-                            <a href="#">
-                                <img class="posterImageSettings" src="https://image.tmdb.org/t/p/w300/{{movies.poster_path}}" title={{movies.original_title}}/>
-                            </a>
+                            <img class="posterImageSettings" src="https://image.tmdb.org/t/p/w300/{{movies.poster_path}}" title={{movies.original_title}}/>
                         </div>
                         <div class="watchSection">
                             <iframe class="videoLoader" ng-src="{{getIframeSrc(movies.videos.results[0].key)}}"></iframe>
@@ -80,7 +78,7 @@
                         <h3 class="featured_info">Top Casts</h3>
                         <ol class="featured_people">
                             <li class="list profileView setFullHeight" ng-repeat="cast in movies.credits.cast | limitTo:4">
-                                <a href="#"><img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{cast.profile_path}}"></img></a>
+                                <a ng-href="#/people/desc/{{cast.id}}"><img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{cast.profile_path}}"></img></a>
                                 <div class="castInfoWrapper">
                                     <p>{{cast.name}}</p>
                                     <p class="profile_job">{{cast.character}}</p>
@@ -194,7 +192,6 @@
                             background-image:url(https://image.tmdb.org/t/p/w1280/{{movies.backdrop_path}}),
                             url(https://image.tmdb.org/t/p/w1280/{{movies.backdrop_path}});
                             content: "";
-                            position: static;
                             opacity: 0.5;
                             z-index: -1;
                             top: 0;
