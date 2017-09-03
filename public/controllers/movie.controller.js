@@ -9,7 +9,6 @@
     function movieCtrl($scope, movies, authentication, $location, $localStorage) {
         var vm = this;
         $scope.movies = movies;
-        console.log("movies here:", movies);
         if (movies.credits) {
             $localStorage.cast = movies.credits.cast;
             $localStorage.crew = movies.credits.crew;
@@ -56,10 +55,8 @@
         };
         $scope.handleOptionsClick = function($event) {
             var className;
-            console.log("$event.target here:", $event.target);
             var el = $event.target;
             $(".menuNavSection span").removeClass("active");
-            console.log("el here:", el);
             $(el).addClass("active");
             if (el.textContent == "Cast") {
                 className = ".CastLists";
@@ -89,6 +86,10 @@
         };
         $scope.getAllReviewLocation = function() {
             return "#" + $location.url() + '/reviews';
+        };
+        $scope.handleCompanyClick = function($event) {
+            var companyName = $event.target.textContent;
+            $localStorage.companyName = companyName;
         };
 
     }

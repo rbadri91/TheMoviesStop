@@ -1,15 +1,12 @@
 (function() {
     angular
         .module('themoviesStop')
-        .controller('genreCtrl', genreCtrl);
+        .controller('companyAndNetworkCtrl', companyAndNetworkCtrl);
+    companyAndNetworkCtrl.$inject = ['$scope', 'companyMedia', '$location', '$localStorage'];
 
-    genreCtrl.$inject = ['$scope', 'genreShows', '$location', '$localStorage'];
-
-    function genreCtrl($scope, genreShows, $location, $localStorage) {
+    function companyAndNetworkCtrl($scope, companyMedia, $location, $localStorage) {
         var vm = this;
-
-        $scope.shows = genreShows;
-
+        $scope.shows = companyMedia;
         $scope.getTitle = function(show) {
             var title = "";
             title = (show.original_title) ? show.original_title : show.original_name;
@@ -40,19 +37,14 @@
             }
         }
         $scope.getTitleHeader = function() {
-            var genreArray = [];
-            var genreId = $localStorage.genreId;
-            genreArray = $localStorage.genreMapping;
-            return getGenreName(genreArray, genreId);
-        }
-    }
-
-    function getGenreName(genreArray, genreId) {
-        for (var i = 0; i < genreArray.length; i++) {
-            if (genreArray[i].id == genreId) {
-                return genreArray[i].name;
+            var url = $location.url();
+            if (url.indexOf('movies') != -1) {
+                return $localStorage.companyName;
+            } else {
+                return $localStorage.networkName;
             }
         }
     }
+
 
 })();

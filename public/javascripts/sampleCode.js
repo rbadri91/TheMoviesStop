@@ -13,13 +13,11 @@ app.factory('auth', ['$http', '$window', function($http, $window) {
 
     auth.isLoggedIn = function() {
         var token = auth.getToken();
-        console.log("in isLoggedIn token:", token);
         if (token) {
             var payload = JSON.parse($window.atob(token.split('.')[1]));
 
             return payload.exp > Date.now() / 1000;
         } else {
-            console.log("in else case");
             return false;
         }
     };
@@ -136,7 +134,6 @@ angular
                     templateUrl: 'templates/login/login.view.ejs',
                     controller: 'loginCtrl',
                     onEnter: ['$state', 'authentication', function($state, authentication) {
-                        console.log("logged in state:", authentication.isLoggedIn());
                         if (authentication.isLoggedIn()) {
                             $state.go('home');
                         }

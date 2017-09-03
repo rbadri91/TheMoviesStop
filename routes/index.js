@@ -93,6 +93,18 @@ router.get('/tv/genre/:genreId', function(req, res, next) {
         res.json(showsList);
     });
 });
+router.get('/movies/company/:companyId', function(req, res, next) {
+    var companyId = req.params.companyId;
+    getCompanyMovies(companyId).then((moviesList) => {
+        res.json(moviesList);
+    });
+});
+router.get('/tv/network/:networkId', function(req, res, next) {
+    var networkId = req.params.networkId;
+    getNetworkShows(networkId).then((showsList) => {
+        res.json(showsList);
+    });
+});
 
 function getPopularMovies() {
     return new Promise((resolve) => {
@@ -202,7 +214,6 @@ router.get('/tv/:show/allseason', function(req, res, next) {
     for (var i = 0; i < count; i++) {
         getSeasonInfo(showId, ((hasSeason0) ? i : i + 1)).then((showData) => {
             results.push(JSON.parse(showData));
-            console.log("add show added");
             if (results.length == count) {
                 results = sortSeasonDetails(results);
                 res.json(results);
@@ -345,7 +356,6 @@ function getSeasonInfo(id, seasonNumber) {
             "path": "/3/tv/" + id + "/season/" + seasonNumber + "?api_key=646a10c0084204abfff75a025d3c4539",
             "headers": {}
         };
-        console.log("it comes to getSeasonInfo");
         getdata(options, resolve);
     });
 }
@@ -364,7 +374,6 @@ function getPeopleInfo(id) {
 }
 
 function getReleaseYear(show) {
-    console.log("show here:", show);
     if (show.media_type == "movie") {
         return ((show.release_date) ? show.release_date.substring(0, show.release_date.indexOf("-")) : "");
     } else {
@@ -421,6 +430,32 @@ function getGenereShows(genreId) {
             "hostname": "api.themoviedb.org",
             "port": null,
             "path": "/3/discover/tv?include_null_first_air_dates=true&with_genres=" + genreId + "&page=1&sort_by=popularity.desc&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
+            "headers": {}
+        };
+        getdata(options, resolve);
+    });
+}
+
+function getCompanyMovies(companyId) {
+    return new Promise((resolve) => {
+        var options = {
+            "method": "GET",
+            "hostname": "api.themoviedb.org",
+            "port": null,
+            "path": "/3/discover/movie?with_companies=" + companyId + "&page=1&include_video=false&include_adult=true&sort_by=popularity.desc&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
+            "headers": {}
+        };
+        getdata(options, resolve);
+    });
+}
+
+function getNetworkShows(networkId) {
+    return new Promise((resolve) => {
+        var options = {
+            "method": "GET",
+            "hostname": "api.themoviedb.org",
+            "port": null,
+            "path": "/3/discover/tv?include_null_first_air_dates=false&with_networks=" + networkId + "&page=1&sort_by=popularity.desc&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
             "headers": {}
         };
         getdata(options, resolve);

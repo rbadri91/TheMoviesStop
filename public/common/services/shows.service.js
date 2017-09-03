@@ -32,10 +32,7 @@
             });
         }
         var getShowDetails = function(id) {
-            console.log("in getShowDetails function");
             return $http.get('/tv/' + id).then(function(data) {
-                console.log("datain show details:", data);
-                console.log("data here:", JSON.parse(data.data));
                 return JSON.parse(data.data);
             });
         }

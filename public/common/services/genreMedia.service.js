@@ -32,7 +32,6 @@
                     }).then((res) => {
                         genreArray = res;
                         $localStorage.genreMapping = genreArray;
-                        console.log("data here:", JSON.parse(data.data).results);
                         return JSON.parse(data.data).results;
                     });
                 } else {

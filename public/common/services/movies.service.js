@@ -21,7 +21,6 @@
         var movies = [];
         var getPopular = function() {
             return $http.get('/movies/popular').then(function(data) {
-                console.log("data here:", JSON.parse(data.data).results);
                 angular.copy(JSON.parse(data.data).results, movies);
                 return chunk(movies, 2);
             });

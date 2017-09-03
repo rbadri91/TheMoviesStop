@@ -174,12 +174,12 @@
                                     </div>
                                     </section>
                                     <section class="panel ProdCreditsSection">
-                                        <h3 class="featured_info">Production Credits</h3>
+                                        <h3 class="featured_info">Network Credits</h3>
                                         <div class="cardView">
                                             <div class="detailsInfoWrapper">
-                                                <span><strong>Production Company</strong></span>
-                                                <a href="#" ng-repeat="comp in shows.production_companies | limitTo:3">{{comp.name}}</span>
-                                                    <a href="#"> View All Companies</a>
+                                                <span><strong>Network &nbsp;</strong></span>
+                                                <a ng-repeat="comp in shows.networks | limitTo:3" ng-href="#/tv/network/{{comp.id}}" ng-mouseup="handleNetworkClick($event)">{{comp.name}} &nbsp;&nbsp;</span>
+                                                    <a href="#"> View All Networks</a>
                                             </div>
                                         </div>
                                     </section>

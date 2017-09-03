@@ -179,8 +179,8 @@
                                         <h3 class="featured_info">Production Credits</h3>
                                         <div class="cardView">
                                             <div class="detailsInfoWrapper">
-                                                <span><strong>Production Company</strong></span>
-                                                <a href="#" ng-repeat="comp in movies.production_companies | limitTo:3">{{comp.name}}</span>
+                                                <span><strong>Production Company &nbsp;</strong></span>
+                                                <a ng-repeat="comp in movies.production_companies | limitTo:3" id="{{comp.id}}" ng-href="#/movies/company/{{comp.id}}" ng-mouseup="handleCompanyClick($event)">{{comp.name}} &nbsp;&nbsp;</span>
                                                 <a href="#"> View All Companies</a>
                                             </div>
                                         </div>

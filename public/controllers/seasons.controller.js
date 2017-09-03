@@ -8,7 +8,6 @@
 
     function seasonsCtrl($scope, seasons, $localStorage) {
         var vm = this;
-        console.log("seasons here:", seasons);
         $scope.seasons = seasons;
         if ($localStorage.backdrop_path) {
             $scope.backdrop_path = $localStorage.backdrop_path;

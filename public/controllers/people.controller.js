@@ -72,10 +72,8 @@
         }
         $scope.handleOptionsClick = function($event) {
             var className;
-            console.log("$event.target here:", $event.target);
             var el = $event.target;
             $(".menuNavSection span").removeClass("active");
-            console.log("el here:", el);
             $(el).addClass("active");
             if (el.textContent == "Personal Info") {
                 className = ".DetailsSection";
@@ -94,7 +92,6 @@
                 'slow');
         };
         $scope.newValue = function(val) {
-            console.log("in handleMediaTypeChange");
             $scope.value = val;
             $scope.showMovies = (val == "Movies") ? true : false;
         };

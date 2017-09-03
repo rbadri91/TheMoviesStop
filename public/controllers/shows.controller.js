@@ -8,7 +8,6 @@
 
     function showsCtrl($scope, shows, authentication, $location, $localStorage) {
         var vm = this;
-        console.log("shows in controller:", shows);
         $scope.shows = shows;
 
         $scope.getIframeSrc = function(videoId) {
@@ -75,8 +74,11 @@
             return "#" + $location.url() + '/fullCast';
         };
         $scope.getAllSeasonLocation = function() {
-            console.log("in getAllSeasonLocation");
             return "#" + $location.url() + '/allseason';
+        };
+        $scope.handleNetworkClick = function($event) {
+            var networkName = $event.target.textContent;
+            $localStorage.networkName = networkName;
         };
     }
 

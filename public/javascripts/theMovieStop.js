@@ -59,7 +59,6 @@ app.config([
                 controller: 'moviesCtrl',
                 resolve: {
                     movies: ['movies', function(movies) {
-                        console.log("in up coming movies");
                         return movies.getUpcoming();
                     }]
                 },
@@ -82,7 +81,6 @@ app.config([
                 controller: 'moviesCtrl',
                 resolve: {
                     movies: ['$stateParams', 'movies', function($stateParams, movies) {
-                        console.log("it comes here");
                         return movies.getMovieDetails($stateParams.id);
                     }]
                 },
@@ -117,6 +115,17 @@ app.config([
                     }]
                 },
                 title: 'Genre Based Movies'
+            })
+            .state('companyBasedMovies', {
+                url: '/movies/company/{id}',
+                templateUrl: 'templates/companyBased.view.ejs',
+                controller: 'companyAndNetworkCtrl',
+                resolve: {
+                    companyMedia: ['$stateParams', 'companyMedia', function($stateParams, companyMedia) {
+                        return companyMedia.getAllCompanyMovies($stateParams.id);
+                    }]
+                },
+                title: 'Company Based Shows'
             })
             .state('popularShows', {
                 url: '/tv/popular',
@@ -207,6 +216,17 @@ app.config([
                 },
                 title: 'Genre Based Shows'
             })
+            .state('networkBasedShows', {
+                url: '/tv/network/{id}',
+                templateUrl: 'templates/companyBased.view.ejs',
+                controller: 'companyAndNetworkCtrl',
+                resolve: {
+                    companyMedia: ['$stateParams', 'companyMedia', function($stateParams, companyMedia) {
+                        return companyMedia.getAllNetworkShows($stateParams.id);
+                    }]
+                },
+                title: 'Network Based Shows'
+            })
             .state('popularPeople', {
                 url: '/people/popular',
                 templateUrl: 'templates/popularPeople.view.ejs',
@@ -224,7 +244,6 @@ app.config([
                 controller: 'peopleCtrl',
                 resolve: {
                     people: ['$stateParams', 'people', function($stateParams, people) {
-                        console.log("id here:", $stateParams.id);
                         return people.getPeopleDetails($stateParams.id);
                     }]
                 },

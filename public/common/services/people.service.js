@@ -24,14 +24,12 @@
         var getPopular = function() {
             return $http.get('/people/popular').then(function(data) {
                 var results = setKnownFors(JSON.parse(data.data).results);
-                console.log("new Results:", results);
                 angular.copy(results, people);
                 return people;
             });
         }
         var getPeopleDetails = function(id) {
             return $http.get('/people/' + id).then(function(data) {
-                console.log("data here:", data);
                 return JSON.parse(data.data);
             });
         }
