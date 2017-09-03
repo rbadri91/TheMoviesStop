@@ -5,13 +5,13 @@
             <div>
                 <div ng-repeat="show in nowShowing | limitTo:4" class="list cardView">
                     <div class="cardimageWrapper">
-                        <a id="show_{{show.id}}" ng-href="/#/movie/desc/{{show.id}}" alt={{show.title}}>
+                        <a id="show_{{show.id}}" ng-href="/#/movies/desc/{{show.id}}" alt={{show.title}}>
                             <img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{show.poster_path}}">
                         </a>
                     </div>
                     <div class="resultInfo">
                         <div class="title">
-                            <a id="show_{{show.id}}" class="resultTitle" title="{{show.title}}" ng-href="/#/movie/desc/{{show.id}}"> 
+                            <a id="show_{{show.id}}" class="resultTitle" title="{{show.title}}" ng-href="/#/movies/desc/{{show.id}}"> 
                                                 {{show.title}}
                                         </a>
                             <span class="vote_avg">
@@ -27,7 +27,7 @@
                             {{show.overview}}
                         </div>
                         <div class="moreInfoWrapper text-center">
-                            <a ng-href="/#/movie/desc/{{show.id}}" class="moreDetails"> More Info</a>
+                            <a ng-href="/#/movies/desc/{{show.id}}" class="moreDetails"> More Info</a>
                         </div>
                     </div>
                 </div>
@@ -41,13 +41,13 @@
             <div>
                 <div ng-repeat="show in OpeningThisWeek | limitTo:4" class="list cardView">
                     <div class="cardimageWrapper">
-                        <a id="show_{{show.id}}" ng-href="/#/movie/desc/{{show.id}}" alt={{show.title}}>
+                        <a id="show_{{show.id}}" ng-href="/#/movies/desc/{{show.id}}" alt={{show.title}}>
                             <img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{show.poster_path}}">
                         </a>
                     </div>
                     <div class="resultInfo">
                         <div class="title">
-                            <a id="show_{{show.id}}" class="resultTitle" title="{{show.title}}" ng-href="/#/movie/desc/{{show.id}}"> 
+                            <a id="show_{{show.id}}" class="resultTitle" title="{{show.title}}" ng-href="/#/movies/desc/{{show.id}}"> 
                                                 {{show.title}}
                                         </a>
                             <span class="vote_avg">
@@ -63,7 +63,7 @@
                             {{show.overview}}
                         </div>
                         <div class="moreInfoWrapper text-center">
-                            <a ng-href="/#/movie/desc/{{show.id}}" class="moreDetails"> More Info</a>
+                            <a ng-href="/#/movies/desc/{{show.id}}" class="moreDetails"> More Info</a>
                         </div>
                     </div>
                 </div>
@@ -77,13 +77,13 @@
             <div>
                 <div ng-repeat="show in OpeningThisWeek | limitTo:4" class="list cardView">
                     <div class="cardimageWrapper">
-                        <a id="show_{{show.id}}" ng-href="/#/movie/desc/{{show.id}}" alt={{show.title}}>
+                        <a id="show_{{show.id}}" ng-href="/#/movies/desc/{{show.id}}" alt={{show.title}}>
                             <img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{show.poster_path}}">
                         </a>
                     </div>
                     <div class="resultInfo">
                         <div class="title">
-                            <a id="show_{{show.id}}" class="resultTitle" title="{{show.title}}" ng-href="/#/movie/desc/{{show.id}}"> 
+                            <a id="show_{{show.id}}" class="resultTitle" title="{{show.title}}" ng-href="/#/movies/desc/{{show.id}}"> 
                                                     {{show.title}}
                                             </a>
                             <span class="vote_avg">
@@ -99,7 +99,7 @@
                             {{show.overview}}
                         </div>
                         <div class="moreInfoWrapper text-center">
-                            <a ng-href="/#/movie/desc/{{show.id}}" class="moreDetails"> More Info</a>
+                            <a ng-href="/#/movies/desc/{{show.id}}" class="moreDetails"> More Info</a>
                         </div>
                     </div>
                 </div>
