@@ -81,6 +81,18 @@ router.get('/movies/:movie', function(req, res, next) {
         res.json(movieInfo);
     });
 });
+router.get('/movies/genre/:genreId', function(req, res, next) {
+    var genreId = req.params.genreId;
+    getGenereMovies(genreId).then((moviesList) => {
+        res.json(moviesList);
+    });
+});
+router.get('/tv/genre/:genreId', function(req, res, next) {
+    var genreId = req.params.genreId;
+    getGenereShows(genreId).then((showsList) => {
+        res.json(showsList);
+    });
+});
 
 function getPopularMovies() {
     return new Promise((resolve) => {
@@ -387,6 +399,32 @@ function sortSeasonDetails(seasonDetails) {
         return parseInt(a.season_number) - parseInt(b.season_number);
     });
     return seasonDetails;
+}
+
+function getGenereMovies(genreId) {
+    return new Promise((resolve) => {
+        var options = {
+            "method": "GET",
+            "hostname": "api.themoviedb.org",
+            "port": null,
+            "path": "/3/discover/movie?with_genres=" + genreId + "&page=1&include_video=false&include_adult=true&sort_by=popularity.desc&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
+            "headers": {}
+        };
+        getdata(options, resolve);
+    });
+}
+
+function getGenereShows(genreId) {
+    return new Promise((resolve) => {
+        var options = {
+            "method": "GET",
+            "hostname": "api.themoviedb.org",
+            "port": null,
+            "path": "/3/discover/tv?include_null_first_air_dates=true&with_genres=" + genreId + "&page=1&sort_by=popularity.desc&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
+            "headers": {}
+        };
+        getdata(options, resolve);
+    });
 }
 
 module.exports = router;

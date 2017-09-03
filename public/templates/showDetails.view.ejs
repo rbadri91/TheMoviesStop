@@ -38,7 +38,7 @@
                                             <span ng-repeat="episodeTime in shows.episode_run_time">{{getTime(episodeTime)}},
                                             </span></time>
                                         <span> | </span>
-                                        <a ng-repeat="genere in shows.genres" id="genere_genere.id" href="#">
+                                        <a ng-repeat="genere in shows.genres" href="#/tv/genre/{{genere.id}}" id="genere.id">
                                                 {{genere.name}} &nbsp;
                                             </a>
                                         <span> | </span>

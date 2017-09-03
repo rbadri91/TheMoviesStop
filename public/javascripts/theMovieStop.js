@@ -100,6 +100,24 @@ app.config([
                 controller: 'reviewsCtrl',
                 title: 'All Reviews'
             })
+            .state('moviesAlsoKnownAs', {
+                url: '/movies/desc/{id}/alsoKnownAs',
+                templateUrl: 'templates/AltName.view.ejs',
+                controller: 'altNameCtrl',
+                title: 'Also Known As'
+            })
+            .state('genreBasedMovies', {
+                url: '/movies/genre/{id}',
+                templateUrl: 'templates/GenreBased.view.ejs',
+                controller: 'genreCtrl',
+                resolve: {
+                    genreShows: ['$stateParams', 'genreShows', function($stateParams, genreShows) {
+
+                        return genreShows.getAllGenreMovies($stateParams.id);
+                    }]
+                },
+                title: 'Genre Based Movies'
+            })
             .state('popularShows', {
                 url: '/tv/popular',
                 templateUrl: 'templates/popularShows.view.ejs',
@@ -177,6 +195,17 @@ app.config([
                     }]
                 },
                 title: 'All Seasons'
+            })
+            .state('genreBasedShows', {
+                url: '/tv/genre/{id}',
+                templateUrl: 'templates/GenreBased.view.ejs',
+                controller: 'genreCtrl',
+                resolve: {
+                    genreShows: ['$stateParams', 'genreShows', function($stateParams, genreShows) {
+                        return genreShows.getAllGenreShows($stateParams.id);
+                    }]
+                },
+                title: 'Genre Based Shows'
             })
             .state('popularPeople', {
                 url: '/people/popular',

@@ -24,7 +24,7 @@
                                     <div class="section-info">
                                         <time>{{getTime(movies.runtime)}}</time>
                                         <span> | </span>
-                                        <a ng-repeat="genere in movies.genres" id="genere_genere.id" href="#">
+                                        <a ng-repeat="genere in movies.genres" href="#/movies/genre/{{genere.id}}" id="{{genere.id}}">
                                             {{genere.name}} &nbsp;
                                         </a>
                                         <span> | </span>

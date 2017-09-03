@@ -1,0 +1,32 @@
+<div class="MoviesWrapper">
+    <h3 class="titleHeader">
+        {{getTitleHeader()}}
+    </h3>
+    <div class="searchResults">
+        <div ng-repeat="show in shows" class="list cardView">
+            <div class="cardimageWrapper">
+                <a id="show_{{show.id}}" href="{{getMediaLink(show.id)}}" alt={{getTitle(show)}}>
+                    <img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{show.poster_path}}">
+                </a>
+            </div>
+            <div class="resultInfo">
+                <div class="title">
+                    <a id="show_{{show.id}}" class="resultTitle" title="{{getTitle(show)}}" href="#"> 
+                            {{getTitle(show)}}
+                    </a>
+                    <span class="vote_avg">
+                                        {{show.vote_average}} <i class="fa fa-star" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div>
+                    <span class="dateInfo">
+                                <i class="fa fa-calendar" aria-hidden="true"></i> &nbsp; {{getReleaseDateOrYear(show)}}
+                    </span>
+                </div>
+                <div class="result_desc">
+                    {{show.overview}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

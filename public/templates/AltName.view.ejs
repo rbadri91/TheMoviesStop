@@ -1,0 +1,46 @@
+<div class="bgDisplay"></div>
+<div class="MoviesWrapper">
+    <h2 class="featured_info text-center"> All Reviews</h2>
+    <div class="section-overview">
+        <div class="section-wrapper">
+            <div class="poster-wrapper shortView">
+                <div class="poster shortView">
+                    <a href="#">
+                        <img class="posterImageSettings" src="https://image.tmdb.org/t/p/w300/{{poster_path}}" title={{name}}/>
+                    </a>
+                </div>
+                <div class="summaryWrapper">
+                    <div class="summary_info">
+                        <h2 class="featured_info">{{name}} ({{year}})</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-repeat="review in reviews" class="cardView setAllMargin">
+            <div class="reviewInfoWrapper">
+                <div class="ReviewWrapper setRightPadding">
+                    <p>{{review.content}}</p>
+                </div>
+                <div class="creditsTag">
+                    <p>- {{review.author}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .bgDisplay::after {
+        background-image:url(https://image.tmdb.org/t/p/w1280/{{backdrop_path}});
+        content: "";
+        opacity: 0.3;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        height: 100%;
+        background-repeat: repeat-y;
+        background-position: center center;
+    }
+</style>

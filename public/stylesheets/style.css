@@ -1025,3 +1025,7 @@ div.cardView div.reviewInfoWrapper {
 .setRightPadding {
     padding-right: 2%;
 }
+
+div.section_desc div.titleBar div.section-titleWrapper div.section-info a {
+    text-decoration: none;
+}
