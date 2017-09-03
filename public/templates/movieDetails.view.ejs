@@ -181,7 +181,7 @@
                                             <div class="detailsInfoWrapper">
                                                 <span><strong>Production Company &nbsp;</strong></span>
                                                 <a ng-repeat="comp in movies.production_companies | limitTo:3" id="{{comp.id}}" ng-href="#/movies/company/{{comp.id}}" ng-mouseup="handleCompanyClick($event)">{{comp.name}} &nbsp;&nbsp;</span>
-                                                <a href="#"> View All Companies</a>
+                                                <a ng-href="#/movies/desc/{{movies.id}}/allCompanies"> View All Companies</a>
                                             </div>
                                         </div>
                                     </section>

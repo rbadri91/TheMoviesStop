@@ -16,6 +16,7 @@
             $localStorage.poster_path = movies.poster_path;
             $localStorage.name = movies.title;
             $localStorage.reviews = movies.reviews.results;
+            $localStorage.companies = movies.production_companies;
         }
 
         $scope.getIframeSrc = function(videoId) {

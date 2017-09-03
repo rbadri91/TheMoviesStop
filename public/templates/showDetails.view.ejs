@@ -179,7 +179,7 @@
                                             <div class="detailsInfoWrapper">
                                                 <span><strong>Network &nbsp;</strong></span>
                                                 <a ng-repeat="comp in shows.networks | limitTo:3" ng-href="#/tv/network/{{comp.id}}" ng-mouseup="handleNetworkClick($event)">{{comp.name}} &nbsp;&nbsp;</span>
-                                                    <a href="#"> View All Networks</a>
+                                                    <a ng-href="#/tv/desc/{{shows.id}}/allNetworks"> View All Networks</a>
                                             </div>
                                         </div>
                                     </section>

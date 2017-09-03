@@ -127,6 +127,12 @@ app.config([
                 },
                 title: 'Company Based Shows'
             })
+            .state('companyLists', {
+                url: '/movies/desc/{id}/allCompanies',
+                templateUrl: 'templates/companyList.view.ejs',
+                controller: 'companyListCtrl',
+                title: 'All Companies'
+            })
             .state('popularShows', {
                 url: '/tv/popular',
                 templateUrl: 'templates/popularShows.view.ejs',
@@ -226,6 +232,12 @@ app.config([
                     }]
                 },
                 title: 'Network Based Shows'
+            })
+            .state('networkLists', {
+                url: '/tv/desc/{id}/allNetworks',
+                templateUrl: 'templates/companyList.view.ejs',
+                controller: 'companyListCtrl',
+                title: 'All Networks'
             })
             .state('popularPeople', {
                 url: '/people/popular',

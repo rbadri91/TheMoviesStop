@@ -1029,3 +1029,8 @@ div.cardView div.reviewInfoWrapper {
 div.section_desc div.titleBar div.section-titleWrapper div.section-info a {
     text-decoration: none;
 }
+
+.companyListView {
+    font-size: 1.8rem;
+    font-family: 'Josefin Slab', serif;
+}

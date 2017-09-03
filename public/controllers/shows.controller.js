@@ -43,6 +43,7 @@
             $localStorage.poster_path = shows.poster_path;
             $localStorage.name = shows.original_name;
             $localStorage.year = $scope.getReleaseYear(shows.first_air_date);
+            $localStorage.networks = shows.networks;
         }
 
         $scope.handleOptionsClick = function($event) {
