@@ -1,6 +1,6 @@
 <div class="MoviesWrapper">
     <h3 class="titleHeader">
-        Top Rated Movies
+        Movies Opening This Week
     </h3>
     <div class="searchResults">
         <div ng-repeat="movie in movies" class="list cardView">
@@ -12,19 +12,19 @@
             <div class="resultInfo">
                 <div class="title">
                     <a id="movie_{{movie.id}}" class="resultTitle" title="{{movie.title}}" href="#"> 
-                                    {{movie.title}}
-                            </a>
+                                            {{movie.title}}
+                                    </a>
                     <span class="vote_avg">
-                                {{movie.vote_average}} <i class="fa fa-star" aria-hidden="true"></i>
-                        </span>
+                                        {{movie.vote_average}} <i class="fa fa-star" aria-hidden="true"></i>
+                                </span>
                 </div>
                 <div>
                     <span class="dateInfo">
-                        <i class="fa fa-calendar" aria-hidden="true"></i> &nbsp; {{movie.release_date}}
-                        </span>
+                                <i class="fa fa-calendar" aria-hidden="true"></i> &nbsp; {{movie.release_date}}
+                                </span>
                     <span class="genersInfo">
-    
-                        </span>
+            
+                                </span>
                 </div>
                 <div class="block-with-text">
                     {{movie.overview}}

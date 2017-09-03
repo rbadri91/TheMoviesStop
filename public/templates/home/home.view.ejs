@@ -1,4 +1,112 @@
-<div class="page-header">
-    <h1>The Movies Stop</h1>
+<div class="MoviesWrapper">
+    <div class="searchResults">
+        <section class="panel ListMediaWrapper">
+            <h3 class="featured_info">Now Showing</h3>
+            <div>
+                <div ng-repeat="show in nowShowing | limitTo:4" class="list cardView">
+                    <div class="cardimageWrapper">
+                        <a id="show_{{show.id}}" ng-href="/#/movie/desc/{{show.id}}" alt={{show.title}}>
+                            <img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{show.poster_path}}">
+                        </a>
+                    </div>
+                    <div class="resultInfo">
+                        <div class="title">
+                            <a id="show_{{show.id}}" class="resultTitle" title="{{show.title}}" ng-href="/#/movie/desc/{{show.id}}"> 
+                                                {{show.title}}
+                                        </a>
+                            <span class="vote_avg">
+                                            {{show.vote_average}} <i class="fa fa-star" aria-hidden="true"></i>
+                                    </span>
+                        </div>
+                        <div>
+                            <span class="dateInfo">
+                                    <i class="fa fa-calendar" aria-hidden="true"></i> &nbsp; {{show.release_date}}
+                                    </span>
+                        </div>
+                        <div class="block-with-text">
+                            {{show.overview}}
+                        </div>
+                        <div class="moreInfoWrapper text-center">
+                            <a ng-href="/#/movie/desc/{{show.id}}" class="moreDetails"> More Info</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="full_view_button text-center">
+                <a ng-href="#/movies/showingnow">View All Movies Showing Now</a>
+            </p>
+        </section>
+        <section class="panel ListMediaWrapper">
+            <h3 class="featured_info">Opening This Week</h3>
+            <div>
+                <div ng-repeat="show in OpeningThisWeek | limitTo:4" class="list cardView">
+                    <div class="cardimageWrapper">
+                        <a id="show_{{show.id}}" ng-href="/#/movie/desc/{{show.id}}" alt={{show.title}}>
+                            <img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{show.poster_path}}">
+                        </a>
+                    </div>
+                    <div class="resultInfo">
+                        <div class="title">
+                            <a id="show_{{show.id}}" class="resultTitle" title="{{show.title}}" ng-href="/#/movie/desc/{{show.id}}"> 
+                                                {{show.title}}
+                                        </a>
+                            <span class="vote_avg">
+                                            {{show.vote_average}} <i class="fa fa-star" aria-hidden="true"></i>
+                                    </span>
+                        </div>
+                        <div>
+                            <span class="dateInfo">
+                                    <i class="fa fa-calendar" aria-hidden="true"></i> &nbsp; {{show.release_date}}
+                                    </span>
+                        </div>
+                        <div class="result_desc block-with-text">
+                            {{show.overview}}
+                        </div>
+                        <div class="moreInfoWrapper text-center">
+                            <a ng-href="/#/movie/desc/{{show.id}}" class="moreDetails"> More Info</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="full_view_button text-center">
+                <a ng-href="#/movies/openingthisweek">View All Movies Opening This Week</a>
+            </p>
+        </section>
+        <section class="panel ListMediaWrapper">
+            <h3 class="featured_info">Upcoming</h3>
+            <div>
+                <div ng-repeat="show in OpeningThisWeek | limitTo:4" class="list cardView">
+                    <div class="cardimageWrapper">
+                        <a id="show_{{show.id}}" ng-href="/#/movie/desc/{{show.id}}" alt={{show.title}}>
+                            <img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{show.poster_path}}">
+                        </a>
+                    </div>
+                    <div class="resultInfo">
+                        <div class="title">
+                            <a id="show_{{show.id}}" class="resultTitle" title="{{show.title}}" ng-href="/#/movie/desc/{{show.id}}"> 
+                                                    {{show.title}}
+                                            </a>
+                            <span class="vote_avg">
+                                                {{show.vote_average}} <i class="fa fa-star" aria-hidden="true"></i>
+                                        </span>
+                        </div>
+                        <div>
+                            <span class="dateInfo">
+                                        <i class="fa fa-calendar" aria-hidden="true"></i> &nbsp; {{show.release_date}}
+                                        </span>
+                        </div>
+                        <div class="result_desc block-with-text">
+                            {{show.overview}}
+                        </div>
+                        <div class="moreInfoWrapper text-center">
+                            <a ng-href="/#/movie/desc/{{show.id}}" class="moreDetails"> More Info</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="full_view_button text-center">
+                <a ng-href="#/movies/upcoming">View All Upcoming Movies</a>
+            </p>
+        </section>
+    </div>
 </div>
-<div>In home page</div>

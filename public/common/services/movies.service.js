@@ -3,7 +3,7 @@
         .module('themoviesStop')
         .service('movies', movies);
 
-    movies.$inject = ['$http'];
+    movies.$inject = ['$http', '$localStorage'];
 
     function chunk(arr, size) {
         var newArr = [];
@@ -17,7 +17,7 @@
         console.log("");
     }
 
-    function movies($http) {
+    function movies($http, $localStorage) {
         var movies = [];
         var getPopular = function() {
             return $http.get('/movies/popular').then(function(data) {
@@ -51,13 +51,24 @@
         var getMovies = function() {
             return movies;
         }
+        var getMoviesOpeningThisWeek = function() {
+            if (!$localStorage.OpeningThisWeek) {
+                return $http.get('/movies/openingThisWeek').then(function(data) {
+                    $localStorage.OpeningThisWeek = JSON.parse(data.data);
+                    return JSON.parse(data.data);
+                });
+            } else {
+                return $localStorage.OpeningThisWeek;
+            }
+        }
         return {
             getPopular: getPopular,
             getTopRated: getTopRated,
             getUpcoming: getUpcoming,
             getShowingNow: getShowingNow,
             getMovieDetails: getMovieDetails,
-            getMovies: getMovies
+            getMovies: getMovies,
+            getMoviesOpeningThisWeek: getMoviesOpeningThisWeek
         };
     }
 })();

@@ -17,6 +17,20 @@ router.get('/', function(req, res, next) {
     res.render('index', { title: 'Express' });
 });
 
+router.get('/allFeeds', function(req, res, next) {
+    var result = {};
+    getUpcomingMovies().then((upcomingMovies) => {
+        result.upcoming = JSON.parse(upcomingMovies);
+        getNowShowingMovies().then((NowShowingMovies) => {
+            result.nowShowing = JSON.parse(NowShowingMovies);
+            getOpeningThisWeek().then((OpeningThisWeek) => {
+                result.OpeningThisWeek = JSON.parse(OpeningThisWeek);
+                res.json(result);
+            });
+        });
+    });
+});
+
 router.post('/register', function(req, res, next) {
     if (!req.body.username || !req.body.password) {
         return res.status(400).json({ message: 'Please fill out all fields' });
@@ -71,6 +85,11 @@ router.get('/movies/upcoming', function(req, res, next) {
 
 router.get('/movies/showingnow', function(req, res, next) {
     getNowShowingMovies().then((movies) => {
+        res.json(movies);
+    });
+});
+router.get('/movies/openingThisWeek', function(req, res, next) {
+    getOpeningThisWeek().then((movies) => {
         res.json(movies);
     });
 });
@@ -456,6 +475,31 @@ function getNetworkShows(networkId) {
             "hostname": "api.themoviedb.org",
             "port": null,
             "path": "/3/discover/tv?include_null_first_air_dates=false&with_networks=" + networkId + "&page=1&sort_by=popularity.desc&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
+            "headers": {}
+        };
+        getdata(options, resolve);
+    });
+}
+
+function getOpeningThisWeek() {
+    var d = new Date();
+    var nextWeek = new Date(d.getTime() + 7 * 24 * 60 * 60 * 1000);
+    var nY = nextWeek.getFullYear();
+    var nM = nextWeek.getMonth() + 1;
+    var nD = nextWeek.getDate();
+
+    var tY = d.getFullYear();
+    var tM = d.getMonth() + 1;
+    var tD = d.getDate();
+    var nWDate = nY + "-" + nM + "-" + nD;
+    var thisDate = tY + "-" + tM + "-" + tD;
+
+    return new Promise((resolve) => {
+        var options = {
+            "method": "GET",
+            "hostname": "api.themoviedb.org",
+            "port": null,
+            "path": "/3/discover/movie?primary_release_date.lte=" + nWDate + "&primary_release_date.gte=" + thisDate + "&primary_release_year=2017&page=1&include_video=false&include_adult=true&sort_by=popularity.desc&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
             "headers": {}
         };
         getdata(options, resolve);

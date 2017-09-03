@@ -9,7 +9,13 @@ app.config([
             .state('home', {
                 url: '/home',
                 templateUrl: 'templates/home/home.view.ejs',
-                controller: 'homeCtrl'
+                controller: 'homeCtrl',
+                resolve: {
+                    allMedia: ['allMedia', function(allMedia) {
+                        return allMedia.getAllMediaDetails();
+                    }]
+                },
+                title: "The Movies Spot"
             })
             .state('login', {
                 url: '/login',
@@ -74,6 +80,17 @@ app.config([
                     }]
                 },
                 title: 'Showing Now Movies'
+            })
+            .state('MoviesOpeningThisWeek', {
+                url: '/movies/openingthisweek',
+                templateUrl: 'templates/openingThisWeekMovies.view.ejs',
+                controller: 'moviesCtrl',
+                resolve: {
+                    movies: ['movies', function(movies) {
+                        return movies.getMoviesOpeningThisWeek();
+                    }]
+                },
+                title: 'Movies Opening This Week'
             })
             .state('movieDetails', {
                 url: '/movies/desc/{id}',
