@@ -1,23 +1,22 @@
 <div class="page-header">
-    <h1>The Movie Stop</h1>
 </div>
 
 <div ng-show="error" class="alert alert-danger row">
     <span>{{ error.message }}</span>
 </div>
+<div class="formWrapper">
+    <form name="registerForm" ng-submit="onSubmit()">
+        <h3>Register</h3>
 
-<form ng-submit="register()" style="margin-top:30px;">
-    <h3>Register</h3>
-
-    <div class="form-group">
-        <input type="text" class="form-control" placeholder="Username" ng-model="user.username"></input>
-    </div>
-    <div class="form-group">
-        <input type="password" class="form-control" placeholder="Password" ng-model="user.password"></input>
-    </div>
-    <div class="form-group">
-        <input type="password" class="form-control" placeholder="Confirm Password" ng-model="user.password"></input>
-    </div>
-    <div ng-messages="registrationForm.confirmPassword.$error" ng-messages-include="messages.html"></div>
-    <button type="submit" class="btn btn-primary">Register</button>
-</form>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Username" ng-model="credentials.username"></input>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Email" ng-model="credentials.email"></input>
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" placeholder="Password" ng-model="credentials.password"></input>
+        </div>
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+</div>

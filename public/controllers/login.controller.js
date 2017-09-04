@@ -9,16 +9,17 @@
     function loginCtrl($scope, $state, authentication) {
         var vm = this;
 
-        vm.credentials = {
-            email: "",
+        $scope.credentials = {
+            username: "",
             password: ""
         };
 
-        vm.onSubmit = function() {
+        $scope.onSubmit = function() {
+            console.log("submit function");
             authentication
-                .logIn(vm.credentials)
-                .error(function(err) {
-                    $scope.error = error;
+                .login($scope.credentials)
+                .catch(function(err) {
+                    $scope.error = err;
                 })
                 .then(function() {
                     $state.go('home');

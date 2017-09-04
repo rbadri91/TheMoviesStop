@@ -9,15 +9,17 @@
     function registerCtrl($scope, $state, authentication) {
         var vm = this;
 
-        vm.credentials = {
+        $scope.credentials = {
+            userName: "",
             email: "",
             password: ""
         };
 
-        vm.onSubmit = function() {
+        $scope.onSubmit = function() {
+            console.log("it comes to submit function");
             authentication
-                .register(vm.credentials)
-                .error(function(err) {
+                .register($scope.credentials)
+                .catch(function(err) {
                     $scope.error = error;
                 })
                 .then(function() {

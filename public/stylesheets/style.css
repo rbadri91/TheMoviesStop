@@ -10,22 +10,22 @@ a {
 }
 
 .navbar {
-    z-index: 9;
-    background: #332b2b;
+    z-index: 9 !important;
+    background: #332b2b !important;
 }
 
 .dropdown:hover .dropdown-menu {
-    display: block;
+    display: block !important;
 }
 
 .navbar-default .navbar-brand,
 .navbar-default .navbar-nav>li>a {
-    color: #f1e7e7;
+    color: #f1e7e7 !important;
 }
 
 .navbar-default .navbar-brand:hover,
 .navbar-default .navbar-nav>li>a:hover {
-    color: #3EC02F;
+    color: #3EC02F !important;
 }
 
 .titleHeader {
@@ -412,7 +412,7 @@ div.watchSection {
     width: 20%;
     z-index: 2;
     display: flex;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
 }
 
@@ -420,8 +420,8 @@ div.watchSection {
     font-size: 11px;
     height: 40px;
     line-height: 13px;
-    padding: 2px 0 0 34px;
-    width: 58px;
+    padding: 2px 0 0 2px;
+    width: 60%;
 }
 
 .section-wrapper .ratings_Wrapper .ratingValue {
@@ -430,15 +430,10 @@ div.watchSection {
 }
 
 .section-wrapper .rating-widget {
-    height: 42px;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 92px;
+    width: 30%;
 }
 
 .section-wrapper .rating-button {
-    height: 42px;
     width: 91px;
 }
 
@@ -454,6 +449,21 @@ div.watchSection {
     align-items: center;
     justify-content: center;
     align-content: center;
+    user-select: none;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    outline: none;
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 18px;
+}
+
+.rateText {
+    padding-right: 5%;
+}
+
+.UserMarkingWrapper {
+    display: flex;
+    flex-direction: column;
 }
 
 .section-wrapper .avgVote {
@@ -1074,4 +1084,12 @@ div.resultInfo div.block-with-text:after {
     height: 1em;
     margin-top: 0.2em;
     background: white;
+}
+
+div.formWrapper {
+    width: 40%;
+    margin: 30px auto 0 auto;
+    background: #fff;
+    padding: 2% 3%;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }

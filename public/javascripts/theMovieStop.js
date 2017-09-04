@@ -1,4 +1,4 @@
-var app = angular.module('themoviesStop', ['ui.router', 'ui.bootstrap', 'ngSanitize', 'ngStorage']);
+var app = angular.module('themoviesStop', ['ui.router', 'ngAnimate', 'ui.bootstrap', 'ngSanitize', 'ngStorage', 'ui.bootstrap.tpls', 'ui.bootstrap.collapse']);
 
 app.config([
     '$stateProvider',
@@ -42,7 +42,7 @@ app.config([
                 templateUrl: 'templates/popularMovies.view.ejs',
                 controller: 'moviesCtrl',
                 resolve: {
-                    movies: ['movies', function(movies) {
+                    postPromise: ['movies', function(movies) {
                         return movies.getPopular();
                     }]
                 },
@@ -53,7 +53,7 @@ app.config([
                 templateUrl: 'templates/topRatedMovies.view.ejs',
                 controller: 'moviesCtrl',
                 resolve: {
-                    movies: ['movies', function(movies) {
+                    postPromise: ['movies', function(movies) {
                         return movies.getTopRated();
                     }]
                 },
@@ -63,8 +63,8 @@ app.config([
                 url: '/movies/upcoming',
                 templateUrl: 'templates/upcomingMovies.view.ejs',
                 controller: 'moviesCtrl',
-                resolve: {
-                    movies: ['movies', function(movies) {
+                postPromise: {
+                    postPromise: ['movies', function(movies) {
                         return movies.getUpcoming();
                     }]
                 },
@@ -74,8 +74,8 @@ app.config([
                 url: '/movies/showingnow',
                 templateUrl: 'templates/showingNowMovies.view.ejs',
                 controller: 'moviesCtrl',
-                resolve: {
-                    movies: ['movies', function(movies) {
+                postPromise: {
+                    postPromise: ['movies', function(movies) {
                         return movies.getShowingNow();
                     }]
                 },
@@ -86,7 +86,7 @@ app.config([
                 templateUrl: 'templates/openingThisWeekMovies.view.ejs',
                 controller: 'moviesCtrl',
                 resolve: {
-                    movies: ['movies', function(movies) {
+                    postPromise: ['movies', function(movies) {
                         return movies.getMoviesOpeningThisWeek();
                     }]
                 },
@@ -97,7 +97,7 @@ app.config([
                 templateUrl: 'templates/movieDetails.view.ejs',
                 controller: 'moviesCtrl',
                 resolve: {
-                    movies: ['$stateParams', 'movies', function($stateParams, movies) {
+                    postPromise: ['$stateParams', 'movies', function($stateParams, movies) {
                         return movies.getMovieDetails($stateParams.id);
                     }]
                 },
@@ -278,11 +278,30 @@ app.config([
                 },
                 title: 'People Information'
             })
+            .state('profilePage', {
+                url: '/profile',
+                templateUrl: 'templates/popularPeople.view.ejs',
+                controller: 'peopleCtrl',
+                resolve: {
+                    people: ['people', function(people) {
+                        return people.getPopular();
+                    }]
+                },
+                title: 'Popular People'
+            })
 
 
         $urlRouterProvider.otherwise('home');
     }
 ]);
+
+function run($rootScope, $location, authentication) {
+    $rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
+        if ($location.path() === '/profile' && !authentication.isLoggedIn()) {
+            $location.path('/');
+        }
+    });
+}
 
 app.config(['$locationProvider', function($locationProvider) {
     $locationProvider.hashPrefix('');
@@ -305,3 +324,4 @@ app.filter('htmlize', function(HTMLIZE_CONVERSIONS) {
         }, string || '');
     };
 });
+app.run(['$rootScope', '$location', 'authentication', run]);

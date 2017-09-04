@@ -1,0 +1,54 @@
+<div class="ShowInfoWraper">
+    <div class="resultList flex">
+        <div class="main-section">
+            <div class="section-overview">
+                <div class="section-wrapper">
+                    <div class="poster-wrapper">
+                        <div class="poster">
+                            <a href="#">
+                                <img class="posterImageSettings" src="https://image.tmdb.org/t/p/w300/{{people.profile_path}}" title={{people.name}}/>
+                            </a>
+                        </div>
+                        <div class="summaryWrapper">
+                            <div class="summary_info">
+                                <h2 class="featured_info">{{people.name}}</h2>
+                                <div class="joinDate">
+                                    {{people.join_date}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <section class="panel ListMediaWrapper">
+                    <h3 class="featured_info">Opening This Week</h3>
+                    <div>
+                        <div ng-repeat="show in OpeningThisWeek | limitTo:4" class="list cardView">
+                            <div class="cardimageWrapper">
+                                <a id="show_{{show.id}}" ng-href="/#/movies/desc/{{show.id}}" alt={{show.title}}>
+                                    <img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{show.poster_path}}">
+                                </a>
+                            </div>
+                            <div class="resultInfo">
+                                <div class="title">
+                                    <a id="show_{{show.id}}" class="resultTitle" title="{{show.title}}" ng-href="/#/movies/desc/{{show.id}}"> 
+                                                            {{show.title}}
+                                                    </a>
+                                    <span class="vote_avg">
+                                                        {{user.rating}} <i class="fa fa-star" aria-hidden="true"></i>
+                                                </span>
+                                </div>
+                                <div class="result_desc block-with-text">
+                                    {{show.overview}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p ng-show="user.watchList.length>0" class="full_view_button text-center">
+                        <a ng-href="#/user/watchList">View All Watchist</a>
+                    </p>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

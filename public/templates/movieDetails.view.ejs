@@ -36,49 +36,62 @@
                                         <div class="ratingValue">
                                             <strong class="avgVote">Rating: {{movies.vote_average}}</strong>
                                         </div>
-                                        <div class="countVote"><strong>Count: {{movies.vote_count}}<strong></div>
+                                        <div class="countVote"><strong>Count: {{movies.vote_count}}</strong></div>
                                     </div>
-                                    <div ng-show="isLoggedIn()" class="rating-widget">
-                                        <div class="rating-button">
-                                            <button><span class="glyphicons glyphicons-star x1">
-                                            </span></button>
+                                    <div class="UserMarkingWrapper">
+                                        <div ng-if="isLoggedIn()" class="rating-widget">
+                                            <div class="rating-button" ng-controller="PopoverDemoCtrl">
+                                                <!-- <div class="rateText" id="tooltipTarget" tooltip-html-unsafe="My <em>fancy</em> tooltip" tooltip-trigger="customEvent">Rate Movie</div> -->
+                                                <button popover-template="'../popover.html'" popover-placement="bottom" popover-trigger="mouseenter" type="button" class="btn btn-default"><i class="fa fa-star-o" aria-hidden="true"></i></button>
+
+                                            </div>
+                                        </div>
+                                        <div ng-if="isLoggedIn()" class="rating-widget">
+                                            <div class="rating-button" ng-controller="PopoverDemoCtrl">
+                                                <button title="Click to Add to watch list Movie" ng-click="handleWatchListClick($event)" ng-style="{color: WatchListColor}" type="button" class="btn btn-default"><i class="fa fa-bookmark" aria-hidden="true"></i></button>
+                                            </div>
+                                        </div>
+                                        <div ng-if="isLoggedIn()" class="rating-widget">
+                                            <div class="rating-button" ng-controller="PopoverDemoCtrl">
+                                                <button title="Click to favorite Movie" type="button" ng-click="handleFavoritesClick($event)" ng-style="{color: FavoritesColor}" class="btn btn-default"><i class="fa fa-heart" aria-hidden="true"></i></button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="summaryWrapper">
-                        <div class="summary_info">
-                            <h3 class="featured_info">Overview</h3>
-                            <div class="summary" ng-bind-html="movies.overview | htmlize">
+                        <div class="summaryWrapper">
+                            <div class="summary_info">
+                                <h3 class="featured_info">Overview</h3>
+                                <div class="summary" ng-bind-html="movies.overview | htmlize">
+                                </div>
+                                <h3 class="featured_info">Featured Crew</h3>
+                                <ol class="featured_people">
+                                    <li class="people_info" ng-repeat="crew in movies.credits.crew | limitTo:6">
+                                        <p>{{crew.name}}</p>
+                                        <p class="profile_job">{{crew.job}}</p>
+                                    </li>
+                                </ol>
                             </div>
-                            <h3 class="featured_info">Featured Crew</h3>
-                            <ol class="featured_people">
-                                <li class="people_info" ng-repeat="crew in movies.credits.crew | limitTo:6">
-                                    <p>{{crew.name}}</p>
-                                    <p class="profile_job">{{crew.job}}</p>
-                                </li>
-                            </ol>
                         </div>
                     </div>
-                </div>
-                <div class="ms-row optionsNav">
-                    <div class="menuNavSection">
-                        <span class="CastsNav active" ng-click ="handleOptionsClick($event)">Cast</span>
-                        <span class="ReviewsNav" ng-click ="handleOptionsClick($event)">Reviews</span>
-                        <span class="VideosNav" ng-click ="handleOptionsClick($event)">Videos</span>
-                        <span ng-show="{{movies.recommendations.results.length}}!=0" class="RecommendedNav" ng-click ="handleOptionsClick($event)">Recommended</span>
-                        <span class="DetailsNav" ng-click ="handleOptionsClick($event)">Details</span>
-                        <span ng-show="{{movies.budget}}!=0"  class="BoxOfficeNav" ng-click ="handleOptionsClick($event)">Box Office</span>
-                        <span class="CreditsNav" ng-click ="handleOptionsClick($event)">Prodution Credits</span>
+                    <div class="ms-row optionsNav">
+                        <div class="menuNavSection">
+                            <span class="CastsNav active" ng-click="handleOptionsClick($event)">Cast</span>
+                            <span class="ReviewsNav" ng-click="handleOptionsClick($event)">Reviews</span>
+                            <span class="VideosNav" ng-click="handleOptionsClick($event)">Videos</span>
+                            <span ng-show="movies.recommendations.results.length!=0" class="RecommendedNav" ng-click="handleOptionsClick($event)">Recommended</span>
+                            <span class="DetailsNav" ng-click="handleOptionsClick($event)">Details</span>
+                            <span ng-show="movies.budget!=0" class="BoxOfficeNav" ng-click="handleOptionsClick($event)">Box Office</span>
+                            <span class="CreditsNav" ng-click="handleOptionsClick($event)">Prodution Credits</span>
+                        </div>
                     </div>
-                </div>
-                <section class="panel CastLists">
+                    <section class="panel CastLists">
                         <h3 class="featured_info">Top Casts</h3>
                         <ol class="featured_people">
                             <li class="list profileView setFullHeight" ng-repeat="cast in movies.credits.cast | limitTo:4">
-                                <a ng-href="#/people/desc/{{cast.id}}"><img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{cast.profile_path}}"></img></a>
+                                <a ng-href="#/people/desc/{{cast.id}}"><img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{cast.profile_path}}"></img>
+                                </a>
                                 <div class="castInfoWrapper">
                                     <p>{{cast.name}}</p>
                                     <p class="profile_job">{{cast.character}}</p>
@@ -88,8 +101,8 @@
                         <p class="full_view_button">
                             <a href="{{getFullCastLocation()}}">View Full Cast</a>
                         </p>
-                </section>
-                <section class="panel ReviewsSection">
+                    </section>
+                    <section class="panel ReviewsSection">
                         <h3 class="featured_info">Reviews</h3>
                         <div class="cardView">
                             <div class="ReviewWrapper">
@@ -100,107 +113,107 @@
                             </div>
                         </div>
                         <p class="full_view_button">
-                                <a href="{{getAllReviewLocation()}}">View All Reviews</a>
+                            <a href="{{getAllReviewLocation()}}">View All Reviews</a>
                         </p>
-                </section>
-                <section class="panel VideosSection">
+                    </section>
+                    <section class="panel VideosSection">
                         <h3 class="featured_info">Videos</h3>
                         <div class="section-content">
-                                <div class="section-inner-content">
-                                    <div class="watchSection" ng-repeat="video in movies.videos.results">
-                                        <iframe class="videoLoader" ng-src="{{getIframeSrc(video.key)}}"></iframe>
-                                    </div>
+                            <div class="section-inner-content">
+                                <div class="watchSection" ng-repeat="video in movies.videos.results">
+                                    <iframe class="videoLoader" ng-src="{{getIframeSrc(video.key)}}"></iframe>
                                 </div>
+                            </div>
                         </div>
-                </section>
-                <section  ng-show="{{movies.recommendations.results.length}}!=0" class="panel RecommendedSection">
+                    </section>
+                    <section ng-show="movies.recommendations.results.length!=0" class="panel RecommendedSection">
                         <h3 class="featured_info">Recommendations</h3>
-                    <div class="scollable">
-                                <div class="list miniPhoto" ng-repeat="movie in movies.recommendations.results | limitTo:7" title ={{movie.title}}>
-                                    <div class="imageWrapper">
-                                            <a target ="_blank" id="movie_{{movie.id}}" href="/#/movies/desc/{{movie.id}}" alt={{movie.title}}>
-                                                <img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{movie.poster_path}}">
-                                            </a>
-                                    </div>
-                                    <a class="infoWrapper" href="/#/movies/desc/{{movie.id}}">
-                                            <div class="infoInnerWrapper">
-                                                <div class="recoNameWrapper">{{movie.original_title}}</div>
-                                                <span class="reco_vote_avg">
-                                                        {{movie.vote_average}} <i class="fa fa-star" aria-hidden="true"></i>
-                                                </span>
-                                                <div class="recoReleaseInfo">
-                                                        <i class="fa fa-calendar" aria-hidden="true"></i> {{getReleaseDate(movie.release_date)}}
-                                                </div>
-                                            </div>
+                        <div class="scollable">
+                            <div class="list miniPhoto" ng-repeat="movie in movies.recommendations.results | limitTo:7" title={{movie.title}}>
+                                <div class="imageWrapper">
+                                    <a target="_blank" id="movie_{{movie.id}}" href="/#/movies/desc/{{movie.id}}" alt={{movie.title}}>
+                                        <img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{movie.poster_path}}">
                                     </a>
                                 </div>
+                                <a class="infoWrapper" href="/#/movies/desc/{{movie.id}}">
+                                    <div class="infoInnerWrapper">
+                                        <div class="recoNameWrapper">{{movie.original_title}}</div>
+                                        <span class="reco_vote_avg">
+                                                        {{movie.vote_average}} <i class="fa fa-star" aria-hidden="true"></i>
+                                                </span>
+                                        <div class="recoReleaseInfo">
+                                            <i class="fa fa-calendar" aria-hidden="true"></i> {{getReleaseDate(movie.release_date)}}
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
-                </section>
-                <section class="panel DetailsSection">
-                        <h3 class="featured_info" >Details</h3>
+                    </section>
+                    <section class="panel DetailsSection">
+                        <h3 class="featured_info">Details</h3>
                         <div class="cardView">
                             <div class="detailsInfoWrapper">
                                 <span ng-show=movies.homepage!=''><strong>Official Site:</strong>
                                             </span>
-                                            <a target="_blank" href="{{movies.homepage}}">{{movies.homepage}}</a>
-                                        </div>
-                                        <div class="detailsInfoWrapper">
-                                            <span><strong>Country: </strong></span>
-                                            <span>United States</span>
-                                        </div>
-                                        <div class="detailsInfoWrapper">
-                                            <span><strong>Languages: </strong></span>
-                                            <span class="movieLang" ng-repeat="lang in movies.spoken_languages ">{{lang.name}}</span>
+                                <a target="_blank" href="{{movies.homepage}}">{{movies.homepage}}</a>
+                            </div>
+                            <div class="detailsInfoWrapper">
+                                <span><strong>Country: </strong></span>
+                                <span>United States</span>
+                            </div>
+                            <div class="detailsInfoWrapper">
+                                <span><strong>Languages: </strong></span>
+                                <span class="movieLang" ng-repeat="lang in movies.spoken_languages ">{{lang.name}}</span>
 
-                                        </div>
-                                        <div class="detailsInfoWrapper">
-                                            <span><strong>Also Known As: </strong></span>
-                                            <span>{{movies.alternative_titles.titles[0].title}}</span>
-                                            <a href="#">View All titles</a>
-                                        </div>
-                                    </div>
-                                    </section>
-                                    <section ng-show="{{movies.budget}}!=0" class="panel BoxOfficeSection">
-                                        <h3 class="featured_info">Box Office</h3>
-                                        <div class="cardView">
-                                            <div class="detailsInfoWrapper">
-                                                <span><strong>Budget: </strong></span>
-                                                <span>$ {{numberWithCommas(movies.budget)}}</span>
-                                            </div>
-                                            <div class="detailsInfoWrapper">
-                                                <span><strong>Revenue: </strong></span>
-                                                <span>$ {{numberWithCommas(movies.revenue)}}</span>
-                                            </div>
-                                        </div>
-                                    </section>
-                                    <section class="panel ProdCreditsSection">
-                                        <h3 class="featured_info">Production Credits</h3>
-                                        <div class="cardView">
-                                            <div class="detailsInfoWrapper">
-                                                <span><strong>Production Company &nbsp;</strong></span>
-                                                <a ng-repeat="comp in movies.production_companies | limitTo:3" id="{{comp.id}}" ng-href="#/movies/company/{{comp.id}}" ng-mouseup="handleCompanyClick($event)">{{comp.name}} &nbsp;&nbsp;</span>
-                                                <a ng-href="#/movies/desc/{{movies.id}}/allCompanies"> View All Companies</a>
-                                            </div>
-                                        </div>
-                                    </section>
-                                </div>
+                            </div>
+                            <div class="detailsInfoWrapper">
+                                <span><strong>Also Known As: </strong></span>
+                                <span>{{movies.alternative_titles.titles[0].title}}</span>
+                                <a href="#">View All titles</a>
                             </div>
                         </div>
-                    </div>
-                    <style>
-                        .bgDisplay::after {
-                            background-image:url(https://image.tmdb.org/t/p/w1280/{{movies.backdrop_path}}),
-                            url(https://image.tmdb.org/t/p/w1280/{{movies.backdrop_path}});
-                            content: "";
-                            opacity: 0.5;
-                            z-index: -1;
-                            top: 0;
-                            left: 0;
-                            bottom: 0;
-                            right: 0;
-                            position: absolute;
-                            height: 100%;
-                            background-repeat: repeat-y;
-                            background-position: center center;
-                        }
-                    </style>
+                    </section>
+                    <section ng-show="movies.budget!=0" class="panel BoxOfficeSection">
+                        <h3 class="featured_info">Box Office</h3>
+                        <div class="cardView">
+                            <div class="detailsInfoWrapper">
+                                <span><strong>Budget: </strong></span>
+                                <span>$ {{numberWithCommas(movies.budget)}}</span>
+                            </div>
+                            <div class="detailsInfoWrapper">
+                                <span><strong>Revenue: </strong></span>
+                                <span>$ {{numberWithCommas(movies.revenue)}}</span>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="panel ProdCreditsSection">
+                        <h3 class="featured_info">Production Credits</h3>
+                        <div class="cardView">
+                            <div class="detailsInfoWrapper">
+                                <span><strong>Production Company &nbsp;</strong></span>
+                                <a ng-repeat="comp in movies.production_companies | limitTo:3" id="{{comp.id}}" ng-href="#/movies/company/{{comp.id}}" ng-mouseup="handleCompanyClick($event)">{{comp.name}} &nbsp;&nbsp;</span>
+                                                <a ng-href="#/movies/desc/{{movies.id}}/allCompanies"> View All Companies</a>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        .bgDisplay::after {
+            background-image:url(https://image.tmdb.org/t/p/w1280/{{movies.backdrop_path}}),
+            url(https://image.tmdb.org/t/p/w1280/{{movies.backdrop_path}});
+            content: "";
+            opacity: 0.5;
+            z-index: -1;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            position: absolute;
+            height: 100%;
+            background-repeat: repeat-y;
+            background-position: center center;
+        }
+    </style>

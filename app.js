@@ -5,9 +5,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var db = require('./config/database');
+var passport = require('passport');
 var mongoose = require('mongoose');
 var session = require('express-session');
-var index = require('./routes/index');
+
 var users = require('./routes/users');
 
 var app = express();
@@ -26,17 +27,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({ secret: 'dlikhoiuhwaf', resave: false, saveUninitialized: false }));
 
-app.use('/', index);
-app.use('/users', users);
-
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-});
-
 // error handler
 app.use(function(err, req, res, next) {
     // set locals, only providing error in development
@@ -54,7 +44,17 @@ mongoose.connect(db.url, function(err) {
 
 mongoose.connection.on('connected', function() {
     var conn = mongoose.connection;
-    require('./routes/index.js');
+    console.log("connected to mongoDB database");
+    require('./routes/index')(app, passport);
+    // var index = require('./routes/index');
+    // app.use('/', index);
+    app.use('/users', users);
+    // catch 404 and forward to error handler
+    app.use(function(req, res, next) {
+        var err = new Error('Not Found');
+        err.status = 404;
+        next(err);
+    });
 });
 
 // If the connection throws an error
@@ -67,6 +67,9 @@ mongoose.connection.on('disconnected', function() {
     console.log('Mongoose default connection disconnected');
 });
 
-
+require('./config/passport.js')(passport);
+app.use(session({ secret: 'dlikhoiuhwaf', resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 module.exports = app;

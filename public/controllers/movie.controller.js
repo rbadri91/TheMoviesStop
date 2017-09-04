@@ -8,15 +8,18 @@
 
     function movieCtrl($scope, movies, authentication, $location, $localStorage) {
         var vm = this;
-        $scope.movies = movies;
-        if (movies.credits) {
-            $localStorage.cast = movies.credits.cast;
-            $localStorage.crew = movies.credits.crew;
-            $localStorage.backdrop_path = movies.backdrop_path;
-            $localStorage.poster_path = movies.poster_path;
-            $localStorage.name = movies.title;
-            $localStorage.reviews = movies.reviews.results;
-            $localStorage.companies = movies.production_companies;
+        var movieArr = movies.movies;
+        console.log("movies here:", movies.getisInWatchList());
+        console.log("movieArr here:", movieArr);
+        $scope.movies = movieArr;
+        if (movieArr.credits) {
+            $localStorage.cast = movieArr.credits.cast;
+            $localStorage.crew = movieArr.credits.crew;
+            $localStorage.backdrop_path = movieArr.backdrop_path;
+            $localStorage.poster_path = movieArr.poster_path;
+            $localStorage.name = movieArr.title;
+            $localStorage.reviews = movieArr.reviews.results;
+            $localStorage.companies = movieArr.production_companies;
         }
 
         $scope.getIframeSrc = function(videoId) {
@@ -91,6 +94,38 @@
         $scope.handleCompanyClick = function($event) {
             var companyName = $event.target.textContent;
             $localStorage.companyName = companyName;
+        };
+
+        if (movies.isInWatchList) {
+            console.log("it comes inside");
+            $scope.isInWatchList = "#1fd41f";
+        } else {
+            $scope.isInWatchList = "#fff";
+        }
+
+        if (movies.isInFavoritesList) {
+            $scope.FavoritesColor = "#1fd41f";
+        } else {
+            $scope.FavoritesColor = "#fff";
+        }
+
+        $scope.handleWatchListClick = function($event) {
+            var ele = $event.target;
+            if ($scope.WatchListColor === "#fff") {
+                $scope.WatchListColor = "#1fd41f";
+            } else {
+                $scope.WatchListColor = "#fff";
+            }
+            movies.handleAddToWatchList($scope.movies.id);
+        };
+        $scope.handleFavoritesClick = function($event) {
+            var ele = $event.target;
+            if ($scope.FavoritesColor === "#fff") {
+                $scope.FavoritesColor = "#1fd41f";
+            } else {
+                $scope.FavoritesColor = "#fff";
+            }
+            movies.handleAddToFavorites($scope.movies.id);
         };
 
     }

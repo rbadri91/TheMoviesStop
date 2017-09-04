@@ -3,10 +3,28 @@ var mongoose = require('mongoose');
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 
+var userRatings = mongoose.Schema({
+    id: Number,
+    mediaType: String,
+    ratingValue: Number,
+});
+var userFavoritesList = mongoose.Schema({
+    id: Number,
+    mediaType: String,
+});
+var userWatchList = mongoose.Schema({
+    id: Number,
+    mediaType: String,
+});
+
 var UserSchema = new mongoose.Schema({
     username: { type: String, lowercase: true, unique: true },
+    email: String,
     hash: String,
-    salt: String
+    salt: String,
+    favoritesList: [userFavoritesList],
+    watchList: [userWatchList],
+    ratings: [userRatings]
 });
 
 UserSchema.methods.setPassword = function(password) {
@@ -26,12 +44,12 @@ UserSchema.methods.generateJWT = function() {
     var today = new Date();
     var exp = new Date(today);
     exp.setDate(today.getDate() + 60);
-
     return jwt.sign({
         _id: this._id,
         username: this.username,
+        email: this.email,
         exp: parseInt(exp.getTime() / 1000),
     }, 'SECRET');
 };
 
-mongoose.model('User', UserSchema);
+module.exports = mongoose.model('User', UserSchema);

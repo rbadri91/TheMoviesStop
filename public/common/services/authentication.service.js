@@ -4,9 +4,9 @@
         .module('themoviesStop')
         .service('authentication', authentication);
 
-    authentication.$inject = ['$http', '$window'];
+    authentication.$inject = ['$http', '$window', '$location'];
 
-    function authentication($http, $window) {
+    function authentication($http, $window, $location) {
 
         var saveToken = function(token) {
             $window.localStorage['moviestop-token'] = token;
@@ -19,7 +19,6 @@
         var isLoggedIn = function() {
             var token = getToken();
             var payload;
-
             if (token) {
                 payload = token.split('.')[1];
                 payload = $window.atob(payload);
@@ -37,27 +36,37 @@
                 var payload = token.split('.')[1];
                 payload = $window.atob(payload);
                 payload = JSON.parse(payload);
-                return {
-                    email: payload.email,
-                    name: payload.name
-                };
+                return payload.username;
             }
         };
 
+        var currUserId = function() {
+            if (isLoggedIn()) {
+                var token = getToken();
+                var payload = token.split('.')[1];
+                payload = $window.atob(payload);
+                payload = JSON.parse(payload);
+                return payload._id;
+            }
+        }
+
         register = function(user) {
-            return $http.post('/register', user).success(function(data) {
-                saveToken(data.token);
+            return $http.post('/register', user).then(function(data) {
+                console.log("data here:", data);
+                console.log("data.token here:", data.data.token);
+                saveToken(data.data.token);
             });
         };
 
         login = function(user) {
-            return $http.post('/login', user).success(function(data) {
-                saveToken(data.token);
+            return $http.post('/login', user).then(function(data) {
+                saveToken(data.data.token);
             });
         };
 
         logout = function() {
             $window.localStorage.removeItem('moviestop-token');
+            $location.path("/");
         };
 
         return {
@@ -67,7 +76,8 @@
             isLoggedIn: isLoggedIn,
             register: register,
             login: login,
-            logout: logout
+            logout: logout,
+            currUserId: currUserId
         };
     }
 
