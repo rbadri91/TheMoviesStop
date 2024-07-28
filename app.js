@@ -8,6 +8,7 @@ var db = require('./config/database');
 var passport = require('passport');
 var mongoose = require('mongoose');
 var session = require('express-session');
+const { MongoClient } = require('mongodb');
 
 var users = require('./routes/users');
 
@@ -27,6 +28,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({ secret: 'dlikhoiuhwaf', resave: false, saveUninitialized: false }));
 
+const port = 8002;
+
+let client;
+
 // error handler
 app.use(function(err, req, res, next) {
     // set locals, only providing error in development
@@ -38,34 +43,51 @@ app.use(function(err, req, res, next) {
     res.render('error');
 });
 
-mongoose.connect(db.url, function(err) {
-    if (err) throw err;
-});
-
-mongoose.connection.on('connected', function() {
-    var conn = mongoose.connection;
-    console.log("connected to mongoDB database");
-    require('./routes/index')(app, passport);
-    // var index = require('./routes/index');
-    // app.use('/', index);
-    app.use('/users', users);
-    // catch 404 and forward to error handler
-    app.use(function(req, res, next) {
-        var err = new Error('Not Found');
-        err.status = 404;
-        next(err);
+async function connectToDatabase() {
+    client = new MongoClient(db.url, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
     });
-});
 
-// If the connection throws an error
-mongoose.connection.on('error', function(err) {
-    console.log('Mongoose default connection error: ' + err);
-});
+    try {
+        await client.connect();
 
-// When the connection is disconnected
-mongoose.connection.on('disconnected', function() {
-    console.log('Mongoose default connection disconnected');
-});
+        // Use the database connection
+        const db = client.db('theMovieAuth'); // Replace with your database name
+
+        // Setup routes
+        require('./routes/index')(app, passport, db);
+
+        app.use('/users', users);
+
+        // catch 404 and forward to error handler
+        app.use(function(req, res, next) {
+            var err = new Error('Not Found');
+            err.status = 404;
+            next(err);
+        });
+
+        // Start the server
+        app.listen(port, () => {
+            console.log(`Server running at http://localhost:${port}`);
+        });
+
+    } catch (err) {
+        console.error('Failed to connect to MongoDB', err);
+    }
+
+    // Handle disconnection
+    client.on('close', function() {
+        console.log('MongoDB connection disconnected');
+    });
+
+    // Handle errors
+    client.on('error', function(err) {
+        console.error('MongoDB connection error:', err);
+    });
+}
+
+connectToDatabase().catch(console.error);
 
 require('./config/passport.js')(passport);
 app.use(session({ secret: 'dlikhoiuhwaf', resave: false, saveUninitialized: false }));

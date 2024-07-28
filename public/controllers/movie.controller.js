@@ -9,8 +9,6 @@
     function movieCtrl($scope, movies, authentication, $location, $localStorage) {
         var vm = this;
         var movieArr = movies.movies;
-        console.log("movies here:", movies.getisInWatchList());
-        console.log("movieArr here:", movieArr);
         $scope.movies = movieArr;
         if (movieArr.credits) {
             $localStorage.cast = movieArr.credits.cast;
@@ -97,7 +95,6 @@
         };
 
         if (movies.isInWatchList) {
-            console.log("it comes inside");
             $scope.isInWatchList = "#1fd41f";
         } else {
             $scope.isInWatchList = "#fff";

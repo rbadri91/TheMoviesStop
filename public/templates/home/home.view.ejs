@@ -33,7 +33,7 @@
                 </div>
             </div>
             <p class="full_view_button text-center">
-                <a ng-href="#/movies/showingnow">View All Movies Showing Now</a>
+                <a ng-href="/#/movies/showingnow">View All Movies Showing Now</a>
             </p>
         </section>
         <section class="panel ListMediaWrapper">
@@ -69,13 +69,13 @@
                 </div>
             </div>
             <p class="full_view_button text-center">
-                <a ng-href="#/movies/openingthisweek">View All Movies Opening This Week</a>
+                <a ng-href="/#/movies/openingthisweek">View All Movies Opening This Week</a>
             </p>
         </section>
         <section class="panel ListMediaWrapper">
             <h3 class="featured_info">Upcoming</h3>
             <div>
-                <div ng-repeat="show in OpeningThisWeek | limitTo:4" class="list cardView">
+                <div ng-repeat="show in upcoming | limitTo:4" class="list cardView">
                     <div class="cardimageWrapper">
                         <a id="show_{{show.id}}" ng-href="/#/movies/desc/{{show.id}}" alt={{show.title}}>
                             <img class="imageSettings" src="https://image.tmdb.org/t/p/w300/{{show.poster_path}}">
@@ -105,7 +105,7 @@
                 </div>
             </div>
             <p class="full_view_button text-center">
-                <a ng-href="#/movies/upcoming">View All Upcoming Movies</a>
+                <a ng-href="/#/movies/upcoming">View All Upcoming Movies</a>
             </p>
         </section>
     </div>

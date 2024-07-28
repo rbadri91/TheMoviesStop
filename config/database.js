@@ -1,3 +1,3 @@
 module.exports = {
-    "url": 'mongodb://rbadri91:Test123@ds161483.mlab.com:61483/themoviesstop'
+    "url": 'mongodb+srv://rbadri01:sIfAmUEW8BNnL1XD@themoviesstopauthentica.vzxw7hj.mongodb.net/?retryWrites=true&w=majority&appName=TheMoviesStopAuthentication'
 };

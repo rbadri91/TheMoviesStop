@@ -16,7 +16,6 @@
         };
 
         $scope.onSubmit = function() {
-            console.log("it comes to submit function");
             authentication
                 .register($scope.credentials)
                 .catch(function(err) {

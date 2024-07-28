@@ -24,8 +24,8 @@ module.exports = function(router, passport) {
         var result = {};
         getUpcomingMovies().then((upcomingMovies) => {
             result.upcoming = JSON.parse(upcomingMovies);
-            getNowShowingMovies().then((NowShowingMovies) => {
-                result.nowShowing = JSON.parse(NowShowingMovies);
+            getNowShowingMovies().then((nowShowingMovies) => {
+                result.nowShowing = JSON.parse(JSON.stringify(nowShowingMovies, null, 2));
                 getOpeningThisWeek().then((OpeningThisWeek) => {
                     result.OpeningThisWeek = JSON.parse(OpeningThisWeek);
                     res.json(result);
@@ -35,9 +35,6 @@ module.exports = function(router, passport) {
     });
 
     router.post('/register', function(req, res, next) {
-        console.log("req.body.username:", req.body.username);
-        console.log("req.body.email:", req.body.email);
-        console.log("req.body.password:", req.body.password);
         if (!req.body.username || !req.body.email || !req.body.password) {
             return res.status(400).json({ message: 'Please fill out all fields' });
         }
@@ -51,9 +48,7 @@ module.exports = function(router, passport) {
 
         user.save(function(err) {
             if (err) { return next(err); }
-            console.log("user saved here");
             var resObj = { token: user.generateJWT() };
-            console.log("resObj here:", resObj);
             return res.json(resObj);
         });
     });
@@ -74,12 +69,6 @@ module.exports = function(router, passport) {
         })(req, res, next);
     });
 
-    router.get('/movies/popular', function(req, res, next) {
-        getPopularMovies().then((movies) => {
-            res.json(movies);
-        });
-    });
-
     router.get('/movies/top', function(req, res, next) {
         getTopMovies().then((movies) => {
             res.json(movies);
@@ -97,6 +86,13 @@ module.exports = function(router, passport) {
             res.json(movies);
         });
     });
+
+    router.get('/movies/popular', function(req, res, next) {
+        getPopularMovies().then((movies) => {
+            res.json(movies);
+        });
+    });
+
     router.get('/movies/openingThisWeek', function(req, res, next) {
         getOpeningThisWeek().then((movies) => {
             res.json(movies);
@@ -105,10 +101,7 @@ module.exports = function(router, passport) {
 
     router.get('/movies/:movie', function(req, res, next) {
         var movieId = req.params.movie;
-        console.log("req.payload:", req.payload);
-        console.log("user here:", req.user);
         getMovieInfo(movieId).then((movieInfo) => {
-            console.log("movieInfo here:", JSON.parse(movieInfo).id);
             res.json(movieInfo);
         });
     });
@@ -125,11 +118,9 @@ module.exports = function(router, passport) {
         User.findById(userId).then(function(user) {
             var resObj = {};
             var currMovieId = req.params.movieId;
-            console.log("user here:", user);
             resObj.isInWatchList = false;
             resObj.isInFavoritesList = false;
 
-            console.log("currMovieId here:", currMovieId);
             for (var i = 0; i < user.watchList.length; i++) {
                 if (currMovieId == user.watchList[i].id) {
                     resObj.isInWatchList = true;
@@ -142,15 +133,12 @@ module.exports = function(router, passport) {
                     break;
                 }
             }
-            console.log("resObj here:", resObj);
             res.json(resObj);
         });
     });
 
     router.post('/user/movies/addToFavorites/', auth, function(req, res, next) {
         var movieId = parseInt(req.body.movieId);
-        console.log("movieId here in favorites:", movieId);
-        console.log("req.payload here:", req.payload);
         User.findById(req.payload._id).then(function(user) {
             var favoritesList = user.favoritesList;
             var index = -1;
@@ -201,7 +189,6 @@ module.exports = function(router, passport) {
     router.post('/user/movies/addToWatchList', auth, function(req, res, next) {
         var movieId = parseInt(req.body.movieId);
         User.findById(req.payload._id).then(function(user) {
-            console.log("user here:", user);
             var watchList = user.watchList;
             var index = -1;
             for (var i = 0; i < watchList.length; i++) {
@@ -346,22 +333,32 @@ module.exports = function(router, passport) {
                 "path": "/3/movie/upcoming?page=1&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
                 "headers": {}
             };
-
             getdata(options, resolve);
         });
     }
 
     function getNowShowingMovies() {
-        return new Promise((resolve) => {
-            var options = {
-                "method": "GET",
-                "hostname": "api.themoviedb.org",
-                "port": null,
-                "path": "/3/movie/now_playing?page=1&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
-                "headers": {}
-            };
-            getdata(options, resolve);
-        });
+        var url = 'https://api.themoviedb.org/3/movie/now_playing?page=1&language=en-US&api_key=646a10c0084204abfff75a025d3c4539';
+        var options = {
+            method: 'GET',
+            headers: {}
+        };
+        return import('node-fetch')
+            .then(({ default: fetch }) => {
+                return fetch(url, options);
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(json => {
+                return json;
+            })
+            .catch(error => {
+                throw new Error('error: ' + error.message);
+            });
     }
 
     router.get('/tv/popular', function(req, res, next) {
@@ -395,10 +392,9 @@ module.exports = function(router, passport) {
             memcached.set("numShows", JSON.parse(showInfo).seasons.length);
             req.session.numSeasons = JSON.parse(showInfo).seasons.length;
             req.session.hasSeason0 = (JSON.parse(showInfo).seasons[0].season_number == 0);
-
-            getSeasonInfo(showId, JSON.parse(showInfo).seasons.length).then((showData) => {
+            getSeasonInfo(showId, JSON.parse(showInfo).seasons.length-1).then((showData) => {
                 var addShowInfo = JSON.parse(showInfo);
-                addShowInfo.last_seasonInfo = JSON.parse(showData);
+                addShowInfo.last_seasonInfo = JSON.parse(JSON.stringify(showData, null, 2));
                 addShowInfo = JSON.stringify(addShowInfo);
 
                 res.json(addShowInfo);
@@ -510,11 +506,11 @@ module.exports = function(router, passport) {
     function getdata(options, resolve) {
         var req = http.request(options, function(res) {
             var chunks = [];
+            var objectConstructor = ({}).constructor;
 
             res.on("data", function(chunk) {
                 chunks.push(chunk);
             });
-
             res.on("end", function() {
                 var body = Buffer.concat(chunks);
                 resolve(body.toString());
@@ -552,16 +548,28 @@ module.exports = function(router, passport) {
     }
 
     function getSeasonInfo(id, seasonNumber) {
-        return new Promise((resolve) => {
-            var options = {
-                "method": "GET",
-                "hostname": "api.themoviedb.org",
-                "port": null,
-                "path": "/3/tv/" + id + "/season/" + seasonNumber + "?api_key=646a10c0084204abfff75a025d3c4539",
-                "headers": {}
-            };
-            getdata(options, resolve);
-        });
+        var url = 'https://api.themoviedb.org/3/tv/' + id + '/season/' + seasonNumber + '?api_key=646a10c0084204abfff75a025d3c4539&language=en-US';
+        var options = {
+            method: 'GET',
+            headers: {}
+        };
+
+        return import('node-fetch')
+            .then(({ default: fetch }) => {
+                return fetch(url, options);
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(json => {
+                return json;
+            })
+            .catch(error => {
+                throw new Error('error: ' + error.message);
+            });
     }
 
     function getPeopleInfo(id) {
@@ -684,7 +692,7 @@ module.exports = function(router, passport) {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/discover/movie?primary_release_date.lte=" + nWDate + "&primary_release_date.gte=" + thisDate + "&primary_release_year=2017&page=1&include_video=false&include_adult=true&sort_by=popularity.desc&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
+                "path": "/3/discover/movie?primary_release_date.lte=" + nWDate + "&primary_release_date.gte=" + thisDate + "&primary_release_year=" + tY + "&page=1&include_video=false&include_adult=true&sort_by=popularity.desc&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
                 "headers": {}
             };
             getdata(options, resolve);

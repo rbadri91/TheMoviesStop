@@ -21,6 +21,13 @@
         var movies = [];
         var isInWatchList = false;
         var isInFavoritesList = false;
+        
+        var getShowingNow = function() {
+            return $http.get('/movies/showingnow').then(function(data) {
+                angular.copy(JSON.parse(data.data).results, movies);
+            });
+        };
+
         var getPopular = function() {
             return $http.get('/movies/popular').then(function(data) {
                 angular.copy(JSON.parse(data.data).results, movies);
@@ -36,21 +43,14 @@
                 angular.copy(JSON.parse(data.data).results, movies);
             });
         };
-        var getShowingNow = function() {
-            return $http.get('/movies/showingnow').then(function(data) {
-                angular.copy(JSON.parse(data.data).results, movies);
-            });
-        };
+
         var getMovieDetails = function(id, userId) {
             return $http.get('/movies/' + id).then(function(data) {
                 angular.copy(JSON.parse(data.data), movies);
-                console.log("authentication.isLoggedIn():", authentication.isLoggedIn());
                 if (authentication.isLoggedIn()) {
                     var userId = authentication.currUserId();
                     var movieId = JSON.parse(data.data).id;
-                    console.log("movieId:", movieId);
                     $http.get('/user/' + userId + '/moviesLikedAndtoWatch/' + movieId).then((data) => {
-                        console.log("data here:", JSON.parse(data.data.isInWatchList));
                         this.isInFavoritesList = JSON.parse(data.data.isInFavoritesList);
                         this.isInWatchList = JSON.parse(data.data.isInWatchList);
                         // angular.copy(JSON.parse(data.data.isInFavoritesList), isInFavoritesList);

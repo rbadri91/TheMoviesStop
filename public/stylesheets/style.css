@@ -355,10 +355,11 @@ div.list.cardView div.view_more a {
     display: inline-block;
     height: 300px;
     width: 30%;
+    position: sticky;
 }
 
 .section-wrapper .watchSection {
-    float: right;
+    float: left;
     position: relative;
     display: inline-block;
     width: 70%;
@@ -530,7 +531,7 @@ div.ShowInfoWraper div.section-wrapper div.poster-wrapper div.summaryWrapper .fe
 .bgDisplay {
     width: 100%;
     height: 100%;
-    position: fixed;
+    position: fixed; 
 }
 
 .featured_people {
@@ -635,9 +636,10 @@ section.panel {
     box-sizing: border-box;
     width: 100%;
     display: block;
-    padding-top: 40px;
-    padding-bottom: 40px;
+    padding-top: 5%;
+    padding-bottom: 5%;
     border-top: 1px solid #d7d7d7;
+    padding-left: 2%;
 }
 
 p.full_view_button {
@@ -672,7 +674,6 @@ section.panel ol.featured_people li p:first-of-type {
 }
 
 .ReviewWrapper {
-    padding-left: 10%;
     width: 100%;
     box-sizing: border-box;
     color: #565252;
@@ -818,7 +819,7 @@ section.DetailsSection div.cardView div.detailsInfoWrapper span.movieLang {
 section.SeasonReviewSection div.cardView {
     height: 100%;
     display: inline-block;
-    width: 94%;
+    width: 96%;
 }
 
 section.SeasonReviewSection div.summaryWrapper div.summary_info div.airWrapper {
@@ -1018,7 +1019,7 @@ ol.creditWrapper li div.castInfo p a {
 }
 
 .shortView {
-    height: 200px !important;
+    /* height: 200px !important; */
 }
 
 .setAllMargin {

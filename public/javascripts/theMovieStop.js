@@ -70,6 +70,7 @@ app.config([
                 },
                 title: 'Upcoming Movies'
             })
+
             .state('showingNowMovies', {
                 url: '/movies/showingnow',
                 templateUrl: 'templates/showingNowMovies.view.ejs',
@@ -81,7 +82,7 @@ app.config([
                 },
                 title: 'Showing Now Movies'
             })
-            .state('MoviesOpeningThisWeek', {
+            .state('openingThisWeekMovies', {
                 url: '/movies/openingthisweek',
                 templateUrl: 'templates/openingThisWeekMovies.view.ejs',
                 controller: 'moviesCtrl',

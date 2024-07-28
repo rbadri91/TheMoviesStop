@@ -52,8 +52,6 @@
 
         register = function(user) {
             return $http.post('/register', user).then(function(data) {
-                console.log("data here:", data);
-                console.log("data.token here:", data.data.token);
                 saveToken(data.data.token);
             });
         };
