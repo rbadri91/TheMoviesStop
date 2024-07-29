@@ -7,6 +7,7 @@ var jwt = require('express-jwt');
 var http = require("https");
 var Memcached = require('memcached');
 var memcached = new Memcached('127.0.0.1:11211');
+const { Curl } = require('node-libcurl');
 
 
 var mongoose = require('mongoose');
@@ -340,26 +341,45 @@ module.exports = function(router, passport) {
 
     function getNowShowingMovies() {
         var url = 'https://api.themoviedb.org/3/movie/now_playing?page=1&language=en-US&api_key=646a10c0084204abfff75a025d3c4539';
-        var options = {
-            method: 'GET',
-            headers: {}
-        };
-        return import('node-fetch')
-            .then(({ default: fetch }) => {
-                return fetch(url, options);
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(json => {
-                return json;
-            })
-            .catch(error => {
-                throw new Error('error: ' + error.message);
+
+        return new Promise((resolve, reject) => {
+            const curl = new Curl();
+            let responseData = '';
+    
+            // Set Curl options
+            curl.setOpt('URL', url);
+            curl.setOpt('FOLLOWLOCATION', true); // Follow redirects
+            curl.setOpt('WRITEFUNCTION', (data) => {
+                responseData += data.toString();
+                return Buffer.byteLength(data);
             });
+            curl.setOpt('HEADERFUNCTION', (header) => {
+                // Optional: Process headers if needed
+                return Buffer.byteLength(header);
+            });
+    
+            curl.on('end', function (statusCode, data, headers) {
+                curl.close();
+                if (statusCode >= 200 && statusCode < 300) {
+                    try {
+                        const jsonData = JSON.parse(responseData);
+                        resolve(jsonData);
+                    } catch (error) {
+                        reject(new Error('Failed to parse JSON response.'));
+                    }
+                } else {
+                    reject(new Error(`HTTP error! status: ${statusCode}`));
+                }
+            });
+    
+            curl.on('error', function (error) {
+                curl.close();
+                reject(new Error('error: ' + error.message));
+            });
+    
+            curl.perform();
+        });
+
     }
 
     router.get('/tv/popular', function(req, res, next) {
