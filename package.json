@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
-    "heroku-postbuild": "ng build --prod" 
+    "heroku-postbuild": "ng build --prod"
   },
   "dependencies": {
     "@uirouter/angularjs": "latest",
@@ -31,6 +31,7 @@
     "serve-favicon": "~2.4.2"
   },
   "devDependencies": {
+    "@angular/cli": "^18.1.2",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-include-source": "^1.1.0"
   }
