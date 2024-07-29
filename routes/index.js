@@ -17,6 +17,7 @@ module.exports = function(router, passport) {
 
     /* GET home page. */
     router.get('/', function(req, res, next) {
+        console.log("router here in default");
         res.render('index', { title: 'Express' });
     });
 
