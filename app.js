@@ -7,7 +7,9 @@ var bodyParser = require('body-parser');
 var db = require('./config/database');
 var passport = require('passport');
 var mongoose = require('mongoose');
-var session = require('express-session');
+// var session = require('express-session');
+var session = require('cookie-session');
+
 const { MongoClient } = require('mongodb');
 
 var users = require('./routes/users');

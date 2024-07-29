@@ -640,6 +640,7 @@ section.panel {
     padding-bottom: 5%;
     border-top: 1px solid #d7d7d7;
     padding-left: 2%;
+    padding-right: 2%;
 }
 
 p.full_view_button {
@@ -803,7 +804,7 @@ section.DetailsSection div.cardView div.detailsInfoWrapper span.movieLang {
     text-decoration: none;
 }
 
-..section-wrapper .posterAndPlotWrapper {
+.section-wrapper .posterAndPlotWrapper {
     height: 300px;
     overflow: hidden;
 }
