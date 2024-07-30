@@ -33,6 +33,7 @@
                 angular.copy(JSON.parse(data.data).results, movies);
             });
         };
+
         var getTopRated = function() {
             return $http.get('/movies/top').then(function(data) {
                 angular.copy(JSON.parse(data.data).results, movies);

@@ -48,6 +48,19 @@ app.config([
                 },
                 title: 'Popular Movies'
             })
+
+            .state('comingUpMovies', {
+                url: '/movies/comingUp',
+                templateUrl: 'templates/upcomingMovies.view.ejs',
+                controller: 'moviesCtrl',
+                resolve: {
+                    postPromise: ['movies', function(movies) {
+                        return movies.getUpcoming();
+                    }]
+                },
+                title: 'Upcoming Movies'
+            })
+
             .state('topRatedMovies', {
                 url: '/movies/top',
                 templateUrl: 'templates/topRatedMovies.view.ejs',
@@ -58,17 +71,6 @@ app.config([
                     }]
                 },
                 title: 'Top Rated Movies'
-            })
-            .state('upComingMovies', {
-                url: '/movies/upcoming',
-                templateUrl: 'templates/upcomingMovies.view.ejs',
-                controller: 'moviesCtrl',
-                postPromise: {
-                    postPromise: ['movies', function(movies) {
-                        return movies.getUpcoming();
-                    }]
-                },
-                title: 'Upcoming Movies'
             })
 
             .state('showingNowMovies', {
@@ -82,6 +84,7 @@ app.config([
                 },
                 title: 'Showing Now Movies'
             })
+
             .state('openingThisWeekMovies', {
                 url: '/movies/openingthisweek',
                 templateUrl: 'templates/openingThisWeekMovies.view.ejs',

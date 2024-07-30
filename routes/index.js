@@ -438,7 +438,14 @@ module.exports = function(router, passport) {
                     results = sortSeasonDetails(results);
                     res.json(results);
                 }
-            });
+            }).catch(error => {
+                // Handle any errors that occurred during the fetch or parsing
+
+                res.status(500).json({
+                    message: 'Internal Server Error: Unable to fetch data.',
+                    details: error.message
+                });
+            });;
         }
     });
 
@@ -568,7 +575,6 @@ module.exports = function(router, passport) {
 
     function getSeasonInfo(id, seasonNumber) {
         var url = 'https://api.themoviedb.org/3/tv/' + id + '/season/' + seasonNumber + '?api_key=646a10c0084204abfff75a025d3c4539&language=en-US';
-        
         return new Promise((resolve, reject) => {
             const curl = new Curl();
             let responseData = '';
