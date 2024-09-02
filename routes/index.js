@@ -100,12 +100,6 @@ module.exports = function(router, passport) {
         });
     });
 
-    router.get('/movies/thisWeekOpening', function(req, res, next) {
-        getOpeningThisWeek().then((movies) => {
-            res.json(movies);
-        });
-    });
-
     router.get('/movies/:movie', function(req, res, next) {
         var movieId = req.params.movie;
         getMovieInfo(movieId).then((movieInfo) => {

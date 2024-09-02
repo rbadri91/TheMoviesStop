@@ -71,14 +71,9 @@
             return isInWatchList;
         };
         var getMoviesOpeningThisWeek = function() {
-            if (!$localStorage.OpeningThisWeek) {
-                return $http.get('/movies/openingThisWeek').then(function(data) {
-                    $localStorage.OpeningThisWeek = JSON.parse(data.data);
-                    angular.copy(JSON.parse(data.data), movies);
-                });
-            } else {
-                return $localStorage.OpeningThisWeek;
-            }
+            return $http.get('/movies/openingThisWeek').then(function (data) {
+                angular.copy(JSON.parse(data.data).results, movies);
+            });
         };
         var handleAddToFavorites = function(movieId) {
 
