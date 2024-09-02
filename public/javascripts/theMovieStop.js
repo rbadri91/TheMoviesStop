@@ -77,7 +77,7 @@ app.config([
                 url: '/movies/showingnow',
                 templateUrl: 'templates/showingNowMovies.view.ejs',
                 controller: 'moviesCtrl',
-                postPromise: {
+                resolve: {
                     postPromise: ['movies', function(movies) {
                         return movies.getShowingNow();
                     }]

@@ -18,22 +18,21 @@ module.exports = function(router, passport) {
 
     /* GET home page. */
     router.get('/', function(req, res, next) {
-        console.log("router here in default");
         res.render('index', { title: 'Express' });
     });
 
     router.get('/allFeeds', function(req, res, next) {
         var result = {};
-        getUpcomingMovies().then((upcomingMovies) => {
-            result.upcoming = JSON.parse(upcomingMovies);
-            getNowShowingMovies().then((nowShowingMovies) => {
-                result.nowShowing = JSON.parse(JSON.stringify(nowShowingMovies, null, 2));
-                getOpeningThisWeek().then((OpeningThisWeek) => {
-                    result.OpeningThisWeek = JSON.parse(OpeningThisWeek);
-                    res.json(result);
+            getUpcomingMovies().then((upcomingMovies) => {
+                result.upcoming = JSON.parse(upcomingMovies);
+                getShowingNowMovies().then((nowShowingMovies) => {
+                    result.nowShowing = JSON.parse(JSON.stringify(nowShowingMovies, null, 2));
+                    getOpeningThisWeek().then((OpeningThisWeek) => {
+                        result.OpeningThisWeek = JSON.parse(OpeningThisWeek);
+                        res.json(result);
+                    });
                 });
             });
-        });
     });
 
     router.post('/register', function(req, res, next) {
@@ -96,6 +95,12 @@ module.exports = function(router, passport) {
     });
 
     router.get('/movies/openingThisWeek', function(req, res, next) {
+        getOpeningThisWeek().then((movies) => {
+            res.json(movies);
+        });
+    });
+
+    router.get('/movies/thisWeekOpening', function(req, res, next) {
         getOpeningThisWeek().then((movies) => {
             res.json(movies);
         });
@@ -339,7 +344,7 @@ module.exports = function(router, passport) {
         });
     }
 
-    function getNowShowingMovies() {
+    function getShowingNowMovies() {
         var url = 'https://api.themoviedb.org/3/movie/now_playing?page=1&language=en-US&api_key=646a10c0084204abfff75a025d3c4539';
 
         return new Promise((resolve, reject) => {
@@ -380,6 +385,19 @@ module.exports = function(router, passport) {
             curl.perform();
         });
 
+    }
+
+    function getNowShowingMovies() {
+        return new Promise((resolve) => {
+            var options = {
+                "method": "GET",
+                "hostname": "api.themoviedb.org",
+                "port": null,
+                "path": "/3/movie/now_playing?page=1&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
+                "headers": {}
+            };
+            getdata(options, resolve);
+        });
     }
 
     router.get('/tv/popular', function(req, res, next) {
@@ -431,7 +449,6 @@ module.exports = function(router, passport) {
         var hasSeason0 = req.session.hasSeason0;
 
         for (var i = 0; i < count; i++) {
-            console.log("hasSeason0:" , hasSeason0);
             getSeasonInfo(showId, ((hasSeason0) ? i : i + 1)).then((showData) => {
                 results.push(JSON.parse(showData));
                 if (results.length == count) {
