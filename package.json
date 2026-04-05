@@ -24,7 +24,7 @@
     "lodash-node": "^3.10.2",
     "memcached": "^2.2.2",
     "mongodb": "^6.8.0",
-    "mongoose": "^4.11.9",
+    "mongoose": "^6.13.6",
     "morgan": "~1.8.1",
     "node-fetch": "^3.3.2",
     "node-libcurl": "^5.0.2",
