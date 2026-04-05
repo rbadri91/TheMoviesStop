@@ -7,7 +7,6 @@ var jwt = require('express-jwt');
 var http = require("https");
 var Memcached = require('memcached');
 var memcached = new Memcached('127.0.0.1:11211');
-const { Curl } = require('node-libcurl');
 
 
 var mongoose = require('mongoose');
@@ -27,7 +26,7 @@ module.exports = function(router, passport) {
                 result.upcoming = JSON.parse(upcomingMovies);
                 getShowingNowMovies().then((nowShowingMovies) => {
                     result.nowShowing = JSON.parse(JSON.stringify(nowShowingMovies, null, 2));
-                    getOpeningThisWeek().then((OpeningThisWeek) => {
+                    getOpeningThisWeek(1).then((OpeningThisWeek) => {
                         result.OpeningThisWeek = JSON.parse(OpeningThisWeek);
                         res.json(result);
                     });
@@ -95,7 +94,7 @@ module.exports = function(router, passport) {
     });
 
     router.get('/movies/openingThisWeek', function(req, res, next) {
-        getOpeningThisWeek().then((movies) => {
+        getOpeningThisWeek(1).then((movies) => {
             res.json(movies);
         });
     });
@@ -339,46 +338,16 @@ module.exports = function(router, passport) {
     }
 
     function getShowingNowMovies() {
-        var url = 'https://api.themoviedb.org/3/movie/now_playing?page=1&language=en-US&api_key=646a10c0084204abfff75a025d3c4539';
-
-        return new Promise((resolve, reject) => {
-            const curl = new Curl();
-            let responseData = '';
-    
-            // Set Curl options
-            curl.setOpt('URL', url);
-            curl.setOpt('FOLLOWLOCATION', true); // Follow redirects
-            curl.setOpt('WRITEFUNCTION', (data) => {
-                responseData += data.toString();
-                return Buffer.byteLength(data);
-            });
-            curl.setOpt('HEADERFUNCTION', (header) => {
-                // Optional: Process headers if needed
-                return Buffer.byteLength(header);
-            });
-    
-            curl.on('end', function (statusCode, data, headers) {
-                curl.close();
-                if (statusCode >= 200 && statusCode < 300) {
-                    try {
-                        const jsonData = JSON.parse(responseData);
-                        resolve(jsonData);
-                    } catch (error) {
-                        reject(new Error('Failed to parse JSON response.'));
-                    }
-                } else {
-                    reject(new Error(`HTTP error! status: ${statusCode}`));
-                }
-            });
-    
-            curl.on('error', function (error) {
-                curl.close();
-                reject(new Error('error: ' + error.message));
-            });
-    
-            curl.perform();
+        return new Promise((resolve) => {
+            var options = {
+                "method": "GET",
+                "hostname": "api.themoviedb.org",
+                "port": null,
+                "path": "/3/movie/now_playing?page=1&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
+                "headers": {}
+            };
+            getdata(options, resolve);
         });
-
     }
 
     function getNowShowingMovies() {
@@ -585,43 +554,15 @@ module.exports = function(router, passport) {
     }
 
     function getSeasonInfo(id, seasonNumber) {
-        var url = 'https://api.themoviedb.org/3/tv/' + id + '/season/' + seasonNumber + '?api_key=646a10c0084204abfff75a025d3c4539&language=en-US';
-        return new Promise((resolve, reject) => {
-            const curl = new Curl();
-            let responseData = '';
-    
-            // Set Curl options
-            curl.setOpt('URL', url);
-            curl.setOpt('FOLLOWLOCATION', true); // Follow redirects
-            curl.setOpt('WRITEFUNCTION', (data) => {
-                responseData += data.toString();
-                return Buffer.byteLength(data);
-            });
-            curl.setOpt('HEADERFUNCTION', (header) => {
-                // Optional: Process headers if needed
-                return Buffer.byteLength(header);
-            });
-    
-            curl.on('end', function (statusCode, data, headers) {
-                curl.close();
-                if (statusCode >= 200 && statusCode < 300) {
-                    try {
-                        const jsonData = JSON.parse(responseData);
-                        resolve(jsonData);
-                    } catch (error) {
-                        reject(new Error('Failed to parse JSON response.'));
-                    }
-                } else {
-                    reject(new Error(`HTTP error! status: ${statusCode}`));
-                }
-            });
-    
-            curl.on('error', function (error) {
-                curl.close();
-                reject(new Error('error: ' + error.message));
-            });
-    
-            curl.perform();
+        return new Promise((resolve) => {
+            var options = {
+                "method": "GET",
+                "hostname": "api.themoviedb.org",
+                "port": null,
+                "path": "/3/tv/" + id + "/season/" + seasonNumber + "?api_key=646a10c0084204abfff75a025d3c4539&language=en-US",
+                "headers": {}
+            };
+            getdata(options, resolve);
         });
     }
 
@@ -727,7 +668,7 @@ module.exports = function(router, passport) {
         });
     }
 
-    function getOpeningThisWeek() {
+    function getOpeningThisWeek(pageId) {
         var d = new Date();
         var nextWeek = new Date(d.getTime() + 7 * 24 * 60 * 60 * 1000);
         var nY = nextWeek.getFullYear();
@@ -745,7 +686,7 @@ module.exports = function(router, passport) {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/discover/movie?primary_release_date.lte=" + nWDate + "&primary_release_date.gte=" + thisDate + "&primary_release_year=" + tY + "&page=1&include_video=false&include_adult=true&sort_by=popularity.desc&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
+                "path": "/3/discover/movie?primary_release_date.lte=" + nWDate + "&primary_release_date.gte=" + thisDate + "&primary_release_year=" + tY + "&page="+pageId + "&include_video=false&include_adult=true&sort_by=popularity.desc&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
                 "headers": {}
             };
             getdata(options, resolve);
