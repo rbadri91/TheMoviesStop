@@ -9,7 +9,21 @@
     function movieCtrl($scope, movies, authentication, $location, $localStorage) {
         var vm = this;
         var movieArr = movies.movies;
+        console.log("movie arr length:", movieArr.length);
         $scope.movies = movieArr;
+        $scope.total_pages = movies.getTotalPages();
+        $scope.currentPage = 1;
+
+        $scope.setPage = function (pageNo) {
+            $scope.currentPage = pageNo; // This will set the current page
+        };
+
+        $scope.pageChanged = function() {
+            console.log('Page changed to: ' + $scope.currentPage);
+            // Here you can take action when the page is changed. For instance, load data corresponding to current page.
+            // You can use $http.get("your_url?page="+$scope.currentPage) to load data
+        };
+
         if (movieArr.credits) {
             $localStorage.cast = movieArr.credits.cast;
             $localStorage.crew = movieArr.credits.crew;

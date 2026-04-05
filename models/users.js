@@ -49,7 +49,7 @@ UserSchema.methods.generateJWT = function() {
         username: this.username,
         email: this.email,
         exp: parseInt(exp.getTime() / 1000),
-    }, 'SECRET');
+    }, process.env.JWT_SECRET);
 };
 
 module.exports = mongoose.model('User', UserSchema);

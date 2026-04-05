@@ -13,7 +13,8 @@ var mongoose = require('mongoose');
 var User = require('../models/users.js');
 module.exports = function(router, passport) {
 
-    var auth = jwt({ secret: 'SECRET', userProperty: 'payload' });
+    var auth = jwt({ secret: process.env.JWT_SECRET, userProperty: 'payload' });
+    var TMDB_API_KEY = process.env.TMDB_API_KEY;
 
     /* GET home page. */
     router.get('/', function(req, res, next) {
@@ -303,7 +304,7 @@ module.exports = function(router, passport) {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/movie/popular?page=1&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
+                "path": "/3/movie/popular?page=1&language=en-US&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
 
@@ -317,7 +318,7 @@ module.exports = function(router, passport) {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/movie/top_rated?page=1&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
+                "path": "/3/movie/top_rated?page=1&language=en-US&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
             getdata(options, resolve);
@@ -330,7 +331,7 @@ module.exports = function(router, passport) {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/movie/upcoming?page=1&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
+                "path": "/3/movie/upcoming?page=1&language=en-US&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
             getdata(options, resolve);
@@ -343,7 +344,7 @@ module.exports = function(router, passport) {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/movie/now_playing?page=1&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
+                "path": "/3/movie/now_playing?page=1&language=en-US&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
             getdata(options, resolve);
@@ -356,7 +357,7 @@ module.exports = function(router, passport) {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/movie/now_playing?page=1&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
+                "path": "/3/movie/now_playing?page=1&language=en-US&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
             getdata(options, resolve);
@@ -435,7 +436,7 @@ module.exports = function(router, passport) {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/tv/popular?page=1&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
+                "path": "/3/tv/popular?page=1&language=en-US&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
 
@@ -449,7 +450,7 @@ module.exports = function(router, passport) {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/tv/top_rated?page=1&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
+                "path": "/3/tv/top_rated?page=1&language=en-US&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
             getdata(options, resolve);
@@ -462,7 +463,7 @@ module.exports = function(router, passport) {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/tv/on_the_air?page=1&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
+                "path": "/3/tv/on_the_air?page=1&language=en-US&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
             getdata(options, resolve);
@@ -475,7 +476,7 @@ module.exports = function(router, passport) {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/tv/airing_today?page=1&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
+                "path": "/3/tv/airing_today?page=1&language=en-US&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
             getdata(options, resolve);
@@ -501,7 +502,7 @@ module.exports = function(router, passport) {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/person/popular?page=1&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
+                "path": "/3/person/popular?page=1&language=en-US&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
 
@@ -532,7 +533,7 @@ module.exports = function(router, passport) {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/movie/" + id + "?append_to_response=images%2Cvideos%2Calternative_titles%2Ccredits%2Creviews%2Creleases%2Csimilar%2Crecommendations&api_key=646a10c0084204abfff75a025d3c4539",
+                "path": "/3/movie/" + id + "?append_to_response=images%2Cvideos%2Calternative_titles%2Ccredits%2Creviews%2Creleases%2Csimilar%2Crecommendations&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
 
@@ -546,7 +547,7 @@ module.exports = function(router, passport) {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/tv/" + id + "?append_to_response=images%2Cvideos%2Calternative_titles%2Ccontent_ratings%2Ccredits%2Creviews%2Creleases%2Csimilar%2Crecommendations%2Ccertifications&api_key=646a10c0084204abfff75a025d3c4539",
+                "path": "/3/tv/" + id + "?append_to_response=images%2Cvideos%2Calternative_titles%2Ccontent_ratings%2Ccredits%2Creviews%2Creleases%2Csimilar%2Crecommendations%2Ccertifications&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
             getdata(options, resolve);
@@ -559,7 +560,7 @@ module.exports = function(router, passport) {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/tv/" + id + "/season/" + seasonNumber + "?api_key=646a10c0084204abfff75a025d3c4539&language=en-US",
+                "path": "/3/tv/" + id + "/season/" + seasonNumber + "?api_key=" + TMDB_API_KEY + "&language=en-US",
                 "headers": {}
             };
             getdata(options, resolve);
@@ -572,7 +573,7 @@ module.exports = function(router, passport) {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/person/" + id + "?append_to_response=images%2Cchanges%2Ccombined_credits%2Ctagged_images%2Crecommendations%2Csimilar&api_key=646a10c0084204abfff75a025d3c4539",
+                "path": "/3/person/" + id + "?append_to_response=images%2Cchanges%2Ccombined_credits%2Ctagged_images%2Crecommendations%2Csimilar&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
             getdata(options, resolve);
@@ -622,7 +623,7 @@ module.exports = function(router, passport) {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/discover/movie?with_genres=" + genreId + "&page=1&include_video=false&include_adult=true&sort_by=popularity.desc&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
+                "path": "/3/discover/movie?with_genres=" + genreId + "&page=1&include_video=false&include_adult=true&sort_by=popularity.desc&language=en-US&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
             getdata(options, resolve);
@@ -635,7 +636,7 @@ module.exports = function(router, passport) {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/discover/tv?include_null_first_air_dates=true&with_genres=" + genreId + "&page=1&sort_by=popularity.desc&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
+                "path": "/3/discover/tv?include_null_first_air_dates=true&with_genres=" + genreId + "&page=1&sort_by=popularity.desc&language=en-US&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
             getdata(options, resolve);
@@ -648,7 +649,7 @@ module.exports = function(router, passport) {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/discover/movie?with_companies=" + companyId + "&page=1&include_video=false&include_adult=true&sort_by=popularity.desc&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
+                "path": "/3/discover/movie?with_companies=" + companyId + "&page=1&include_video=false&include_adult=true&sort_by=popularity.desc&language=en-US&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
             getdata(options, resolve);
@@ -661,7 +662,7 @@ module.exports = function(router, passport) {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/discover/tv?include_null_first_air_dates=false&with_networks=" + networkId + "&page=1&sort_by=popularity.desc&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
+                "path": "/3/discover/tv?include_null_first_air_dates=false&with_networks=" + networkId + "&page=1&sort_by=popularity.desc&language=en-US&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
             getdata(options, resolve);
@@ -686,7 +687,7 @@ module.exports = function(router, passport) {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/discover/movie?primary_release_date.lte=" + nWDate + "&primary_release_date.gte=" + thisDate + "&primary_release_year=" + tY + "&page="+pageId + "&include_video=false&include_adult=true&sort_by=popularity.desc&language=en-US&api_key=646a10c0084204abfff75a025d3c4539",
+                "path": "/3/discover/movie?primary_release_date.lte=" + nWDate + "&primary_release_date.gte=" + thisDate + "&primary_release_year=" + tY + "&page="+pageId + "&include_video=false&include_adult=true&sort_by=popularity.desc&language=en-US&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
             getdata(options, resolve);

@@ -1,3 +1,6 @@
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -29,7 +32,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(session({ secret: 'dlikhoiuhwaf', resave: false, saveUninitialized: false }));
+app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
 
 const port = 8002;
 
@@ -93,7 +96,7 @@ async function connectToDatabase() {
 connectToDatabase().catch(console.error);
 
 require('./config/passport.js')(passport);
-app.use(session({ secret: 'dlikhoiuhwaf', resave: false, saveUninitialized: false }));
+app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
 

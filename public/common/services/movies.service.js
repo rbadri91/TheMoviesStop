@@ -21,6 +21,7 @@
         var movies = [];
         var isInWatchList = false;
         var isInFavoritesList = false;
+        var total_pages = 1;
         
         var getShowingNow = function() {
             return $http.get('/movies/showingnow').then(function(data) {
@@ -70,8 +71,14 @@
         var getisInWatchList = function() {
             return isInWatchList;
         };
+
+        var getTotalPages = function() {
+            return total_pages;
+        };
+
         var getMoviesOpeningThisWeek = function() {
             return $http.get('/movies/openingThisWeek').then(function (data) {
+                total_pages = JSON.parse(data.data).total_pages;
                 angular.copy(JSON.parse(data.data).results, movies);
             });
         };
@@ -92,6 +99,7 @@
             isInWatchList: isInWatchList,
             getisInWatchList: getisInWatchList,
             getisInFavoritesList: getisInFavoritesList,
+            getTotalPages:getTotalPages, 
             getPopular: getPopular,
             getTopRated: getTopRated,
             getUpcoming: getUpcoming,

@@ -1,3 +1,4 @@
+  
 <div class="MoviesWrapper">
     <h3 class="titleHeader">
         Movies Opening This Week
@@ -11,20 +12,20 @@
             </div>
             <div class="resultInfo">
                 <div class="title">
-                    <a id="movie_{{movie.id}}" class="resultTitle" title="{{movie.title}}" href="#"> 
-                                            {{movie.title}}
-                                    </a>
+                    <a id="movie_{{movie.id}}" class="resultTitle" title="{{movie.title}}" href="#">
+                        {{movie.title}}
+                    </a>
                     <span class="vote_avg">
-                                        {{movie.vote_average}} <i class="fa fa-star" aria-hidden="true"></i>
-                                </span>
+                        {{movie.vote_average}} <i class="fa fa-star" aria-hidden="true"></i>
+                    </span>
                 </div>
                 <div>
                     <span class="dateInfo">
-                                <i class="fa fa-calendar" aria-hidden="true"></i> &nbsp; {{movie.release_date}}
-                                </span>
+                        <i class="fa fa-calendar" aria-hidden="true"></i> &nbsp; {{movie.release_date}}
+                    </span>
                     <span class="genersInfo">
-            
-                                </span>
+
+                    </span>
                 </div>
                 <div class="block-with-text">
                     {{movie.overview}}
@@ -35,4 +36,16 @@
             </div>
         </div>
     </div>
+
+    <div id="pagination">
+        <ul uib-pagination total-items="{{total_pages}}" ng-model="{{currentPage}}" ng-change="pageChanged()"></ul>
+        <pre>The selected page no: {{currentPage}}</pre>
+    </div>
+
+    <pagination  
+        total-items="{{total_pages}}" 
+        items-per-page= "itemsPerPage"
+        ng-model="currentPage" 
+        class="pagination-sm">
+    </pagination>
 </div>
