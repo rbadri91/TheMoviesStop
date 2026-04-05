@@ -95,6 +95,8 @@ async function connectToDatabase() {
 
 connectToDatabase().catch(console.error);
 
+mongoose.connect(process.env.MONGODB_URL).catch(err => console.error('Mongoose connection error:', err));
+
 require('./config/passport.js')(passport);
 app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
 app.use(passport.initialize());

@@ -9,8 +9,10 @@ module.exports = function(passport) {
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
-        User.findById(id, function(err, data) {
-            done(err, data);
+        User.findById(id).then(function(data) {
+            done(null, data);
+        }).catch(function(err) {
+            done(err);
         });
     });
 
@@ -19,8 +21,7 @@ module.exports = function(passport) {
             passwordField: 'password',
         },
         function(username, password, done) {
-            User.findOne({ username: username }, function(err, user) {
-                if (err) { return done(err); }
+            User.findOne({ username: username }).then(function(user) {
                 if (!user) {
                     return done(null, false, { message: 'Incorrect username.' });
                 }
@@ -28,6 +29,8 @@ module.exports = function(passport) {
                     return done(null, false, { message: 'Incorrect password.' });
                 }
                 return done(null, user);
+            }).catch(function(err) {
+                return done(err);
             });
         }
     ));

@@ -3,7 +3,7 @@
 var express = require('express');
 // var router = express.Router();
 // var passport = require('passport');
-var jwt = require('express-jwt');
+const { expressjwt: jwt } = require('express-jwt');
 var http = require("https");
 var Memcached = require('memcached');
 var memcached = new Memcached('127.0.0.1:11211');
@@ -13,7 +13,7 @@ var mongoose = require('mongoose');
 var User = require('../models/users.js');
 module.exports = function(router, passport) {
 
-    var auth = jwt({ secret: process.env.JWT_SECRET, userProperty: 'payload' });
+    var auth = jwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'], requestProperty: 'payload' });
     var TMDB_API_KEY = process.env.TMDB_API_KEY;
 
     /* GET home page. */
@@ -47,10 +47,10 @@ module.exports = function(router, passport) {
 
         user.setPassword(req.body.password);
 
-        user.save(function(err) {
-            if (err) { return next(err); }
-            var resObj = { token: user.generateJWT() };
-            return res.json(resObj);
+        user.save().then(function() {
+            return res.json({ token: user.generateJWT() });
+        }).catch(function(err) {
+            return next(err);
         });
     });
 
