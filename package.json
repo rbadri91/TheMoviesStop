@@ -4,7 +4,13 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "start:dev": "nodemon ./bin/www"
+    "start:dev": "nodemon ./bin/www",
+    "test": "jest --runInBand --forceExit"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": ["**/tests/**/*.test.js"],
+    "testTimeout": 15000
   },
   "dependencies": {
     "@uirouter/angularjs": "latest",
@@ -36,6 +42,8 @@
   "devDependencies": {
     "@angular/cli": "^21.2.6",
     "grunt-contrib-watch": "^1.0.0",
-    "grunt-include-source": "^1.1.0"
+    "grunt-include-source": "^1.1.0",
+    "jest": "^30.3.0",
+    "supertest": "^7.2.2"
   }
 }
