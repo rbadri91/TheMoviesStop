@@ -1,21 +1,219 @@
 @use 'bootstrap/scss/bootstrap';
 
-/* Global app styles */
 body {
-  background-color: #111;
-  color: #eee;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
+  padding-top: 0;
+  font: 14px 'Lucida Grande', Helvetica, Arial, sans-serif;
+  background: #efefef;
+  height: 100%;
+}
+
+a { color: #00b7ff; }
+
+.MoviesWrapper {
+  width: 85%;
+  margin: 30px auto 50px;
+}
+
+.searchResults {
+  margin-top: 20px;
+  position: relative;
+
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}
+
+section.panel {
+  box-sizing: border-box;
+  width: 100%;
+  display: block;
+  padding: 5% 2%;
+  border-top: 1px solid #d7d7d7;
+}
+
+.ListMediaWrapper {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding-top: 2% !important;
+}
+
+.featured_info {
+  font-family: 'Josefin Slab', serif;
+  font-weight: 600;
+}
+
+div.resultList {
+  margin-top: 20px;
+  width: 100%;
+}
+
+div.resultList.flex {
+  display: flex;
+  flex-flow: wrap;
+  justify-content: space-between;
+}
+
+div.list {
+  float: left;
+  color: #000;
+}
+
+div.list.cardView {
+  width: 48%;
+  background-color: #fff;
+  box-sizing: border-box;
+  margin-bottom: 34px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  border: 1px solid #e6e7e9;
+  box-shadow: 0 2px 0 0 rgba(230, 230, 230, 0.5);
+}
+
+div.list.cardView:nth-child(odd) {
+  clear: left;
+  margin-right: 2.5%;
+}
+
+.cardimageWrapper {
+  width: 40%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 300px;
+  line-height: 0;
+  overflow: hidden;
+  position: absolute;
+}
+
+.imageSettings {
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  top: 0;
+  position: absolute;
+  transition: opacity 200ms;
+  object-fit: cover;
+}
+
+.resultInfo {
+  width: 60%;
+  margin-left: 40%;
+  height: 300px;
+  position: relative;
+  box-sizing: border-box;
+  padding: 10px 16px 16px;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 4px 0 2px;
+  font-size: 1.1em;
+  border-bottom: 1px solid #ccbaba;
+  padding-bottom: 4px;
+}
+
+a.resultTitle {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  padding-right: 20px;
+  line-height: 24px;
+  color: inherit;
+  text-decoration: none;
+
+  &:hover { text-decoration: none; }
+}
+
+.vote_avg {
+  float: right;
+  color: #000;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.dateInfo {
+  font-size: 1em;
+  border-bottom: 1px solid #ccbaba;
+  display: block;
+  padding: 4px 0;
+}
+
+div.resultInfo div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0;
+  margin-bottom: 16px;
+  width: 100%;
+  line-height: 1.2em;
+}
+
+div.resultInfo div.block-with-text {
+  overflow: hidden;
+  position: relative;
+  line-height: 1.2em;
+  max-height: 8.4em;
+  text-align: justify;
+  font-family: 'Josefin Slab', serif;
+  font-weight: 600;
+  color: #584c4c;
+  word-wrap: break-word;
+  white-space: normal;
+  font-size: 1.1em;
+}
+
+div.list.cardView div.moreInfoWrapper {
+  font-family: 'Josefin Slab', serif;
+  border-top: 1px solid #ccbaba;
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 16px;
+
+  a {
+    color: #000;
+    text-decoration: none;
+    font-weight: 400;
+    &:hover { text-decoration: underline; }
+  }
+}
+
+p.full_view_button {
+  margin: 20px 0 0;
+  display: inline-block;
+  width: 100%;
+
+  a {
+    font-size: 2rem;
+    color: #000;
+    font-family: 'Josefin Slab', serif;
+    font-weight: 600;
+    text-decoration: none;
+    &:hover { text-decoration: none; }
+  }
 }
 
 .formWrapper {
-  max-width: 400px;
+  max-width: 420px;
   margin: 80px auto;
-  padding: 2rem;
-  background: #1c1c1c;
-  border-radius: 8px;
-}
+  padding: 2rem 3%;
+  background: #fff;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 
-.formWrapper h3 {
-  margin-bottom: 1.5rem;
-  color: #fff;
+  h3 { margin-bottom: 1.5rem; }
+
+  a {
+    color: #00b7ff;
+    &:hover { text-decoration: underline; }
+  }
 }

@@ -1,0 +1,70 @@
+<nav class="navbar navbar-expand-md navbar-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/home">The Movies Stop</a>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      (click)="isMenuCollapsed.set(!isMenuCollapsed())"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="navbar-collapse" [ngbCollapse]="isMenuCollapsed()">
+      <ul class="navbar-nav me-auto">
+
+        <!-- Movies -->
+        <li class="nav-item" ngbDropdown>
+          <a class="nav-link dropdown-toggle" ngbDropdownToggle role="button">Movies</a>
+          <ul ngbDropdownMenu>
+            <li><a ngbDropdownItem routerLink="/movies/popular" (click)="collapseMenu()">Popular</a></li>
+            <li><a ngbDropdownItem routerLink="/movies/top" (click)="collapseMenu()">Top Rated</a></li>
+            <li><a ngbDropdownItem routerLink="/movies/comingUp" (click)="collapseMenu()">Upcoming</a></li>
+            <li><a ngbDropdownItem routerLink="/movies/showingnow" (click)="collapseMenu()">Now Showing</a></li>
+            <li><a ngbDropdownItem routerLink="/movies/openingthisweek" (click)="collapseMenu()">Opening This Week</a></li>
+          </ul>
+        </li>
+
+        <!-- TV Shows -->
+        <li class="nav-item" ngbDropdown>
+          <a class="nav-link dropdown-toggle" ngbDropdownToggle role="button">TV Shows</a>
+          <ul ngbDropdownMenu>
+            <li><a ngbDropdownItem routerLink="/tv/popular" (click)="collapseMenu()">Popular</a></li>
+            <li><a ngbDropdownItem routerLink="/tv/top" (click)="collapseMenu()">Top Rated</a></li>
+            <li><a ngbDropdownItem routerLink="/tv/onTV" (click)="collapseMenu()">On TV</a></li>
+            <li><a ngbDropdownItem routerLink="/tv/airingToday" (click)="collapseMenu()">Airing Today</a></li>
+          </ul>
+        </li>
+
+        <!-- People -->
+        <li class="nav-item" ngbDropdown>
+          <a class="nav-link dropdown-toggle" ngbDropdownToggle role="button">People</a>
+          <ul ngbDropdownMenu>
+            <li><a ngbDropdownItem routerLink="/people/popular" (click)="collapseMenu()">Popular</a></li>
+          </ul>
+        </li>
+
+      </ul>
+
+      <!-- Right side -->
+      <ul class="navbar-nav ms-auto">
+        @if (auth.isLoggedIn()) {
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/profile" (click)="collapseMenu()">{{ auth.currentUser() }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" role="button" (click)="logout(); collapseMenu()">Log Out</a>
+          </li>
+        } @else {
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/login" (click)="collapseMenu()">Log In</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/register" (click)="collapseMenu()">Register</a>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+</nav>

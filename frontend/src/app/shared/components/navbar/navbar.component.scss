@@ -1,0 +1,37 @@
+.navbar {
+  background: #332b2b;
+  z-index: 100;
+}
+
+.navbar-brand {
+  color: #f1e7e7;
+  font-size: 1.3rem;
+  font-weight: 600;
+
+  &:hover {
+    color: #3ec02f;
+  }
+}
+
+.nav-link {
+  color: #f1e7e7 !important;
+  cursor: pointer;
+
+  &:hover {
+    color: #3ec02f !important;
+  }
+}
+
+:host ::ng-deep .dropdown-menu {
+  background: #332b2b;
+  border: 1px solid #4a3f3f;
+
+  .dropdown-item {
+    color: #f1e7e7;
+
+    &:hover {
+      background: #4a3f3f;
+      color: #3ec02f;
+    }
+  }
+}

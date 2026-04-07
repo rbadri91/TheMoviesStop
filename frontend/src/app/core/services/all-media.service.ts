@@ -4,9 +4,9 @@ import { Observable } from 'rxjs';
 import { Movie } from '../../models/movie.model';
 
 export interface AllMediaFeeds {
-  upcomingMovies: Movie[];
-  nowShowingMovies: Movie[];
-  openingThisWeek: Movie[];
+  upcoming: { results: Movie[] };
+  nowShowing: { results: Movie[] };
+  OpeningThisWeek: { results: Movie[] };
 }
 
 @Injectable({ providedIn: 'root' })

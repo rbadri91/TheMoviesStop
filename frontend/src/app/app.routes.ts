@@ -15,6 +15,11 @@ export const routes: Routes = [
       import('./features/auth/register/register.component').then((m) => m.RegisterComponent),
     canActivate: [guestGuard],
   },
-  // Phase 3+: home, movies, shows, people routes go here
+  {
+    path: 'home',
+    loadComponent: () =>
+      import('./features/home/home.component').then((m) => m.HomeComponent),
+  },
+  // Phase 4+: movies, shows, people routes go here
   { path: '**', redirectTo: 'home' },
 ];

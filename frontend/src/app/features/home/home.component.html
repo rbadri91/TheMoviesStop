@@ -1,0 +1,120 @@
+<div class="MoviesWrapper">
+
+  @if (loading()) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-light" role="status"></div>
+    </div>
+  }
+
+  @if (error()) {
+    <div class="alert alert-danger">{{ error() }}</div>
+  }
+
+  @if (!loading()) {
+    <div class="searchResults">
+
+      <!-- Now Showing -->
+      <section class="panel ListMediaWrapper">
+        <h3 class="featured_info">Now Showing</h3>
+        <div class="resultList flex">
+          @for (movie of nowShowing(); track movie.id) {
+            <div class="list cardView">
+              <div class="cardimageWrapper">
+                <a [routerLink]="['/movies/desc', movie.id]">
+                  <img class="imageSettings" [src]="posterBase + movie.poster_path" [alt]="movie.title" />
+                </a>
+              </div>
+              <div class="resultInfo">
+                <div class="title">
+                  <a [routerLink]="['/movies/desc', movie.id]" class="resultTitle" [title]="movie.title">
+                    {{ movie.title }}
+                  </a>
+                  <span class="vote_avg">{{ movie.vote_average }} &#9733;</span>
+                </div>
+                <div>
+                  <span class="dateInfo">&#128197; {{ movie.release_date }}</span>
+                </div>
+                <div class="block-with-text">{{ movie.overview }}</div>
+                <div class="moreInfoWrapper text-center">
+                  <a [routerLink]="['/movies/desc', movie.id]" class="moreDetails">More Info</a>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+        <p class="full_view_button text-center">
+          <a routerLink="/movies/showingnow">View All Movies Showing Now</a>
+        </p>
+      </section>
+
+      <!-- Opening This Week -->
+      <section class="panel ListMediaWrapper">
+        <h3 class="featured_info">Opening This Week</h3>
+        <div class="resultList flex">
+          @for (movie of openingThisWeek(); track movie.id) {
+            <div class="list cardView">
+              <div class="cardimageWrapper">
+                <a [routerLink]="['/movies/desc', movie.id]">
+                  <img class="imageSettings" [src]="posterBase + movie.poster_path" [alt]="movie.title" />
+                </a>
+              </div>
+              <div class="resultInfo">
+                <div class="title">
+                  <a [routerLink]="['/movies/desc', movie.id]" class="resultTitle" [title]="movie.title">
+                    {{ movie.title }}
+                  </a>
+                  <span class="vote_avg">{{ movie.vote_average }} &#9733;</span>
+                </div>
+                <div>
+                  <span class="dateInfo">&#128197; {{ movie.release_date }}</span>
+                </div>
+                <div class="block-with-text">{{ movie.overview }}</div>
+                <div class="moreInfoWrapper text-center">
+                  <a [routerLink]="['/movies/desc', movie.id]" class="moreDetails">More Info</a>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+        <p class="full_view_button text-center">
+          <a routerLink="/movies/openingthisweek">View All Movies Opening This Week</a>
+        </p>
+      </section>
+
+      <!-- Upcoming -->
+      <section class="panel ListMediaWrapper">
+        <h3 class="featured_info">Upcoming</h3>
+        <div class="resultList flex">
+          @for (movie of upcoming(); track movie.id) {
+            <div class="list cardView">
+              <div class="cardimageWrapper">
+                <a [routerLink]="['/movies/desc', movie.id]">
+                  <img class="imageSettings" [src]="posterBase + movie.poster_path" [alt]="movie.title" />
+                </a>
+              </div>
+              <div class="resultInfo">
+                <div class="title">
+                  <a [routerLink]="['/movies/desc', movie.id]" class="resultTitle" [title]="movie.title">
+                    {{ movie.title }}
+                  </a>
+                  <span class="vote_avg">{{ movie.vote_average }} &#9733;</span>
+                </div>
+                <div>
+                  <span class="dateInfo">&#128197; {{ movie.release_date }}</span>
+                </div>
+                <div class="block-with-text">{{ movie.overview }}</div>
+                <div class="moreInfoWrapper text-center">
+                  <a [routerLink]="['/movies/desc', movie.id]" class="moreDetails">More Info</a>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+        <p class="full_view_button text-center">
+          <a routerLink="/movies/comingUp">View All Upcoming Movies</a>
+        </p>
+      </section>
+
+    </div>
+  }
+</div>
