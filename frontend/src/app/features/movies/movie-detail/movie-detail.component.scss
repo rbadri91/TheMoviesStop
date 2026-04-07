@@ -1,0 +1,40 @@
+.bgDisplay {
+  &::after {
+    background-image: var(--backdrop);
+    content: '';
+    opacity: 0.15;
+    z-index: -1;
+    top: 0; left: 0; bottom: 0; right: 0;
+    position: fixed;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+  }
+}
+
+.scollable {
+  width: 100%;
+  overflow-x: scroll;
+  white-space: nowrap;
+  font-size: 0;
+  padding-bottom: 20px;
+
+  .list { display: inline-block; float: none; }
+
+  .miniPhoto {
+    width: 180px;
+    margin: 0 15px 0 0;
+    height: 250px;
+    position: relative;
+    display: inline-block;
+  }
+}
+
+.UserMarkingWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  button { font-size: 1.2rem; }
+}

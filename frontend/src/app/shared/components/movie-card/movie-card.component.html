@@ -1,0 +1,22 @@
+<div class="list cardView">
+  <div class="cardimageWrapper">
+    <a [routerLink]="['/movies/desc', movie.id]">
+      <img class="imageSettings" [src]="posterBase + movie.poster_path" [alt]="movie.title" />
+    </a>
+  </div>
+  <div class="resultInfo">
+    <div class="title">
+      <a [routerLink]="['/movies/desc', movie.id]" class="resultTitle" [title]="movie.title">
+        {{ movie.title }}
+      </a>
+      <span class="vote_avg">{{ movie.vote_average }} &#9733;</span>
+    </div>
+    <div>
+      <span class="dateInfo">&#128197; {{ movie.release_date }}</span>
+    </div>
+    <div class="block-with-text">{{ movie.overview }}</div>
+    <div class="moreInfoWrapper text-center">
+      <a [routerLink]="['/movies/desc', movie.id]" class="moreDetails">More Info</a>
+    </div>
+  </div>
+</div>

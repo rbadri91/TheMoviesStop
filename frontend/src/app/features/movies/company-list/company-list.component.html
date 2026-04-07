@@ -1,0 +1,13 @@
+<div class="MoviesWrapper">
+  <h2 class="featured_info text-center">All Production Companies</h2>
+  <div class="searchResults">
+    @for (company of companies(); track company.id) {
+      <div class="list cardView companyListView">
+        <a [routerLink]="['/movies/company', company.id]">{{ company.name }}</a>
+      </div>
+    }
+    @if (!companies().length) {
+      <p class="text-muted text-center py-4">No company data. Navigate from a movie detail page.</p>
+    }
+  </div>
+</div>

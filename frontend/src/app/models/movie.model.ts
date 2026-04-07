@@ -44,6 +44,7 @@ export interface Review {
 export interface Movie {
   id: number;
   title: string;
+  name?: string; // TV show compat when used as union
   overview: string;
   poster_path: string | null;
   backdrop_path: string | null;
@@ -61,6 +62,12 @@ export interface Movie {
   similar?: { results: Movie[] };
   recommendations?: { results: Movie[] };
   releases?: { countries: { certification: string; iso_3166_1: string }[] };
+  alternative_titles?: { titles: { title: string; iso_3166_1: string }[] };
+  spoken_languages?: { iso_639_1: string; name: string }[];
+  homepage?: string;
+  budget?: number;
+  revenue?: number;
+  original_title?: string;
 }
 
 export interface MovieListResponse {

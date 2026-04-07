@@ -1,0 +1,32 @@
+@if (media(); as m) {
+  <div class="MoviesWrapper">
+    <h2 class="featured_info text-center">All Reviews</h2>
+    <div class="section-overview">
+      <div class="section-wrapper">
+        <div class="poster-wrapper shortView">
+          <div class="poster shortView">
+            <img class="posterImageSettings" [src]="posterBase + m.poster_path" [alt]="getMediaTitle(m)" />
+          </div>
+          <div class="summaryWrapper">
+            <h2 class="featured_info">{{ getMediaTitle(m) }}</h2>
+          </div>
+        </div>
+      </div>
+
+      @if (reviews().length) {
+        @for (review of reviews(); track review.id) {
+          <div class="cardView setAllMargin">
+            <div class="reviewInfoWrapper">
+              <div class="ReviewWrapper setRightPadding"><p>{{ review.content }}</p></div>
+              <div class="creditsTag"><p>- {{ review.author }}</p></div>
+            </div>
+          </div>
+        }
+      } @else {
+        <p class="text-muted text-center py-4">No reviews available.</p>
+      }
+    </div>
+  </div>
+} @else {
+  <div class="text-center py-5 text-muted">No data available. Please navigate from a detail page.</div>
+}

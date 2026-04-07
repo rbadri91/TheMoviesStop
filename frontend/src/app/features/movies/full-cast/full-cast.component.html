@@ -1,0 +1,63 @@
+@if (movie(); as m) {
+  <div class="MoviesWrapper">
+    <div class="section-wrapper">
+      <div class="poster-wrapper shortView">
+        <div class="poster shortView">
+          <img class="posterImageSettings" [src]="posterBase + m.poster_path" [alt]="m.title" />
+        </div>
+        <div class="summaryWrapper">
+          <h2 class="featured_info">{{ m.title }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="crew_teamWrapper">
+      <!-- Cast -->
+      <div class="colSplit">
+        <h3 class="titleHeader">Cast ({{ cast().length }})</h3>
+        <ol class="person creditWrapper">
+          @for (actor of cast(); track actor.id) {
+            <li>
+              <a [routerLink]="['/people/desc', actor.id]">
+                <img class="castProfileWrapper" [src]="posterBase + actor.profile_path" [alt]="actor.name" />
+              </a>
+              <div class="castInfo">
+                <p>
+                  <a [routerLink]="['/people/desc', actor.id]">{{ actor.name }}</a><br />
+                  <span class="cast_actor">{{ actor.character }}</span>
+                </p>
+              </div>
+            </li>
+          }
+        </ol>
+      </div>
+
+      <!-- Crew by department -->
+      <div class="colSplit">
+        <h3 class="titleHeader">Crew ({{ movie()?.credits?.crew?.length ?? 0 }})</h3>
+        @for (dept of deptKeys(); track dept) {
+          <div class="crewWrapper">
+            <h4>{{ dept }}</h4>
+            <ol class="person creditWrapper">
+              @for (person of crewByDept()[dept]; track person.id) {
+                <li>
+                  <a [routerLink]="['/people/desc', person.id]">
+                    <img class="castProfileWrapper" [src]="posterBase + person.profile_path" [alt]="person.name" />
+                  </a>
+                  <div class="castInfo">
+                    <p>
+                      <a [routerLink]="['/people/desc', person.id]">{{ person.name }}</a><br />
+                      <span class="cast_actor">{{ person.job }}</span>
+                    </p>
+                  </div>
+                </li>
+              }
+            </ol>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="text-center py-5 text-muted">No cast data available. Please navigate from a movie detail page.</div>
+}
