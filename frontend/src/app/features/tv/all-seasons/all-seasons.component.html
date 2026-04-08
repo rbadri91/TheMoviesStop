@@ -1,0 +1,52 @@
+<div class="MoviesWrapper">
+  <h2 class="featured_info text-center">All Season Reviews</h2>
+
+  @if (loading()) {
+    <div class="text-center py-5"><div class="spinner-border" role="status"></div></div>
+  }
+
+  @if (error()) {
+    <div class="alert alert-danger">{{ error() }}</div>
+  }
+
+  @if (show(); as s) {
+    <div class="section-overview">
+      <div class="section-wrapper">
+        <div class="poster-wrapper shortView">
+          <div class="poster shortView">
+            <img class="posterImageSettings" [src]="posterBase + s.poster_path" [alt]="s.name" />
+          </div>
+          <div class="summaryWrapper">
+            <div class="summary_info">
+              <h2 class="featured_info">{{ s.name }} ({{ getReleaseYear(s.first_air_date) }})</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      @for (season of seasons(); track season.season_number) {
+        <section class="panel SeasonReviewSection">
+          <div class="cardView setAllMargin">
+            <div class="ReviewWrapper" style="display:flex;gap:16px;padding:16px;">
+              <div style="flex-shrink:0;width:100px;">
+                <img [src]="posterBase + season.poster_path" [alt]="season.name"
+                  style="width:100%;height:auto;" />
+              </div>
+              <div class="summaryWrapper">
+                <div class="summary_info">
+                  <h3 class="featured_info">{{ season.name }}</h3>
+                  <div class="airWrapper">
+                    <span class="dateInfo">{{ getReleaseYear(season.air_date) }}</span>
+                    <span> | </span>
+                    <span>Episodes {{ season.episodes?.length ?? 0 }}</span>
+                  </div>
+                  <div class="summary" [innerHTML]="season.overview | htmlize"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      }
+    </div>
+  }
+</div>

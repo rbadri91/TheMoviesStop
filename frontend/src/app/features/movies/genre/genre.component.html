@@ -6,8 +6,14 @@
   @if (error()) { <div class="alert alert-danger">{{ error() }}</div> }
   @if (!loading()) {
     <div class="searchResults">
-      @for (movie of movies(); track movie.id) {
-        <app-movie-card [movie]="movie" />
+      @if (isTV) {
+        @for (show of shows(); track show.id) {
+          <app-show-card [show]="show" />
+        }
+      } @else {
+        @for (movie of movies(); track movie.id) {
+          <app-movie-card [movie]="movie" />
+        }
       }
     </div>
   }

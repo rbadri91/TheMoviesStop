@@ -1,13 +1,19 @@
 <div class="MoviesWrapper">
-  <h3 class="titleHeader">{{ title() || 'Company Movies' }}</h3>
+  <h3 class="titleHeader">{{ title() }}</h3>
   @if (loading()) {
     <div class="text-center py-5"><div class="spinner-border" role="status"></div></div>
   }
   @if (error()) { <div class="alert alert-danger">{{ error() }}</div> }
   @if (!loading()) {
     <div class="searchResults">
-      @for (movie of items(); track movie.id) {
-        <app-movie-card [movie]="movie" />
+      @if (isTV) {
+        @for (show of shows(); track show.id) {
+          <app-show-card [show]="show" />
+        }
+      } @else {
+        @for (movie of movies(); track movie.id) {
+          <app-movie-card [movie]="movie" />
+        }
       }
     </div>
   }

@@ -26,6 +26,21 @@ export interface PersonCredit {
   releaseYear?: string;
 }
 
+export interface TaggedImage {
+  file_path: string;
+  media_type: 'movie' | 'tv';
+  media: {
+    id: number;
+    media_type: 'movie' | 'tv';
+    title?: string;
+    name?: string;
+    poster_path: string | null;
+    vote_average: number;
+    release_date?: string;
+    first_air_date?: string;
+  };
+}
+
 export interface Person {
   id: number;
   name: string;
@@ -37,11 +52,12 @@ export interface Person {
   gender: number;
   known_for_department: string;
   imdb_id: string | null;
+  also_known_as?: string[];
   known_for?: KnownForItem[];
   knownFor?: string;
   combined_credits?: { cast: PersonCredit[]; crew: PersonCredit[] };
   images?: { profiles: { file_path: string }[] };
-  tagged_images?: { results: { file_path: string }[] };
+  tagged_images?: { results: TaggedImage[] };
 }
 
 export interface PersonListResponse {

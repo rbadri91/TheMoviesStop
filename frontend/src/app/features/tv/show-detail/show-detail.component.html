@@ -1,0 +1,234 @@
+@if (loading()) {
+  <div class="text-center py-5"><div class="spinner-border" role="status"></div></div>
+}
+@if (error()) {
+  <div class="alert alert-danger m-3">{{ error() }}</div>
+}
+
+@if (show(); as s) {
+  <div class="bgDisplay" [style.--backdrop]="'url(' + backdropBase + s.backdrop_path + ')'"></div>
+
+  <div class="MovieInfoWraper">
+    <div class="section-wrapper">
+
+      <!-- Poster + Trailer -->
+      <div class="poster-wrapper">
+        <div class="poster">
+          <img class="posterImageSettings" [src]="posterBase + s.poster_path" [alt]="s.name" />
+        </div>
+        @if (s.videos?.results?.length) {
+          <div class="watchSection">
+            <iframe class="videoLoader" [src]="getIframeSrc(s.videos!.results[0].key)"
+              allowfullscreen frameborder="0"></iframe>
+          </div>
+        }
+      </div>
+
+      <!-- Title bar -->
+      <div class="section_desc">
+        <div class="titleBar">
+          <div class="section-titleWrapper">
+            <h2>{{ s.original_name ?? s.name }}
+              <span class="titleYear">
+                ({{ getFirstAirYear(s.first_air_date) }}{{ s.last_air_date ? ' - ' + getFirstAirYear(s.last_air_date) : '' }})
+              </span>
+            </h2>
+            <div class="section-info">
+              @if (s.episode_run_time?.length) {
+                <time>{{ getEpisodeRuntime(s.episode_run_time!) }}</time><span> | </span>
+              }
+              @for (genre of s.genres; track genre.id) {
+                <a [routerLink]="['/tv/genre', genre.id]">{{ genre.name }}</a>&nbsp;
+              }
+              @if (s.content_ratings?.results?.length) {
+                <span> | </span>
+                <span>{{ getCertificate(s.content_ratings!.results) }}</span>
+              }
+            </div>
+          </div>
+          <div class="ratings_Wrapper">
+            <div class="userRatings">
+              <div class="ratingValue"><strong>Rating: {{ s.vote_average }}</strong></div>
+              <div><strong>Count: {{ s.vote_count }}</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Overview + Featured Crew -->
+        <div class="summaryWrapper">
+          <div class="summary_info">
+            <h3 class="featured_info">Overview</h3>
+            <div class="summary" [innerHTML]="s.overview | htmlize"></div>
+            @if (s.credits?.crew?.length) {
+              <h3 class="featured_info">Featured Crew</h3>
+              <ol class="featured_people">
+                @for (crew of (s.credits!.crew | slice:0:3); track crew.id) {
+                  <li class="people_info">
+                    <p>{{ crew.name }}</p>
+                    <p class="profile_job">{{ crew.job }}</p>
+                  </li>
+                }
+              </ol>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Section nav -->
+      <div class="ms-row optionsNav">
+        <div class="menuNavSection">
+          <span class="CastsNav" [class.active]="activeSection()==='cast'" (click)="scrollTo('cast')">Cast</span>
+          <span class="SeasonReviewsNav" [class.active]="activeSection()==='season'" (click)="scrollTo('season')">Season Reviews</span>
+          @if (s.videos?.results?.length) {
+            <span class="VideosNav" [class.active]="activeSection()==='videos'" (click)="scrollTo('videos')">Videos</span>
+          }
+          @if (s.recommendations?.results?.length) {
+            <span class="RecommendedNav" [class.active]="activeSection()==='recommended'" (click)="scrollTo('recommended')">Recommended</span>
+          }
+          <span class="DetailsNav" [class.active]="activeSection()==='details'" (click)="scrollTo('details')">Details</span>
+          <span class="CreditsNav" [class.active]="activeSection()==='credits'" (click)="scrollTo('credits')">Network Credits</span>
+        </div>
+      </div>
+
+      <!-- Cast -->
+      <section class="panel cast-section">
+        <h3 class="featured_info">Top Cast</h3>
+        <ol class="featured_people">
+          @for (cast of ((s.credits?.cast ?? []) | slice:0:4); track cast.id) {
+            <li class="list profileView">
+              <a [routerLink]="['/people/desc', cast.id]">
+                <img class="imageSettings" [src]="posterBase + cast.profile_path" [alt]="cast.name" />
+              </a>
+              <div class="castInfoWrapper">
+                <p>{{ cast.name }}</p>
+                <p class="profile_job">{{ cast.character }}</p>
+              </div>
+            </li>
+          }
+        </ol>
+        <p class="full_view_button">
+          <a [routerLink]="['/tv/desc', s.id, 'fullCast']">View Full Cast</a>
+        </p>
+      </section>
+
+      <!-- Last Season -->
+      <section class="panel season-section">
+        <h3 class="featured_info">Last Season</h3>
+        @if (s.last_seasonInfo) {
+          <div class="cardView">
+            <div class="ReviewWrapper" style="display:flex;gap:16px;padding:16px;">
+              <div style="flex-shrink:0;width:100px;">
+                <img [src]="posterBase + s.poster_path" [alt]="s.name" style="width:100%;height:auto;" />
+              </div>
+              <div class="summaryWrapper">
+                <div class="summary_info">
+                  <h3 class="featured_info">Season {{ s.last_seasonInfo.season_number }}</h3>
+                  <div class="airWrapper">
+                    <span class="dateInfo">{{ getFirstAirYear(s.last_seasonInfo.air_date) }}</span>
+                    <span> | </span>
+                    <span>Episodes {{ s.last_seasonInfo.episodes?.length ?? 0 }}</span>
+                  </div>
+                  <div class="summary" [innerHTML]="s.overview | htmlize"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        } @else {
+          <p>Season info not available.</p>
+        }
+        <p class="full_view_button">
+          <a [routerLink]="['/tv/desc', s.id, 'allseason']">View All Seasons</a>
+        </p>
+      </section>
+
+      <!-- Videos -->
+      @if (s.videos?.results?.length) {
+        <section class="panel videos-section">
+          <h3 class="featured_info">Videos</h3>
+          <div class="section-content">
+            <div class="section-inner-content">
+              @for (video of s.videos!.results; track video.id) {
+                <div class="watchSection">
+                  <iframe class="videoLoader" [src]="getIframeSrc(video.key)"
+                    allowfullscreen frameborder="0"></iframe>
+                </div>
+              }
+            </div>
+          </div>
+        </section>
+      }
+
+      <!-- Recommendations -->
+      @if (s.recommendations?.results?.length) {
+        <section class="panel recommended-section">
+          <h3 class="featured_info">Recommendations</h3>
+          <div class="scollable">
+            @for (rec of (s.recommendations!.results | slice:0:7); track rec.id) {
+              <div class="list miniPhoto" [title]="rec.name">
+                <div class="imageWrapper">
+                  <a [routerLink]="['/tv/desc', rec.id]">
+                    <img class="imageSettings" [src]="posterBase + rec.poster_path" [alt]="rec.name" />
+                  </a>
+                </div>
+                <a class="infoWrapper" [routerLink]="['/tv/desc', rec.id]">
+                  <div class="infoInnerWrapper">
+                    <div class="recoNameWrapper">{{ rec.name }}</div>
+                    <span class="reco_vote_avg">{{ rec.vote_average }} &#9733;</span>
+                    <div class="recoReleaseInfo">{{ getFirstAirYear(rec.first_air_date) }}</div>
+                  </div>
+                </a>
+              </div>
+            }
+          </div>
+        </section>
+      }
+
+      <!-- Details -->
+      <section class="panel details-section">
+        <h3 class="featured_info">Details</h3>
+        <div class="cardView">
+          @if (s.homepage) {
+            <div class="detailsInfoWrapper">
+              <strong>Official Site: </strong>
+              <a [href]="s.homepage" target="_blank">{{ s.homepage }}</a>
+            </div>
+          }
+          @if (s.origin_country?.length) {
+            <div class="detailsInfoWrapper">
+              <strong>Country: </strong>
+              <span>{{ s.origin_country![0] }}</span>
+            </div>
+          }
+          @if (s.languages?.length) {
+            <div class="detailsInfoWrapper">
+              <strong>Languages: </strong>
+              @for (lang of s.languages!; track lang) {
+                <span class="movieLang">{{ lang }}</span>
+              }
+            </div>
+          }
+          @if (s.alternative_titles?.results?.[0]) {
+            <div class="detailsInfoWrapper">
+              <strong>Also Known As: </strong>
+              <span>{{ s.alternative_titles!.results[0].title }}</span>
+            </div>
+          }
+        </div>
+      </section>
+
+      <!-- Network Credits -->
+      <section class="panel credits-section">
+        <h3 class="featured_info">Network Credits</h3>
+        <div class="cardView">
+          <div class="detailsInfoWrapper">
+            <strong>Networks: </strong>
+            @for (network of ((s.networks ?? []) | slice:0:3); track network.id) {
+              <a [routerLink]="['/tv/network', network.id]">{{ network.name }}</a>&nbsp;&nbsp;
+            }
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+}

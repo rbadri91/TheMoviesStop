@@ -1,12 +1,13 @@
-@if (movie(); as m) {
+@if (media(); as m) {
+  <div class="bgDisplay" [style.--backdrop]="'url(' + backdropBase + m.backdrop_path + ')'"></div>
   <div class="MoviesWrapper">
     <div class="section-wrapper">
       <div class="poster-wrapper shortView">
         <div class="poster shortView">
-          <img class="posterImageSettings" [src]="posterBase + m.poster_path" [alt]="m.title" />
+          <img class="posterImageSettings" [src]="posterBase + m.poster_path" [alt]="getTitle(m)" />
         </div>
         <div class="summaryWrapper">
-          <h2 class="featured_info">{{ m.title }}</h2>
+          <h2 class="featured_info">{{ getTitle(m) }}</h2>
         </div>
       </div>
     </div>
@@ -18,14 +19,16 @@
         <ol class="person creditWrapper">
           @for (actor of cast(); track actor.id) {
             <li>
-              <a [routerLink]="['/people/desc', actor.id]">
-                <img class="castProfileWrapper" [src]="posterBase + actor.profile_path" [alt]="actor.name" />
-              </a>
-              <div class="castInfo">
-                <p>
-                  <a [routerLink]="['/people/desc', actor.id]">{{ actor.name }}</a><br />
-                  <span class="cast_actor">{{ actor.character }}</span>
-                </p>
+              <div>
+                <a [routerLink]="['/people/desc', actor.id]">
+                  <img class="castProfileWrapper" [src]="posterBase + actor.profile_path" [alt]="actor.name" />
+                </a>
+                <div class="castInfo">
+                  <p>
+                    <a [routerLink]="['/people/desc', actor.id]">{{ actor.name }}</a><br />
+                    <span class="cast_actor">{{ actor.character }}</span>
+                  </p>
+                </div>
               </div>
             </li>
           }
@@ -34,21 +37,23 @@
 
       <!-- Crew by department -->
       <div class="colSplit">
-        <h3 class="titleHeader">Crew ({{ movie()?.credits?.crew?.length ?? 0 }})</h3>
+        <h3 class="titleHeader">Crew ({{ media()?.credits?.crew?.length ?? 0 }})</h3>
         @for (dept of deptKeys(); track dept) {
           <div class="crewWrapper">
             <h4>{{ dept }}</h4>
             <ol class="person creditWrapper">
               @for (person of crewByDept()[dept]; track person.id) {
                 <li>
-                  <a [routerLink]="['/people/desc', person.id]">
-                    <img class="castProfileWrapper" [src]="posterBase + person.profile_path" [alt]="person.name" />
-                  </a>
-                  <div class="castInfo">
-                    <p>
-                      <a [routerLink]="['/people/desc', person.id]">{{ person.name }}</a><br />
-                      <span class="cast_actor">{{ person.job }}</span>
-                    </p>
+                  <div>
+                    <a [routerLink]="['/people/desc', person.id]">
+                      <img class="castProfileWrapper" [src]="posterBase + person.profile_path" [alt]="person.name" />
+                    </a>
+                    <div class="castInfo">
+                      <p>
+                        <a [routerLink]="['/people/desc', person.id]">{{ person.name }}</a><br />
+                        <span class="cast_actor">{{ person.job }}</span>
+                      </p>
+                    </div>
                   </div>
                 </li>
               }
@@ -59,5 +64,5 @@
     </div>
   </div>
 } @else {
-  <div class="text-center py-5 text-muted">No cast data available. Please navigate from a movie detail page.</div>
+  <div class="text-center py-5 text-muted">No cast data available. Please navigate from a detail page.</div>
 }

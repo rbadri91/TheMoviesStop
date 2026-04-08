@@ -1,0 +1,123 @@
+.bgDisplay {
+  &::after {
+    background-image: var(--backdrop);
+    content: '';
+    opacity: 0.15;
+    z-index: -1;
+    top: 0; left: 0; bottom: 0; right: 0;
+    position: fixed;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+  }
+}
+
+.crew_teamWrapper {
+  width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  align-content: flex-start;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.colSplit {
+  width: 50%;
+}
+
+ol.creditWrapper {
+  width: 100%;
+  list-style-type: none;
+  list-style-position: outside;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+ol.creditWrapper li {
+  width: 100%;
+  flex: 0 0 auto;
+  text-align: left;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+ol.creditWrapper li > div {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  min-height: 70px;
+  text-align: left;
+}
+
+.castProfileWrapper {
+  width: 60px;
+  height: 60px;
+  border-radius: 4px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+ol.creditWrapper li div.castInfo {
+  display: flex;
+  align-items: center;
+  padding-left: 14px;
+  padding-right: 20px;
+  width: 100%;
+}
+
+ol.creditWrapper li div.castInfo p {
+  white-space: normal;
+  overflow: visible;
+  font-size: 1em;
+  line-height: 1.4em;
+  margin: 0;
+  padding: 0;
+}
+
+ol.creditWrapper li div.castInfo p a {
+  color: #000;
+  text-decoration: none;
+  font-size: 1.4rem;
+  font-family: 'Lato', sans-serif;
+}
+
+.cast_actor {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.crewWrapper h4 {
+  font-size: 1.4rem;
+  margin-top: 16px;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+.section-wrapper {
+  width: 900px;
+  margin: 30px auto 0;
+}
+
+.poster-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.poster {
+  width: 80px;
+  flex-shrink: 0;
+}
+
+.posterImageSettings {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}

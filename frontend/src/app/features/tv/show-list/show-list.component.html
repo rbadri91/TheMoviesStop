@@ -1,0 +1,21 @@
+<div class="MoviesWrapper">
+  <h3 class="titleHeader">{{ title() }}</h3>
+
+  @if (loading()) {
+    <div class="text-center py-5">
+      <div class="spinner-border" role="status"></div>
+    </div>
+  }
+
+  @if (error()) {
+    <div class="alert alert-danger">{{ error() }}</div>
+  }
+
+  @if (!loading()) {
+    <div class="searchResults">
+      @for (show of shows(); track show.id) {
+        <app-show-card [show]="show" />
+      }
+    </div>
+  }
+</div>

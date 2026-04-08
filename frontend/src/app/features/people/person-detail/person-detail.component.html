@@ -1,0 +1,210 @@
+@if (loading()) {
+  <div class="text-center py-5"><div class="spinner-border" role="status"></div></div>
+}
+@if (error()) {
+  <div class="alert alert-danger m-3">{{ error() }}</div>
+}
+
+@if (person(); as p) {
+  <div class="bgDisplay" [style.--backdrop]="'url(' + backdropBase + p.images?.profiles?.[0]?.file_path + ')'"></div>
+
+  <div class="ShowInfoWraper">
+    <div class="section-wrapper">
+      <div class="poster-wrapper">
+        <div class="poster">
+          <img class="posterImageSettings" [src]="posterBase + p.profile_path" [alt]="p.name" />
+        </div>
+        <div class="summaryWrapper">
+          <div class="summary_info">
+            <h2 class="featured_info">{{ p.name }}</h2>
+            <h3 class="featured_info">Biography</h3>
+            <div class="summary" [innerHTML]="p.biography | htmlize"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section nav -->
+    <div class="ms-row optionsNav">
+      <div class="menuNavSection">
+        <span class="PersonalDetailsNav" [class.active]="activeSection()==='details'" (click)="scrollTo('details')">Personal Info</span>
+        <span class="ImagesNav" [class.active]="activeSection()==='images'" (click)="scrollTo('images')">Profile Images</span>
+        <span class="KnownForNav" [class.active]="activeSection()==='knownfor'" (click)="scrollTo('knownfor')">Known For</span>
+        <span class="TaggedImagesNav" [class.active]="activeSection()==='tagged'" (click)="scrollTo('tagged')">Tagged Images</span>
+        <span class="FilmoGraphyNav" [class.active]="activeSection()==='filmography'" (click)="scrollTo('filmography')">Filmography</span>
+      </div>
+    </div>
+
+    <!-- Personal Details -->
+    <section class="panel details-section">
+      <h3 class="featured_info">Personal Details</h3>
+      <div class="cardView">
+        <div class="detailsInfoWrapper">
+          <strong>Gender: </strong><span>{{ getGender(p.gender) }}</span>
+        </div>
+        @if (p.birthday) {
+          <div class="detailsInfoWrapper">
+            <strong>Birthday: </strong><span>{{ p.birthday }}</span>
+          </div>
+        }
+        @if (p.place_of_birth) {
+          <div class="detailsInfoWrapper">
+            <strong>Place of Birth: </strong><span>{{ p.place_of_birth }}</span>
+          </div>
+        }
+        @if (p.also_known_as?.length) {
+          <div class="detailsInfoWrapper">
+            <strong>Also Known As: </strong>
+            @for (alias of p.also_known_as!; track alias) {
+              <span>{{ alias }} </span>
+            }
+          </div>
+        }
+        @if (p.imdb_id) {
+          <div class="detailsInfoWrapper">
+            <strong>IMDB: </strong>
+            <a [href]="'http://www.imdb.com/' + p.imdb_id + '/'" target="_blank">
+              http://www.imdb.com/{{ p.imdb_id }}/
+            </a>
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- Profile Images -->
+    @if (p.images?.profiles?.length) {
+      <section class="panel images-section">
+        <h3 class="featured_info">Profile Images</h3>
+        <div class="scollable">
+          @for (profile of (p.images!.profiles | slice:0:7); track profile.file_path) {
+            <div class="list miniPhoto">
+              <div class="imageWrapper">
+                <img class="imageSettings" [src]="posterBase + profile.file_path" [alt]="p.name" />
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+    }
+
+    <!-- Known For -->
+    @if (p.combined_credits?.cast?.length) {
+      <section class="panel knownfor-section">
+        <h3 class="featured_info">Known For</h3>
+        <div class="scollable">
+          @for (credit of (p.combined_credits!.cast | slice:0:7); track credit.id) {
+            <div class="list miniPhoto" [title]="getTitle(credit)">
+              <div class="imageWrapper">
+                <a [routerLink]="getShowLink(credit)">
+                  <img class="imageSettings" [src]="posterBase + credit.poster_path" [alt]="getTitle(credit)" />
+                </a>
+              </div>
+              <a class="infoWrapper" [routerLink]="getShowLink(credit)">
+                <div class="infoInnerWrapper">
+                  <div class="recoNameWrapper">{{ getTitle(credit) }}</div>
+                  <span class="reco_vote_avg">{{ credit.vote_average }} &#9733;</span>
+                  <div class="recoReleaseInfo">{{ getReleaseYear(credit) }}</div>
+                </div>
+              </a>
+            </div>
+          }
+        </div>
+      </section>
+    }
+
+    <!-- Tagged Images -->
+    @if (p.tagged_images?.results?.length) {
+      <section class="panel tagged-section">
+        <h3 class="featured_info">Tagged Images</h3>
+        <div class="scollable">
+          @for (img of (p.tagged_images!.results | slice:0:7); track img.file_path) {
+            <div class="list miniPhoto" [title]="getTitle(img)">
+              <div class="imageWrapper">
+                <a [routerLink]="getShowLink(img)">
+                  <img class="imageSettings" [src]="posterBase + img.file_path" [alt]="getTitle(img)" />
+                </a>
+              </div>
+              <a class="infoWrapper" [routerLink]="getShowLink(img)">
+                <div class="infoInnerWrapper">
+                  <div class="recoNameWrapper">{{ getTitle(img) }}</div>
+                  <span class="reco_vote_avg">{{ img.media?.vote_average }} &#9733;</span>
+                </div>
+              </a>
+            </div>
+          }
+        </div>
+      </section>
+    }
+
+    <!-- Filmography -->
+    <section class="panel filmography-section">
+      <span class="mediaTypeButtons">
+        <div class="btn-group">
+          <button class="btn btn-sm" [class.btn-primary]="filmographyTab()==='Movies'"
+            [class.btn-outline-secondary]="filmographyTab()!=='Movies'"
+            (click)="filmographyTab.set('Movies')">Movies</button>
+          <button class="btn btn-sm" [class.btn-primary]="filmographyTab()==='TV Shows'"
+            [class.btn-outline-secondary]="filmographyTab()!=='TV Shows'"
+            (click)="filmographyTab.set('TV Shows')">TV Shows</button>
+        </div>
+      </span>
+
+      @if (filmographyTab() === 'Movies') {
+        <div class="cardView setMarginTop">
+          @if (movieCast().length) {
+            <h3 class="featured_info text-center">Acting</h3>
+            @for (act of movieCast(); track act.id) {
+              <div class="detailsInfoWrapper" [class.even]="$even">
+                <div class="jobWrapper">
+                  <span><strong>{{ getReleaseYear(act) }}</strong>&nbsp;</span>
+                  <span><a [routerLink]="getShowLink(act)">{{ getTitle(act) }}</a></span>
+                  @if (act.character) { <span>&nbsp;as {{ act.character }}</span> }
+                </div>
+              </div>
+            }
+          }
+          @if (movieCrew().length) {
+            <h3 class="featured_info text-center">Production</h3>
+            @for (act of movieCrew(); track act.id) {
+              <div class="detailsInfoWrapper">
+                <div class="jobWrapper">
+                  <span><strong>{{ getReleaseYear(act) }}</strong>&nbsp;</span>
+                  <span><a [routerLink]="getShowLink(act)">{{ getTitle(act) }}</a></span>
+                  @if (act.job) { <span>&nbsp;... {{ act.job }}</span> }
+                </div>
+              </div>
+            }
+          }
+        </div>
+      } @else {
+        <div class="cardView setMarginTop">
+          @if (tvCast().length) {
+            <h3 class="featured_info text-center">Acting</h3>
+            @for (act of tvCast(); track act.id) {
+              <div class="detailsInfoWrapper" [class.even]="$even">
+                <div class="jobWrapper">
+                  <span><strong>{{ getReleaseYear(act) }}</strong>&nbsp;</span>
+                  <span><a [routerLink]="getShowLink(act)">{{ getTitle(act) }}</a></span>
+                  @if (act.character) { <span>&nbsp;as {{ act.character }}</span> }
+                </div>
+              </div>
+            }
+          }
+          @if (tvCrew().length) {
+            <h3 class="featured_info text-center">Production</h3>
+            @for (act of tvCrew(); track act.id) {
+              <div class="detailsInfoWrapper">
+                <div class="jobWrapper">
+                  <span><strong>{{ getReleaseYear(act) }}</strong>&nbsp;</span>
+                  <span><a [routerLink]="getShowLink(act)">{{ getTitle(act) }}</a></span>
+                  @if (act.job) { <span>&nbsp;... {{ act.job }}</span> }
+                </div>
+              </div>
+            }
+          }
+        </div>
+      }
+    </section>
+
+  </div>
+}

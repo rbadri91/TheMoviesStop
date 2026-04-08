@@ -1,0 +1,30 @@
+<div class="MoviesWrapper">
+  <h3 class="titleHeader">Popular People</h3>
+
+  @if (loading()) {
+    <div class="text-center py-5"><div class="spinner-border" role="status"></div></div>
+  }
+  @if (error()) {
+    <div class="alert alert-danger">{{ error() }}</div>
+  }
+
+  @if (!loading()) {
+    <div class="resultList flex">
+      @for (person of people(); track person.id) {
+        <div class="list profileView">
+          <div class="profileImageWrapper">
+            <a [routerLink]="['/people/desc', person.id]">
+              <img class="imageSettings" [src]="posterBase + person.profile_path" [alt]="person.name" />
+            </a>
+          </div>
+          <a class="infoWrapper" [routerLink]="['/people/desc', person.id]">
+            <div class="infoInnerWrapper">
+              <div class="nameWrapper">{{ person.name }}</div>
+              <div class="knownForDesc" [title]="person.knownFor ?? ''">{{ person.knownFor }}</div>
+            </div>
+          </a>
+        </div>
+      }
+    </div>
+  }
+</div>

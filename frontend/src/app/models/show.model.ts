@@ -41,10 +41,12 @@ export interface SeasonDetail {
 export interface Show {
   id: number;
   name: string;
+  original_name?: string;
   overview: string;
   poster_path: string | null;
   backdrop_path: string | null;
   first_air_date: string;
+  last_air_date?: string;
   vote_average: number;
   vote_count: number;
   genre_ids?: number[];
@@ -53,6 +55,12 @@ export interface Show {
   seasons?: Season[];
   number_of_seasons?: number;
   number_of_episodes?: number;
+  episode_run_time?: number[];
+  origin_country?: string[];
+  languages?: string[];
+  homepage?: string;
+  alternative_titles?: { results: { title: string; iso_3166_1: string }[] };
+  last_seasonInfo?: SeasonDetail;
   credits?: { cast: CastMember[]; crew: CrewMember[] };
   videos?: { results: Video[] };
   reviews?: { results: Review[] };

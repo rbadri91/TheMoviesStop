@@ -1,0 +1,22 @@
+<div class="list cardView">
+  <div class="cardimageWrapper">
+    <a [routerLink]="['/tv/desc', show.id]">
+      <img class="imageSettings" [src]="posterBase + show.poster_path" [alt]="show.name" />
+    </a>
+  </div>
+  <div class="resultInfo">
+    <div class="title">
+      <a [routerLink]="['/tv/desc', show.id]" class="resultTitle" [title]="show.name">
+        {{ show.name }}
+      </a>
+      <span class="vote_avg">{{ show.vote_average }} &#9733;</span>
+    </div>
+    <div>
+      <span class="dateInfo">&#128197; {{ show.first_air_date }}</span>
+    </div>
+    <div class="block-with-text">{{ show.overview }}</div>
+    <div class="moreInfoWrapper text-center">
+      <a [routerLink]="['/tv/desc', show.id]" class="moreDetails">More Info</a>
+    </div>
+  </div>
+</div>
