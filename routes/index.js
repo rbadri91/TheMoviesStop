@@ -72,31 +72,31 @@ module.exports = function(router, passport) {
 
     router.get('/movies/top', function(req, res, next) {
         getTopMovies().then((movies) => {
-            res.json(movies);
+            res.json(JSON.parse(movies));
         });
     });
 
     router.get('/movies/upcoming', function(req, res, next) {
         getUpcomingMovies().then((movies) => {
-            res.json(movies);
+            res.json(JSON.parse(movies));
         });
     });
 
     router.get('/movies/showingnow', function(req, res, next) {
         getNowShowingMovies().then((movies) => {
-            res.json(movies);
+            res.json(JSON.parse(movies));
         });
     });
 
     router.get('/movies/popular', function(req, res, next) {
         getPopularMovies().then((movies) => {
-            res.json(movies);
+            res.json(JSON.parse(movies));
         });
     });
 
     router.get('/movies/openingThisWeek', function(req, res, next) {
         getOpeningThisWeek(1).then((movies) => {
-            res.json(movies);
+            res.json(JSON.parse(movies));
         });
     });
 

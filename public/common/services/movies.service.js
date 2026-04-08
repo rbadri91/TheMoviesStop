@@ -25,24 +25,24 @@
         
         var getShowingNow = function() {
             return $http.get('/movies/showingnow').then(function(data) {
-                angular.copy(JSON.parse(data.data).results, movies);
+                angular.copy(data.data.results, movies);
             });
         };
 
         var getPopular = function() {
             return $http.get('/movies/popular').then(function(data) {
-                angular.copy(JSON.parse(data.data).results, movies);
+                angular.copy(data.data.results, movies);
             });
         };
 
         var getTopRated = function() {
             return $http.get('/movies/top').then(function(data) {
-                angular.copy(JSON.parse(data.data).results, movies);
+                angular.copy(data.data.results, movies);
             });
         };
         var getUpcoming = function() {
             return $http.get('/movies/upcoming').then(function(data) {
-                angular.copy(JSON.parse(data.data).results, movies);
+                angular.copy(data.data.results, movies);
             });
         };
 
@@ -78,8 +78,8 @@
 
         var getMoviesOpeningThisWeek = function() {
             return $http.get('/movies/openingThisWeek').then(function (data) {
-                total_pages = JSON.parse(data.data).total_pages;
-                angular.copy(JSON.parse(data.data).results, movies);
+                total_pages = data.data.total_pages;
+                angular.copy(data.data.results, movies);
             });
         };
         var handleAddToFavorites = function(movieId) {
