@@ -1,0 +1,59 @@
+.section-wrapper .poster-wrapper.shortView {
+  height: 400px;
+  display: flex;
+  align-items: flex-start;
+  margin-left: 3%;
+}
+
+.section-wrapper .poster.shortView {
+  flex-shrink: 0;
+  height: 400px;
+  width: auto;
+}
+
+.posterImageSettings {
+  height: 400px;
+  width: auto;
+  display: block;
+}
+
+.section-wrapper .poster-wrapper .summaryWrapper {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 20px;
+  width: 70%;
+}
+
+.cardView {
+  background-color: #fff;
+  border: 1px solid #e6e7e9;
+  box-shadow: 0 2px 0 0 rgba(230, 230, 230, 0.5);
+  margin-bottom: 12px;
+}
+
+.setAllMargin {
+  margin: 3%;
+}
+
+.setRightPadding {
+  padding-right: 2%;
+}
+
+.reviewInfoWrapper {
+  margin-top: 2%;
+  padding: 20px;
+}
+
+.ReviewWrapper {
+  width: 100%;
+  box-sizing: border-box;
+  color: #565252;
+
+  p { margin: 0; }
+}
+
+.creditsTag {
+  padding-top: 10px;
+  padding-left: 10%;
+  color: #565252;
+}

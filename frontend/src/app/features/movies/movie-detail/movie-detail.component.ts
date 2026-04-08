@@ -36,19 +36,24 @@ export class MovieDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id')!;
-    this.svc.getMovieDetails(id).subscribe({
-      next: (movie) => {
-        this.movie.set(movie);
-        this.loading.set(false);
-        if (this.auth.isLoggedIn()) {
-          this.svc.getUserMediaStatus(movie.id).subscribe((status) => {
-            this.inWatchList.set(status.isInWatchList);
-            this.inFavorites.set(status.isInFavoritesList);
-          });
-        }
-      },
-      error: () => { this.error.set('Failed to load movie.'); this.loading.set(false); },
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id')!;
+      this.loading.set(true);
+      this.error.set(null);
+      this.movie.set(null);
+      this.svc.getMovieDetails(id).subscribe({
+        next: (movie) => {
+          this.movie.set(movie);
+          this.loading.set(false);
+          if (this.auth.isLoggedIn()) {
+            this.svc.getUserMediaStatus(movie.id).subscribe((status) => {
+              this.inWatchList.set(status.isInWatchList);
+              this.inFavorites.set(status.isInFavoritesList);
+            });
+          }
+        },
+        error: () => { this.error.set('Failed to load movie.'); this.loading.set(false); },
+      });
     });
   }
 

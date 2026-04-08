@@ -7,6 +7,7 @@ import { Movie } from '../../../models/movie.model';
   standalone: true,
   imports: [RouterLink],
   templateUrl: './movie-card.component.html',
+  styles: [':host { display: contents; }'],
 })
 export class MovieCardComponent {
   @Input({ required: true }) movie!: Movie;

@@ -22,17 +22,17 @@ module.exports = function(router, passport) {
     });
 
     router.get('/allFeeds', function(req, res, next) {
-        var result = {};
-            getUpcomingMovies().then((upcomingMovies) => {
-                result.upcoming = JSON.parse(upcomingMovies);
-                getShowingNowMovies().then((nowShowingMovies) => {
-                    result.nowShowing = JSON.parse(JSON.stringify(nowShowingMovies, null, 2));
-                    getOpeningThisWeek(1).then((OpeningThisWeek) => {
-                        result.OpeningThisWeek = JSON.parse(OpeningThisWeek);
-                        res.json(result);
-                    });
-                });
+        Promise.all([
+            getUpcomingMovies(),
+            getNowShowingMovies(),
+            getOpeningThisWeek(1)
+        ]).then(([upcomingMovies, nowShowingMovies, OpeningThisWeek]) => {
+            res.json({
+                upcoming: JSON.parse(upcomingMovies),
+                nowShowing: JSON.parse(nowShowingMovies),
+                OpeningThisWeek: JSON.parse(OpeningThisWeek)
             });
+        }).catch(next);
     });
 
     router.post('/register', function(req, res, next) {

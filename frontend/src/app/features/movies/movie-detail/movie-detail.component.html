@@ -52,12 +52,12 @@
             @if (auth.isLoggedIn()) {
               <div class="UserMarkingWrapper">
                 <button class="btn btn-sm btn-outline-secondary"
-                  [style.color]="inWatchList() ? '#1fd41f' : '#fff'"
+                  [style.color]="inWatchList() ? '#1fd41f' : '#333'"
                   (click)="toggleWatchList()" title="Toggle Watchlist">
                   &#128278;
                 </button>
                 <button class="btn btn-sm btn-outline-secondary"
-                  [style.color]="inFavorites() ? '#1fd41f' : '#fff'"
+                  [style.color]="inFavorites() ? '#1fd41f' : '#333'"
                   (click)="toggleFavorites()" title="Toggle Favorites">
                   &#10084;
                 </button>
@@ -107,7 +107,7 @@
       <section class="panel cast-section">
         <h3 class="featured_info">Top Cast</h3>
         <ol class="featured_people">
-          @for (cast of (m.credits?.cast ?? [] | slice:0:4); track cast.id) {
+          @for (cast of ((m.credits?.cast ?? []) | slice:0:4); track cast.id) {
             <li class="list profileView">
               <a [routerLink]="['/people/desc', cast.id]">
                 <img class="imageSettings" [src]="posterBase + cast.profile_path" [alt]="cast.name" />
@@ -125,9 +125,9 @@
       </section>
 
       <!-- Reviews -->
-      @if (m.reviews?.results?.length) {
-        <section class="panel reviews-section">
-          <h3 class="featured_info">Reviews</h3>
+      <section class="panel reviews-section">
+        <h3 class="featured_info">Reviews</h3>
+        @if (m.reviews?.results?.length) {
           <div class="cardView">
             <div class="ReviewWrapper">
               <p>{{ m.reviews!.results[0].content }}</p>
@@ -139,8 +139,10 @@
           <p class="full_view_button">
             <a [routerLink]="['/movies/desc', m.id, 'reviews']">View All Reviews</a>
           </p>
-        </section>
-      }
+        } @else {
+          <p>No reviews available.</p>
+        }
+      </section>
 
       <!-- Videos -->
       @if (m.videos?.results?.length) {
@@ -226,7 +228,7 @@
         <div class="cardView">
           <div class="detailsInfoWrapper">
             <strong>Production Companies: </strong>
-            @for (comp of (m.production_companies ?? [] | slice:0:3); track comp.id) {
+            @for (comp of ((m.production_companies ?? []) | slice:0:3); track comp.id) {
               <a [routerLink]="['/movies/company', comp.id]">{{ comp.name }}</a>&nbsp;&nbsp;
             }
             <a [routerLink]="['/movies/desc', m.id, 'allCompanies']">View All Companies</a>

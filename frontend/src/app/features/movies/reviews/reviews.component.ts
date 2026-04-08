@@ -9,6 +9,7 @@ import { Review } from '../../../models/movie.model';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './reviews.component.html',
+  styleUrl: './reviews.component.scss',
 })
 export class ReviewsComponent {
   readonly posterBase = 'https://image.tmdb.org/t/p/w300';
