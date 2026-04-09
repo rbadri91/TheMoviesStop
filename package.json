@@ -20,7 +20,7 @@
     "body-parser": "^1.20.4",
     "cookie-parser": "^1.4.7",
     "cookie-session": "^2.1.0",
-    "debug": "~2.6.3",
+    "debug": "~3.1.0",
     "dotenv": "^17.4.1",
     "ejs": "^3.1.10",
     "express": "^4.22.1",
