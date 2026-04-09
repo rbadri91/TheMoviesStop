@@ -13,6 +13,13 @@
   }
 }
 
+.section-info a,
+.credits-section a,
+.details-section a {
+  color: #00b7ff;
+  text-decoration: none;
+}
+
 .MovieInfoWraper {
   width: 900px;
   margin: 50px auto;
@@ -326,7 +333,7 @@ div.list.miniPhoto div.imageWrapper {
 
 .recoNameWrapper {
   margin: 1%;
-  font-size: 1.3rem;
+  font-size: 13px;
   flex: 0 0 50%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -337,11 +344,11 @@ div.list.miniPhoto div.imageWrapper {
   line-height: 24px;
   flex: 0 0 40%;
   text-align: right;
-  font-size: 1.3rem;
+  font-size: 13px;
 }
 
 .recoReleaseInfo {
-  font-size: 1.3rem;
+  font-size: 13px;
   flex: 0 0 50%;
 }
 

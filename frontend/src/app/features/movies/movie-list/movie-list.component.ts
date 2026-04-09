@@ -44,7 +44,12 @@ export class MovieListComponent implements OnInit {
     switch (mode) {
       case 'popular':       return this.svc.getPopular();
       case 'top':           return this.svc.getTopRated();
-      case 'comingUp':      return this.svc.getUpcoming();
+      case 'comingUp':      return this.svc.getUpcoming().pipe(
+        map((movies) => {
+          const today = new Date(); today.setHours(0, 0, 0, 0);
+          return movies.filter(m => m.release_date && new Date(m.release_date) >= today);
+        })
+      );
       case 'showingnow':    return this.svc.getShowingNow();
       case 'openingthisweek': return this.svc.getOpeningThisWeek().pipe(map((r) => r.results));
     }
