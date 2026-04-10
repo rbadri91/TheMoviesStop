@@ -1,5 +1,19 @@
+.bgDisplay {
+  &::after {
+    background-image: var(--backdrop);
+    content: '';
+    opacity: 0.15;
+    z-index: -1;
+    top: 0; left: 0; bottom: 0; right: 0;
+    position: fixed;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+  }
+}
+
 .poster-wrapper.shortView {
-  height: 200px;
   display: flex;
   align-items: flex-start;
   margin-left: 3%;
@@ -25,13 +39,51 @@
   padding: 0 20px;
 }
 
-.cardView {
-  background-color: #fff;
-  border: 1px solid #e6e7e9;
-  box-shadow: 0 2px 0 0 rgba(230, 230, 230, 0.5);
-  margin-bottom: 12px;
+.SeasonReviewSection {
+  .cardView {
+    height: 100%;
+    display: inline-block;
+    width: 96%;
+    background-color: #fff;
+    border: 1px solid #e6e7e9;
+    box-shadow: 0 2px 0 0 rgba(230, 230, 230, 0.5);
+  }
+
+  .summaryWrapper .summary_info .airWrapper {
+    padding-bottom: 2%;
+  }
+
+  .cardView .summary_info .featured_info {
+    margin-top: 0;
+  }
+}
+
+.ReviewWrapper {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+}
+
+.seasonPoster {
+  flex-shrink: 0;
+  width: 100px;
+
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+.SeasonReviewSection .summaryWrapper {
+  flex: 1;
+  padding: 0 20px;
 }
 
 .setAllMargin { margin: 3%; }
 
 .airWrapper { margin: 8px 0; }
+
+.dateInfo {
+  font-size: 1em;
+}

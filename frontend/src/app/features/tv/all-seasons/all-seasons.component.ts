@@ -20,6 +20,7 @@ export class AllSeasonsComponent implements OnInit {
 
   readonly show = computed(() => this.state.selectedShow());
   readonly posterBase = 'https://image.tmdb.org/t/p/w300';
+  readonly backdropBase = 'https://image.tmdb.org/t/p/w1280';
 
   constructor(
     private route: ActivatedRoute,
@@ -37,5 +38,9 @@ export class AllSeasonsComponent implements OnInit {
 
   getReleaseYear(date: string): string {
     return date?.substring(0, date.indexOf('-')) ?? '';
+  }
+
+  getOverview(overview: string): string {
+    return overview?.trim() ? overview : 'This season does not have any summary.';
   }
 }

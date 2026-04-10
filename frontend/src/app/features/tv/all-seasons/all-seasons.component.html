@@ -1,10 +1,13 @@
+@if (show(); as s) {
+  <div class="bgDisplay" [style.--backdrop]="'url(' + backdropBase + s.backdrop_path + ')'"></div>
+}
+
 <div class="MoviesWrapper">
   <h2 class="featured_info text-center">All Season Reviews</h2>
 
   @if (loading()) {
     <div class="text-center py-5"><div class="spinner-border" role="status"></div></div>
   }
-
   @if (error()) {
     <div class="alert alert-danger">{{ error() }}</div>
   }
@@ -27,10 +30,9 @@
       @for (season of seasons(); track season.season_number) {
         <section class="panel SeasonReviewSection">
           <div class="cardView setAllMargin">
-            <div class="ReviewWrapper" style="display:flex;gap:16px;padding:16px;">
-              <div style="flex-shrink:0;width:100px;">
-                <img [src]="posterBase + season.poster_path" [alt]="season.name"
-                  style="width:100%;height:auto;" />
+            <div class="ReviewWrapper">
+              <div class="seasonPoster">
+                <img [src]="posterBase + season.poster_path" [alt]="season.name" class="posterImageSettings" />
               </div>
               <div class="summaryWrapper">
                 <div class="summary_info">
@@ -40,7 +42,7 @@
                     <span> | </span>
                     <span>Episodes {{ season.episodes?.length ?? 0 }}</span>
                   </div>
-                  <div class="summary" [innerHTML]="season.overview | htmlize"></div>
+                  <div class="summary" [innerHTML]="getOverview(season.overview) | htmlize"></div>
                 </div>
               </div>
             </div>

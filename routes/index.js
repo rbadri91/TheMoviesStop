@@ -439,10 +439,16 @@ module.exports = function(router, passport) {
             memcached.set("numShows", parsed.seasons.length);
             req.session.numSeasons = parsed.seasons.length;
             req.session.hasSeason0 = (parsed.seasons[0].season_number == 0);
-            getSeasonInfo(showId, parsed.seasons.length - 1).then((showData) => {
-                parsed.last_seasonInfo = JSON.parse(showData);
-                res.json(parsed);
-            }).catch(next);
+            setTimeout(() => {
+                getSeasonInfo(showId, parsed.seasons.length - 1).then((showData) => {
+                    try {
+                        parsed.last_seasonInfo = JSON.parse(showData);
+                    } catch(e) {
+                        parsed.last_seasonInfo = null;
+                    }
+                    res.json(parsed);
+                }).catch(next);
+            }, 300);
         }).catch(next);
     });
 
