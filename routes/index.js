@@ -73,44 +73,44 @@ module.exports = function(router, passport) {
     router.get('/movies/top', function(req, res, next) {
         getTopMovies().then((movies) => {
             res.json(JSON.parse(movies));
-        });
+        }).catch(next);
     });
 
     router.get('/movies/upcoming', function(req, res, next) {
         getUpcomingMovies().then((movies) => {
             res.json(JSON.parse(movies));
-        });
+        }).catch(next);
     });
 
     router.get('/movies/showingnow', function(req, res, next) {
         getNowShowingMovies().then((movies) => {
             res.json(JSON.parse(movies));
-        });
+        }).catch(next);
     });
 
     router.get('/movies/popular', function(req, res, next) {
         getPopularMovies().then((movies) => {
             res.json(JSON.parse(movies));
-        });
+        }).catch(next);
     });
 
     router.get('/movies/openingThisWeek', function(req, res, next) {
         getOpeningThisWeek(1).then((movies) => {
             res.json(JSON.parse(movies));
-        });
+        }).catch(next);
     });
 
     router.get('/movies/:movie', function(req, res, next) {
         var movieId = req.params.movie;
         getMovieInfo(movieId).then((movieInfo) => {
             res.json(movieInfo);
-        });
+        }).catch(next);
     });
     router.get('/movies/genre/:genreId', function(req, res, next) {
         var genreId = req.params.genreId;
         getGenereMovies(genreId).then((moviesList) => {
             res.json(moviesList);
-        });
+        }).catch(next);
     });
 
     router.get('/user/:userId/moviesLikedAndtoWatch/:movieId', function(req, res, next) {
@@ -215,19 +215,19 @@ module.exports = function(router, passport) {
         var genreId = req.params.genreId;
         getGenereShows(genreId).then((showsList) => {
             res.json(showsList);
-        });
+        }).catch(next);
     });
     router.get('/movies/company/:companyId', function(req, res, next) {
         var companyId = req.params.companyId;
         getCompanyMovies(companyId).then((moviesList) => {
             res.json(moviesList);
-        });
+        }).catch(next);
     });
     router.get('/tv/network/:networkId', function(req, res, next) {
         var networkId = req.params.networkId;
         getNetworkShows(networkId).then((showsList) => {
             res.json(showsList);
-        });
+        }).catch(next);
     });
 
     router.post('/user/tv/addToFavorites', auth, function(req, res, next) {
@@ -408,43 +408,42 @@ module.exports = function(router, passport) {
     router.get('/tv/popular', function(req, res, next) {
         getPopularShows().then((shows) => {
             res.json(shows);
-        });
+        }).catch(next);
     });
 
     router.get('/tv/top', function(req, res, next) {
         getTopShows().then((shows) => {
             res.json(shows);
-        });
+        }).catch(next);
     });
 
     router.get('/tv/onTV', function(req, res, next) {
         getonTVShows().then((shows) => {
             res.json(shows);
-        });
+        }).catch(next);
     });
 
     router.get('/tv/airingToday', function(req, res, next) {
         getAiringTodayShows().then((shows) => {
             res.json(shows);
-        });
+        }).catch(next);
     });
 
     router.get('/tv/:show', function(req, res, next) {
         var showId = req.params.show;
         getShowInfo(showId).then((showInfo) => {
-            var showDetails = showInfo;
-            memcached.set("numShows", JSON.parse(showInfo).seasons.length);
-            req.session.numSeasons = JSON.parse(showInfo).seasons.length;
-            req.session.hasSeason0 = (JSON.parse(showInfo).seasons[0].season_number == 0);
-            getSeasonInfo(showId, JSON.parse(showInfo).seasons.length-1).then((showData) => {
-                var addShowInfo = JSON.parse(showInfo);
-                addShowInfo.last_seasonInfo = JSON.parse(JSON.stringify(showData, null, 2));
-                addShowInfo = JSON.stringify(addShowInfo);
-
-                res.json(addShowInfo);
-            });
-
-        });
+            var parsed = JSON.parse(showInfo);
+            if (!parsed || !parsed.seasons || !parsed.seasons.length) {
+                return res.json(parsed || {});
+            }
+            memcached.set("numShows", parsed.seasons.length);
+            req.session.numSeasons = parsed.seasons.length;
+            req.session.hasSeason0 = (parsed.seasons[0].season_number == 0);
+            getSeasonInfo(showId, parsed.seasons.length - 1).then((showData) => {
+                parsed.last_seasonInfo = JSON.parse(showData);
+                res.json(parsed);
+            }).catch(next);
+        }).catch(next);
     });
 
     router.get('/tv/:show/allseason', function(req, res, next) {
@@ -527,14 +526,14 @@ module.exports = function(router, passport) {
     router.get('/people/popular', function(req, res, next) {
         getPopularPeople().then((people) => {
             res.json(people);
-        });
+        }).catch(next);
     });
     router.get('/people/:person', function(req, res, next) {
         var peopleId = req.params.person;
         getPeopleInfo(peopleId).then((peopleInfo) => {
             peopleInfo = sortCastsAndCrews(JSON.parse(peopleInfo));
             res.json(peopleInfo);
-        });
+        }).catch(next);
     });
 
     function getPopularPeople() {

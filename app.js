@@ -38,16 +38,8 @@ const port = 8002;
 
 let client;
 
-// error handler
-app.use(function(err, req, res, next) {
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-    // render the error page
-    res.status(err.status || 500);
-    res.render('error');
-});
+// error handler — placed before routes intentionally for EJS errors;
+// API error handler is registered after routes inside connectToDatabase()
 
 async function connectToDatabase() {
     client = new MongoClient(db.url, {
@@ -66,11 +58,15 @@ async function connectToDatabase() {
 
         app.use('/users', users);
 
-        // catch 404 and forward to error handler
+        // catch 404
         app.use(function(req, res, next) {
-            var err = new Error('Not Found');
-            err.status = 404;
-            next(err);
+            res.status(404).json({ error: 'Not Found' });
+        });
+
+        // global API error handler — keeps the process alive
+        app.use(function(err, req, res, next) {
+            console.error('[API Error]', err.message);
+            res.status(err.status || 500).json({ error: err.message || 'Internal Server Error' });
         });
 
         // Start the server

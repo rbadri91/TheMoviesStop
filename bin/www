@@ -32,6 +32,14 @@ server.listen(port, function () {
 server.on('error', onError);
 server.on('listening', onListening);
 
+// Keep the process alive on unhandled rejections/exceptions instead of crashing
+process.on('uncaughtException', function(err) {
+    console.error('[uncaughtException]', err.message, err.stack);
+});
+process.on('unhandledRejection', function(reason) {
+    console.error('[unhandledRejection]', reason);
+});
+
 /**
  * Normalize a port into a number, string, or false.
  */
