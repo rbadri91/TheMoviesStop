@@ -4,10 +4,25 @@ import { Observable, tap } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Show, ShowListResponse, SeasonDetail } from '../../models/show.model';
 import { StateService } from './state.service';
+import { AuthService } from './auth.service';
+import { UserMediaStatus } from '../../models/movie.model';
 
 @Injectable({ providedIn: 'root' })
 export class ShowsService {
-  constructor(private http: HttpClient, private state: StateService) {}
+  constructor(private http: HttpClient, private state: StateService, private auth: AuthService) {}
+
+  getUserShowStatus(showId: number): Observable<UserMediaStatus> {
+    const userId = this.auth.currentUserId();
+    return this.http.get<UserMediaStatus>(`/api/user/${userId}/tvLikedAndToWatch/${showId}`);
+  }
+
+  addToWatchList(showId: number): Observable<unknown> {
+    return this.http.post('/api/user/tv/addToWatchList', { showId });
+  }
+
+  addToFavorites(showId: number): Observable<unknown> {
+    return this.http.post('/api/user/tv/addToFavorites', { showId });
+  }
 
   getPopular(): Observable<Show[]> {
     return this.http

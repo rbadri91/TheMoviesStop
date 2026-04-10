@@ -9,6 +9,7 @@ import { Person } from '../../../models/person.model';
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './people-list.component.html',
+  styleUrl: './people-list.component.scss',
 })
 export class PeopleListComponent implements OnInit {
   people = signal<Person[]>([]);

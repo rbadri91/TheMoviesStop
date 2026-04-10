@@ -230,46 +230,87 @@ module.exports = function(router, passport) {
         });
     });
 
-    router.get('/user/tv/addToFavorites', function(req, res, next) {
-        var showId = parseInt(req.body);
-        var favoritesList = req.user.favoritesList;
-        var index = -1;
-        for (var i = 0; i < favoritesList.length; i++) {
-            if (favoritesList[i].id == showId) {
-                index = i;
-                break;
+    router.post('/user/tv/addToFavorites', auth, function(req, res, next) {
+        var showId = parseInt(req.body.showId);
+        User.findById(req.payload._id).then(function(user) {
+            var favoritesList = user.favoritesList;
+            var index = -1;
+            for (var i = 0; i < favoritesList.length; i++) {
+                if (favoritesList[i].id == showId) { index = i; break; }
             }
-        }
-        if (index != -1) {
-            req.user.favoritesList.splice(index, 1);
-        } else {
-            var favObj = { id: showId, mediaType: "shows" };
-            req.user.favoritesList.push(favObj);
-        }
-        req.user.save(function(err) {
-            if (err) { return next(err); }
-            return "Success";
+            if (index != -1) {
+                user.favoritesList.splice(index, 1);
+            } else {
+                user.favoritesList.push({ id: showId, mediaType: "shows" });
+            }
+            user.save(function(err) {
+                if (err) { return next(err); }
+                res.json({ success: true });
+            });
+        });
+    });
+
+    router.get('/user/:userId/tvLikedAndToWatch/:showId', function(req, res, next) {
+        User.findById(req.params.userId).then(function(user) {
+            var showId = req.params.showId;
+            var resObj = { isInWatchList: false, isInFavoritesList: false };
+            for (var i = 0; i < user.watchList.length; i++) {
+                if (showId == user.watchList[i].id) { resObj.isInWatchList = true; break; }
+            }
+            for (var j = 0; j < user.favoritesList.length; j++) {
+                if (showId == user.favoritesList[j].id) { resObj.isInFavoritesList = true; break; }
+            }
+            res.json(resObj);
+        });
+    });
+
+    router.get('/user/profile', auth, function(req, res, next) {
+        User.findById(req.payload._id).then(async function(user) {
+            var enrichItem = async function(item) {
+                return new Promise(function(resolve) {
+                    var path = (item.mediaType === 'movie')
+                        ? '/3/movie/' + item.id + '?language=en-US&api_key=' + TMDB_API_KEY
+                        : '/3/tv/' + item.id + '?language=en-US&api_key=' + TMDB_API_KEY;
+                    var options = { method: 'GET', hostname: 'api.themoviedb.org', port: null, path: path, headers: {} };
+                    getdata(options, function(data) {
+                        try {
+                            var parsed = JSON.parse(data);
+                            resolve(Object.assign({}, item.toObject(), {
+                                title: parsed.title || parsed.name,
+                                poster_path: parsed.poster_path,
+                            }));
+                        } catch(e) { resolve(item.toObject()); }
+                    });
+                });
+            };
+            try {
+                var [watchList, favoritesList] = await Promise.all([
+                    Promise.all(user.watchList.map(enrichItem)),
+                    Promise.all(user.favoritesList.map(enrichItem)),
+                ]);
+                res.json({ username: user.username, watchList: watchList, favoritesList: favoritesList });
+            } catch(e) {
+                res.json({ username: user.username, watchList: [], favoritesList: [] });
+            }
         });
     });
     router.post('/user/tv/addToWatchList', auth, function(req, res, next) {
-        var showId = parseInt(req.body);
-        var watchList = req.user.watchList;
-        var index = -1;
-        for (var i = 0; i < watchList.length; i++) {
-            if (watchList[i].id == showId) {
-                index = i;
-                break;
+        var showId = parseInt(req.body.showId);
+        User.findById(req.payload._id).then(function(user) {
+            var watchList = user.watchList;
+            var index = -1;
+            for (var i = 0; i < watchList.length; i++) {
+                if (watchList[i].id == showId) { index = i; break; }
             }
-        }
-        if (index != -1) {
-            req.user.watchList.splice(index, 1);
-        } else {
-            var watchObj = { id: showId, mediaType: "shows" };
-            req.user.watchList.push(watchObj);
-        }
-        req.user.save(function(err) {
-            if (err) { return next(err); }
-            return "Success";
+            if (index != -1) {
+                user.watchList.splice(index, 1);
+            } else {
+                user.watchList.push({ id: showId, mediaType: "shows" });
+            }
+            user.save(function(err) {
+                if (err) { return next(err); }
+                res.json({ success: true });
+            });
         });
     });
 

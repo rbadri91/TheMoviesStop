@@ -3,6 +3,8 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ShowsService } from '../../../core/services/shows.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { StateService } from '../../../core/services/state.service';
 import { Show } from '../../../models/show.model';
 import { HtmlizePipe } from '../../../shared/pipes/htmlize.pipe';
 
@@ -18,6 +20,8 @@ export class ShowDetailComponent implements OnInit {
   loading = signal(true);
   error = signal<string | null>(null);
   activeSection = signal('cast');
+  inWatchList = signal(false);
+  inFavorites = signal(false);
 
   readonly posterBase = 'https://image.tmdb.org/t/p/w300';
   readonly backdropBase = 'https://image.tmdb.org/t/p/w1280';
@@ -25,6 +29,8 @@ export class ShowDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private svc: ShowsService,
+    public auth: AuthService,
+    private state: StateService,
     private sanitizer: DomSanitizer
   ) {}
 
@@ -35,7 +41,16 @@ export class ShowDetailComponent implements OnInit {
       this.error.set(null);
       this.show.set(null);
       this.svc.getShowDetails(id).subscribe({
-        next: (show) => { this.show.set(show); this.loading.set(false); },
+        next: (show) => {
+          this.show.set(show);
+          this.loading.set(false);
+          if (this.auth.isLoggedIn()) {
+            this.svc.getUserShowStatus(show.id).subscribe((status) => {
+              this.inWatchList.set(status.isInWatchList);
+              this.inFavorites.set(status.isInFavoritesList);
+            });
+          }
+        },
         error: () => { this.error.set('Failed to load show.'); this.loading.set(false); },
       });
     });
@@ -64,5 +79,19 @@ export class ShowDetailComponent implements OnInit {
     this.activeSection.set(section);
     const el = document.querySelector(`.${section}-section`);
     el?.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  toggleWatchList(): void {
+    const s = this.show();
+    if (!s) return;
+    this.svc.addToWatchList(s.id).subscribe();
+    this.inWatchList.set(!this.inWatchList());
+  }
+
+  toggleFavorites(): void {
+    const s = this.show();
+    if (!s) return;
+    this.svc.addToFavorites(s.id).subscribe();
+    this.inFavorites.set(!this.inFavorites());
   }
 }

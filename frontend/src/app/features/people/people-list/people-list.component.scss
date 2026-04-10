@@ -1,0 +1,53 @@
+.peopleGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.profileCard {
+  background: #fff;
+  border: 1px solid #e6e7e9;
+  box-shadow: 0 2px 2px 0 rgba(191, 153, 153, 0.5);
+  display: flex;
+  flex-direction: column;
+}
+
+.profileImageWrapper {
+  overflow: hidden;
+
+  a {
+    display: block;
+  }
+}
+
+.personPhoto {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.personInfoWrapper {
+  display: block;
+  padding: 6px 8px;
+  background: #fbfafa;
+  border-top: 1px solid #e6e7e9;
+  color: #524747;
+  text-decoration: none;
+}
+
+.nameWrapper {
+  font-size: 13px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.knownForDesc {
+  font-size: 11px;
+  color: #777;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

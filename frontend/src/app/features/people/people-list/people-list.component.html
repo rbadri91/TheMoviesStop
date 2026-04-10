@@ -9,19 +9,17 @@
   }
 
   @if (!loading()) {
-    <div class="resultList flex">
+    <div class="peopleGrid">
       @for (person of people(); track person.id) {
-        <div class="list profileView">
+        <div class="profileCard">
           <div class="profileImageWrapper">
             <a [routerLink]="['/people/desc', person.id]">
-              <img class="imageSettings" [src]="posterBase + person.profile_path" [alt]="person.name" />
+              <img class="personPhoto" [src]="posterBase + person.profile_path" [alt]="person.name" />
             </a>
           </div>
-          <a class="infoWrapper" [routerLink]="['/people/desc', person.id]">
-            <div class="infoInnerWrapper">
-              <div class="nameWrapper">{{ person.name }}</div>
-              <div class="knownForDesc" [title]="person.knownFor ?? ''">{{ person.knownFor }}</div>
-            </div>
+          <a class="personInfoWrapper" [routerLink]="['/people/desc', person.id]">
+            <div class="nameWrapper">{{ person.name }}</div>
+            <div class="knownForDesc" [title]="person.knownFor ?? ''">{{ person.knownFor }}</div>
           </a>
         </div>
       }

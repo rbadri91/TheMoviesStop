@@ -1,0 +1,77 @@
+@if (loading()) {
+  <div class="text-center py-5"><div class="spinner-border" role="status"></div></div>
+}
+@if (error()) {
+  <div class="alert alert-danger m-3">{{ error() }}</div>
+}
+
+@if (profile(); as p) {
+  <div class="profileWrapper">
+
+    <!-- Header -->
+    <div class="profileHeader cardView">
+      <div class="profileAvatar">{{ p.username[0] | uppercase }}</div>
+      <div class="profileInfo">
+        <h2 class="featured_info">{{ p.username }}</h2>
+        <p class="profileMeta">
+          {{ p.watchList.length }} in watchlist &nbsp;|&nbsp; {{ p.favoritesList.length }} in favorites
+        </p>
+      </div>
+    </div>
+
+    <!-- Tab nav -->
+    <div class="ms-row optionsNav">
+      <div class="menuNavSection">
+        <span class="tabNav" [class.active]="activeTab()==='watchlist'" (click)="activeTab.set('watchlist')">
+          Watchlist ({{ p.watchList.length }})
+        </span>
+        <span class="tabNav" [class.active]="activeTab()==='favorites'" (click)="activeTab.set('favorites')">
+          Favorites ({{ p.favoritesList.length }})
+        </span>
+      </div>
+    </div>
+
+    <!-- Watchlist -->
+    @if (activeTab() === 'watchlist') {
+      @if (p.watchList.length === 0) {
+        <p class="emptyState">Your watchlist is empty. Add movies or shows from their detail pages.</p>
+      } @else {
+        <div class="mediaGrid">
+          @for (item of p.watchList; track item.id) {
+            <div class="mediaCard">
+              <a [routerLink]="getLink(item)">
+                <img [src]="posterBase + item.poster_path" [alt]="item.title" class="mediaPoster" />
+              </a>
+              <div class="mediaCardInfo">
+                <a [routerLink]="getLink(item)" class="mediaTitle">{{ item.title }}</a>
+                <span class="mediaType">{{ item.mediaType === 'movie' ? 'Movie' : 'TV Show' }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    }
+
+    <!-- Favorites -->
+    @if (activeTab() === 'favorites') {
+      @if (p.favoritesList.length === 0) {
+        <p class="emptyState">Your favorites list is empty. Add movies or shows from their detail pages.</p>
+      } @else {
+        <div class="mediaGrid">
+          @for (item of p.favoritesList; track item.id) {
+            <div class="mediaCard">
+              <a [routerLink]="getLink(item)">
+                <img [src]="posterBase + item.poster_path" [alt]="item.title" class="mediaPoster" />
+              </a>
+              <div class="mediaCardInfo">
+                <a [routerLink]="getLink(item)" class="mediaTitle">{{ item.title }}</a>
+                <span class="mediaType">{{ item.mediaType === 'movie' ? 'Movie' : 'TV Show' }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    }
+
+  </div>
+}

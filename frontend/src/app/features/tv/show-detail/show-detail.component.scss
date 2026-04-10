@@ -13,6 +13,18 @@
   }
 }
 
+.MovieInfoWraper a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.section-info a,
+.credits-section a,
+.details-section a {
+  color: #00b7ff;
+  text-decoration: none;
+}
+
 .MovieInfoWraper {
   width: 900px;
   margin: 50px auto;

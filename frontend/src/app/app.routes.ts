@@ -16,6 +16,13 @@ export const routes: Routes = [
     canActivate: [guestGuard],
   },
 
+  // Profile
+  {
+    path: 'profile',
+    loadComponent: () => import('./features/profile/profile.component').then((m) => m.ProfileComponent),
+    canActivate: [authGuard],
+  },
+
   // Home
   {
     path: 'home',
