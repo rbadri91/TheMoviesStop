@@ -24,5 +24,6 @@
         </div>
       }
     </div>
+    <app-paginator [currentPage]="currentPage()" [totalPages]="totalPages()" (pageChange)="onPageChange($event)" />
   }
 </div>

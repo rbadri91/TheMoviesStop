@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Movie, MovieListResponse, UserMediaStatus } from '../../models/movie.model';
 import { StateService } from './state.service';
 import { AuthService } from './auth.service';
@@ -14,28 +13,20 @@ export class MoviesService {
     private auth: AuthService
   ) {}
 
-  getPopular(): Observable<Movie[]> {
-    return this.http
-      .get<MovieListResponse>('/api/movies/popular')
-      .pipe(map((res) => res.results));
+  getPopular(page = 1): Observable<MovieListResponse> {
+    return this.http.get<MovieListResponse>(`/api/movies/popular?page=${page}`);
   }
 
-  getTopRated(): Observable<Movie[]> {
-    return this.http
-      .get<MovieListResponse>('/api/movies/top')
-      .pipe(map((res) => res.results));
+  getTopRated(page = 1): Observable<MovieListResponse> {
+    return this.http.get<MovieListResponse>(`/api/movies/top?page=${page}`);
   }
 
-  getUpcoming(): Observable<Movie[]> {
-    return this.http
-      .get<MovieListResponse>('/api/movies/upcoming')
-      .pipe(map((res) => res.results));
+  getUpcoming(page = 1): Observable<MovieListResponse> {
+    return this.http.get<MovieListResponse>(`/api/movies/upcoming?page=${page}`);
   }
 
-  getShowingNow(): Observable<Movie[]> {
-    return this.http
-      .get<MovieListResponse>('/api/movies/showingnow')
-      .pipe(map((res) => res.results));
+  getShowingNow(page = 1): Observable<MovieListResponse> {
+    return this.http.get<MovieListResponse>(`/api/movies/showingnow?page=${page}`);
   }
 
   getOpeningThisWeek(): Observable<MovieListResponse> {

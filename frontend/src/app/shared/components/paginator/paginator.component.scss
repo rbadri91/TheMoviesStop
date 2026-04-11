@@ -1,0 +1,41 @@
+.paginator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  padding: 24px 0 12px;
+}
+
+.pageBtn {
+  min-width: 34px;
+  height: 34px;
+  padding: 0 8px;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 3px;
+  color: #333;
+
+  &:hover:not(:disabled):not(.active) {
+    background: #f0f0f0;
+  }
+
+  &.active {
+    background: #104010;
+    color: #fff;
+    border-color: #104010;
+    cursor: default;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+}
+
+.pageDots {
+  padding: 0 4px;
+  color: #999;
+  font-size: 14px;
+}

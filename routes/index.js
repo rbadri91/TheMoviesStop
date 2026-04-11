@@ -80,25 +80,29 @@ module.exports = function(router, passport) {
     });
 
     router.get('/movies/top', function(req, res, next) {
-        getTopMovies().then((movies) => {
+        var page = parseInt(req.query.page) || 1;
+        getTopMovies(page).then((movies) => {
             res.json(JSON.parse(movies));
         }).catch(next);
     });
 
     router.get('/movies/upcoming', function(req, res, next) {
-        getUpcomingMovies().then((movies) => {
+        var page = parseInt(req.query.page) || 1;
+        getUpcomingMovies(page).then((movies) => {
             res.json(JSON.parse(movies));
         }).catch(next);
     });
 
     router.get('/movies/showingnow', function(req, res, next) {
-        getNowShowingMovies().then((movies) => {
+        var page = parseInt(req.query.page) || 1;
+        getNowShowingMovies(page).then((movies) => {
             res.json(JSON.parse(movies));
         }).catch(next);
     });
 
     router.get('/movies/popular', function(req, res, next) {
-        getPopularMovies().then((movies) => {
+        var page = parseInt(req.query.page) || 1;
+        getPopularMovies(page).then((movies) => {
             res.json(JSON.parse(movies));
         }).catch(next);
     });
@@ -343,66 +347,65 @@ module.exports = function(router, passport) {
         }).catch(next);
     });
 
-    function getPopularMovies() {
+    function getPopularMovies(page) {
         return new Promise((resolve) => {
             var options = {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/movie/popular?page=1&language=en-US&api_key=" + TMDB_API_KEY,
-                "headers": {}
-            };
-
-            getdata(options, resolve);
-        });
-    }
-
-    function getTopMovies() {
-        return new Promise((resolve) => {
-            var options = {
-                "method": "GET",
-                "hostname": "api.themoviedb.org",
-                "port": null,
-                "path": "/3/movie/top_rated?page=1&language=en-US&api_key=" + TMDB_API_KEY,
+                "path": "/3/movie/popular?page=" + (page||1) + "&language=en-US&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
             getdata(options, resolve);
         });
     }
 
-    function getUpcomingMovies() {
+    function getTopMovies(page) {
         return new Promise((resolve) => {
             var options = {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/movie/upcoming?page=1&language=en-US&api_key=" + TMDB_API_KEY,
+                "path": "/3/movie/top_rated?page=" + (page||1) + "&language=en-US&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
             getdata(options, resolve);
         });
     }
 
-    function getShowingNowMovies() {
+    function getUpcomingMovies(page) {
         return new Promise((resolve) => {
             var options = {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/movie/now_playing?page=1&language=en-US&api_key=" + TMDB_API_KEY,
+                "path": "/3/movie/upcoming?page=" + (page||1) + "&language=en-US&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
             getdata(options, resolve);
         });
     }
 
-    function getNowShowingMovies() {
+    function getShowingNowMovies(page) {
         return new Promise((resolve) => {
             var options = {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/movie/now_playing?page=1&language=en-US&api_key=" + TMDB_API_KEY,
+                "path": "/3/movie/now_playing?page=" + (page||1) + "&language=en-US&api_key=" + TMDB_API_KEY,
+                "headers": {}
+            };
+            getdata(options, resolve);
+        });
+    }
+
+    function getNowShowingMovies(page) {
+        return new Promise((resolve) => {
+            var options = {
+                "method": "GET",
+                "hostname": "api.themoviedb.org",
+                "port": null,
+                "path": "/3/movie/now_playing?page=" + (page||1) + "&language=en-US&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
             getdata(options, resolve);
@@ -410,25 +413,29 @@ module.exports = function(router, passport) {
     }
 
     router.get('/tv/popular', function(req, res, next) {
-        getPopularShows().then((shows) => {
+        var page = parseInt(req.query.page) || 1;
+        getPopularShows(page).then((shows) => {
             res.json(shows);
         }).catch(next);
     });
 
     router.get('/tv/top', function(req, res, next) {
-        getTopShows().then((shows) => {
+        var page = parseInt(req.query.page) || 1;
+        getTopShows(page).then((shows) => {
             res.json(shows);
         }).catch(next);
     });
 
     router.get('/tv/onTV', function(req, res, next) {
-        getonTVShows().then((shows) => {
+        var page = parseInt(req.query.page) || 1;
+        getonTVShows(page).then((shows) => {
             res.json(shows);
         }).catch(next);
     });
 
     router.get('/tv/airingToday', function(req, res, next) {
-        getAiringTodayShows().then((shows) => {
+        var page = parseInt(req.query.page) || 1;
+        getAiringTodayShows(page).then((shows) => {
             res.json(shows);
         }).catch(next);
     });
@@ -480,53 +487,52 @@ module.exports = function(router, passport) {
         }
     });
 
-    function getPopularShows() {
+    function getPopularShows(page) {
         return new Promise((resolve) => {
             var options = {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/tv/popular?page=1&language=en-US&api_key=" + TMDB_API_KEY,
-                "headers": {}
-            };
-
-            getdata(options, resolve);
-        });
-    }
-
-    function getTopShows() {
-        return new Promise((resolve) => {
-            var options = {
-                "method": "GET",
-                "hostname": "api.themoviedb.org",
-                "port": null,
-                "path": "/3/tv/top_rated?page=1&language=en-US&api_key=" + TMDB_API_KEY,
+                "path": "/3/tv/popular?page=" + (page||1) + "&language=en-US&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
             getdata(options, resolve);
         });
     }
 
-    function getonTVShows() {
+    function getTopShows(page) {
         return new Promise((resolve) => {
             var options = {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/tv/on_the_air?page=1&language=en-US&api_key=" + TMDB_API_KEY,
+                "path": "/3/tv/top_rated?page=" + (page||1) + "&language=en-US&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
             getdata(options, resolve);
         });
     }
 
-    function getAiringTodayShows() {
+    function getonTVShows(page) {
         return new Promise((resolve) => {
             var options = {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/tv/airing_today?page=1&language=en-US&api_key=" + TMDB_API_KEY,
+                "path": "/3/tv/on_the_air?page=" + (page||1) + "&language=en-US&api_key=" + TMDB_API_KEY,
+                "headers": {}
+            };
+            getdata(options, resolve);
+        });
+    }
+
+    function getAiringTodayShows(page) {
+        return new Promise((resolve) => {
+            var options = {
+                "method": "GET",
+                "hostname": "api.themoviedb.org",
+                "port": null,
+                "path": "/3/tv/airing_today?page=" + (page||1) + "&language=en-US&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
             getdata(options, resolve);
@@ -534,7 +540,8 @@ module.exports = function(router, passport) {
     }
 
     router.get('/people/popular', function(req, res, next) {
-        getPopularPeople().then((people) => {
+        var page = parseInt(req.query.page) || 1;
+        getPopularPeople(page).then((people) => {
             res.json(people);
         }).catch(next);
     });
@@ -546,13 +553,13 @@ module.exports = function(router, passport) {
         }).catch(next);
     });
 
-    function getPopularPeople() {
+    function getPopularPeople(page) {
         return new Promise((resolve) => {
             var options = {
                 "method": "GET",
                 "hostname": "api.themoviedb.org",
                 "port": null,
-                "path": "/3/person/popular?page=1&language=en-US&api_key=" + TMDB_API_KEY,
+                "path": "/3/person/popular?page=" + (page||1) + "&language=en-US&api_key=" + TMDB_API_KEY,
                 "headers": {}
             };
 
