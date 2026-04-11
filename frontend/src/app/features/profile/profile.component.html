@@ -14,7 +14,7 @@
       <div class="profileInfo">
         <h2 class="featured_info">{{ p.username }}</h2>
         <p class="profileMeta">
-          {{ p.watchList.length }} in watchlist &nbsp;|&nbsp; {{ p.favoritesList.length }} in favorites
+          {{ p.watchList.length }} in watchlist &nbsp;|&nbsp; {{ p.favoritesList.length }} in favorites &nbsp;|&nbsp; {{ p.ratings.length }} rated
         </p>
       </div>
     </div>
@@ -27,6 +27,9 @@
         </span>
         <span class="tabNav" [class.active]="activeTab()==='favorites'" (click)="activeTab.set('favorites')">
           Favorites ({{ p.favoritesList.length }})
+        </span>
+        <span class="tabNav" [class.active]="activeTab()==='ratings'" (click)="activeTab.set('ratings')">
+          Ratings ({{ p.ratings.length }})
         </span>
       </div>
     </div>
@@ -66,6 +69,28 @@
               <div class="mediaCardInfo">
                 <a [routerLink]="getLink(item)" class="mediaTitle">{{ item.title }}</a>
                 <span class="mediaType">{{ item.mediaType === 'movie' ? 'Movie' : 'TV Show' }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    }
+
+    <!-- Ratings -->
+    @if (activeTab() === 'ratings') {
+      @if (p.ratings.length === 0) {
+        <p class="emptyState">You haven't rated anything yet. Rate movies or shows from their detail pages.</p>
+      } @else {
+        <div class="mediaGrid">
+          @for (item of p.ratings; track item.id) {
+            <div class="mediaCard">
+              <a [routerLink]="getLink(item)">
+                <img [src]="posterBase + item.poster_path" [alt]="item.title" class="mediaPoster" />
+              </a>
+              <div class="mediaCardInfo">
+                <a [routerLink]="getLink(item)" class="mediaTitle">{{ item.title }}</a>
+                <span class="mediaType">{{ item.mediaType === 'movie' ? 'Movie' : 'TV Show' }}</span>
+                <span class="ratingBadge">&#9733; {{ item.ratingValue }}/10</span>
               </div>
             </div>
           }

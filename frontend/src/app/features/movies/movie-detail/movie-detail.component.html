@@ -51,16 +51,21 @@
             </div>
             @if (auth.isLoggedIn()) {
               <div class="UserMarkingWrapper">
-                <button class="btn btn-sm btn-outline-secondary"
-                  [style.color]="inWatchList() ? '#1fd41f' : '#333'"
-                  (click)="toggleWatchList()" title="Toggle Watchlist">
-                  &#128278;
-                </button>
-                <button class="btn btn-sm btn-outline-secondary"
-                  [style.color]="inFavorites() ? '#1fd41f' : '#333'"
-                  (click)="toggleFavorites()" title="Toggle Favorites">
-                  &#10084;
-                </button>
+                <div class="toggleButtons">
+                  <button class="btn btn-sm btn-outline-secondary"
+                    [style.color]="inWatchList() ? '#1fd41f' : '#333'"
+                    (click)="toggleWatchList()" title="Toggle Watchlist">
+                    &#128278;
+                  </button>
+                  <button class="btn btn-sm btn-outline-secondary"
+                    [style.color]="inFavorites() ? '#1fd41f' : '#333'"
+                    (click)="toggleFavorites()" title="Toggle Favorites">
+                    &#10084;
+                  </button>
+                </div>
+                <div class="ratingWidget">
+                  <app-star-rating [rating]="userRating()" (ratingChange)="onRate($event)" />
+                </div>
               </div>
             }
           </div>

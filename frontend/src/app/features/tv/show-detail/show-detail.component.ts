@@ -7,11 +7,12 @@ import { AuthService } from '../../../core/services/auth.service';
 import { StateService } from '../../../core/services/state.service';
 import { Show } from '../../../models/show.model';
 import { HtmlizePipe } from '../../../shared/pipes/htmlize.pipe';
+import { StarRatingComponent } from '../../../shared/components/star-rating/star-rating.component';
 
 @Component({
   selector: 'app-show-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, HtmlizePipe],
+  imports: [CommonModule, RouterLink, HtmlizePipe, StarRatingComponent],
   templateUrl: './show-detail.component.html',
   styleUrl: './show-detail.component.scss',
 })
@@ -22,6 +23,7 @@ export class ShowDetailComponent implements OnInit {
   activeSection = signal('cast');
   inWatchList = signal(false);
   inFavorites = signal(false);
+  userRating = signal(0);
 
   readonly posterBase = 'https://image.tmdb.org/t/p/w300';
   readonly backdropBase = 'https://image.tmdb.org/t/p/w1280';
@@ -48,6 +50,7 @@ export class ShowDetailComponent implements OnInit {
             this.svc.getUserShowStatus(show.id).subscribe((status) => {
               this.inWatchList.set(status.isInWatchList);
               this.inFavorites.set(status.isInFavoritesList);
+              this.userRating.set(status.userRating ?? 0);
             });
           }
         },
@@ -93,5 +96,12 @@ export class ShowDetailComponent implements OnInit {
     if (!s) return;
     this.svc.addToFavorites(s.id).subscribe();
     this.inFavorites.set(!this.inFavorites());
+  }
+
+  onRate(rating: number): void {
+    const s = this.show();
+    if (!s) return;
+    this.svc.rateShow(s.id, rating).subscribe();
+    this.userRating.set(rating);
   }
 }

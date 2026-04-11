@@ -1,0 +1,11 @@
+<div class="starRating" (mouseleave)="onLeave()">
+  @for (star of stars; track star) {
+    <span [class]="getStarClass(star)"
+          (mouseenter)="onHover(star)"
+          (click)="onClick(star)"
+          [title]="star + '/10'">&#9733;</span>
+  }
+  @if (_rating() > 0) {
+    <span class="ratingLabel">{{ _rating() }}/10</span>
+  }
+</div>

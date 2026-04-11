@@ -16,7 +16,7 @@ export class ProfileComponent implements OnInit {
   profile = signal<UserProfile | null>(null);
   loading = signal(true);
   error = signal<string | null>(null);
-  activeTab = signal<'watchlist' | 'favorites'>('watchlist');
+  activeTab = signal<'watchlist' | 'favorites' | 'ratings'>('watchlist');
 
   readonly posterBase = 'https://image.tmdb.org/t/p/w300';
 

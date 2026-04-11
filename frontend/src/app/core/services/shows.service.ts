@@ -24,6 +24,10 @@ export class ShowsService {
     return this.http.post('/api/user/tv/addToFavorites', { showId });
   }
 
+  rateShow(showId: number, ratingVal: number): Observable<unknown> {
+    return this.http.post('/api/user/tv/rate', { showId, ratingVal });
+  }
+
   getPopular(): Observable<Show[]> {
     return this.http
       .get<ShowListResponse>('/api/tv/popular')
