@@ -3,7 +3,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 var express = require('express');
 var path = require('path');
-var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -19,22 +18,17 @@ var users = require('./routes/users');
 
 var app = express();
 
-// view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-app.set('views', path.join(__dirname, './views'));
-app.set('view engine', 'ejs');
+const ANGULAR_DIST = path.join(__dirname, 'frontend', 'dist', 'frontend', 'browser');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+
+// Serve Angular build output
+app.use(express.static(ANGULAR_DIST));
 
 app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
-
-const port = 8002;
 
 let client;
 
@@ -58,20 +52,16 @@ async function connectToDatabase() {
 
         app.use('/users', users);
 
-        // catch 404
-        app.use(function(req, res, next) {
-            res.status(404).json({ error: 'Not Found' });
+        // Catch-all: serve Angular's index.html for any non-API route
+        // This allows Angular's client-side router to handle all page navigation
+        app.use(function(req, res) {
+            res.sendFile(path.join(ANGULAR_DIST, 'index.html'));
         });
 
         // global API error handler — keeps the process alive
         app.use(function(err, req, res, next) {
             console.error('[API Error]', err.message);
             res.status(err.status || 500).json({ error: err.message || 'Internal Server Error' });
-        });
-
-        // Start the server
-        app.listen(port, () => {
-            console.log(`Server running at http://localhost:${port}`);
         });
 
     } catch (err) {
