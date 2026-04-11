@@ -6,7 +6,7 @@
     "start": "node ./bin/www",
     "start:dev": "nodemon ./bin/www",
     "test": "jest --runInBand --forceExit",
-    "heroku-postbuild": "cd frontend && npm install && npm run build"
+    "heroku-postbuild": "cd frontend && npm install --include=dev && npm run build"
   },
   "jest": {
     "testEnvironment": "node",
