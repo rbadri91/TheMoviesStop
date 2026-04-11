@@ -57,3 +57,6 @@ typings/
 # dotenv environment variables file
 .env
 
+
+# Angular build output (built by heroku-postbuild on deploy)
+frontend/dist/

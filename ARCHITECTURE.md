@@ -11,16 +11,16 @@ TheMoviesStop is a full-stack web application that surfaces movie, TV show, and 
 ```
 Browser (Angular 21 SPA)
     │
-    │  HTTP /api/*
+    │  All requests
     ▼
-Express Backend (Node.js)
+Express Backend (Node.js) — serves Angular static files + handles /api/* routes
     │                │
     │ TMDB API       │ MongoDB
     ▼                ▼
 themoviedb.org    User data
 ```
 
-The Express backend acts as a proxy and auth layer. It does not render HTML — all UI is handled by the Angular SPA.
+Express serves the Angular build output (`frontend/dist/frontend/browser/`) as static files. Any URL not matched by a static file or an API route falls back to `index.html`, letting Angular's client-side router handle navigation. The legacy AngularJS app (`public/`) has been removed.
 
 ---
 
@@ -28,14 +28,13 @@ The Express backend acts as a proxy and auth layer. It does not render HTML — 
 
 ```
 TheMoviesStop/
-├── app.js                  # Express app setup (middleware, routes, error handler)
+├── app.js                  # Express app setup (middleware, static serving, error handler)
 ├── bin/www                 # HTTP server entry point, process crash handlers
 ├── routes/index.js         # All API route handlers (single file)
 ├── models/users.js         # Mongoose User schema
-├── config/                 # Passport config (legacy, unused in new frontend)
-├── views/index.ejs         # Shell for the legacy AngularJS app (public/)
-├── public/                 # Legacy AngularJS 1.x frontend (not actively developed)
-└── frontend/               # Angular 21 frontend (active)
+├── config/                 # Passport and database config
+└── frontend/               # Angular 21 frontend
+    ├── dist/frontend/browser/  # Build output (gitignored; built by heroku-postbuild)
     └── src/app/
         ├── app.ts          # Root component
         ├── app.routes.ts   # All client-side routes
@@ -262,6 +261,14 @@ The `/allFeeds` and auth endpoints are unaffected because they construct their o
 
 ---
 
-## Legacy Frontend (`public/`)
+## Deployment (Heroku)
 
-The `public/` directory contains the original AngularJS 1.x app. It is served via `views/index.ejs` on port 8002 (the Express server itself). It is no longer actively developed — the Angular 21 app in `frontend/` is the migration target. Both apps share the same Express backend.
+`npm start` → `node ./bin/www` → Express listens on `process.env.PORT`.
+
+On each deploy, Heroku runs `heroku-postbuild` before starting the server:
+```bash
+cd frontend && npm install && npm run build
+```
+This produces `frontend/dist/frontend/browser/` which Express serves as static files. No separate frontend server is needed in production.
+
+Required Heroku config vars: `TMDB_API_KEY`, `JWT_SECRET`, `SESSION_SECRET`, `MONGODB_URL`, `NODE_ENV=production`.

@@ -25,11 +25,6 @@ module.exports = function(router, passport) {
     var auth = jwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'], requestProperty: 'payload' });
     var TMDB_API_KEY = process.env.TMDB_API_KEY;
 
-    /* GET home page. */
-    router.get('/', function(req, res, next) {
-        res.render('index', { title: 'Express' });
-    });
-
     router.get('/allFeeds', function(req, res, next) {
         Promise.all([
             getUpcomingMovies(),
