@@ -17,5 +17,6 @@
         <app-movie-card [movie]="movie" />
       }
     </div>
+    <app-paginator [currentPage]="currentPage()" [totalPages]="totalPages()" (pageChange)="onPageChange($event)" />
   }
 </div>

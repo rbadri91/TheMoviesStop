@@ -62,16 +62,21 @@ TheMoviesStop/
 
 All routes live in one file. They fall into four categories:
 
-**TMDB proxy routes** — fetch from TMDB and return the result to the browser:
+**TMDB proxy routes** — fetch from TMDB and return the result to the browser. All list routes accept an optional `?page=N` query param (default 1), which is forwarded directly to TMDB:
 ```
-GET /movies/popular
-GET /movies/top
-GET /movies/showingnow
-GET /movies/upcoming
+GET /movies/popular?page=N
+GET /movies/top?page=N
+GET /movies/showingnow?page=N
+GET /movies/upcoming?page=N
+GET /movies/openingThisWeek
 GET /movies/:id
+GET /tv/popular?page=N
+GET /tv/top?page=N
+GET /tv/onTV?page=N
+GET /tv/airingToday?page=N
 GET /tv/:id
 GET /tv/:id/allseason
-GET /people/popular
+GET /people/popular?page=N
 GET /people/:id
 ...
 ```
@@ -187,7 +192,8 @@ shared/
 │   ├── navbar/               # Auth-aware navigation bar
 │   ├── movie-card/           # Poster card used in lists
 │   ├── show-card/            # Poster card for TV shows
-│   └── star-rating/          # 10-star interactive rating widget
+│   ├── star-rating/          # 10-star interactive rating widget
+│   └── paginator/            # Page navigation (prev/next + numbered pages with ellipsis)
 └── pipes/
     └── htmlize.pipe.ts       # Sanitizes and renders HTML content from TMDB reviews
 

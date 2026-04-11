@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Show, ShowListResponse, SeasonDetail } from '../../models/show.model';
 import { StateService } from './state.service';
 import { AuthService } from './auth.service';
@@ -28,28 +27,20 @@ export class ShowsService {
     return this.http.post('/api/user/tv/rate', { showId, ratingVal });
   }
 
-  getPopular(): Observable<Show[]> {
-    return this.http
-      .get<ShowListResponse>('/api/tv/popular')
-      .pipe(map((res) => res.results));
+  getPopular(page = 1): Observable<ShowListResponse> {
+    return this.http.get<ShowListResponse>(`/api/tv/popular?page=${page}`);
   }
 
-  getTopRated(): Observable<Show[]> {
-    return this.http
-      .get<ShowListResponse>('/api/tv/top')
-      .pipe(map((res) => res.results));
+  getTopRated(page = 1): Observable<ShowListResponse> {
+    return this.http.get<ShowListResponse>(`/api/tv/top?page=${page}`);
   }
 
-  getOnTV(): Observable<Show[]> {
-    return this.http
-      .get<ShowListResponse>('/api/tv/onTV')
-      .pipe(map((res) => res.results));
+  getOnTV(page = 1): Observable<ShowListResponse> {
+    return this.http.get<ShowListResponse>(`/api/tv/onTV?page=${page}`);
   }
 
-  getAiringToday(): Observable<Show[]> {
-    return this.http
-      .get<ShowListResponse>('/api/tv/airingToday')
-      .pipe(map((res) => res.results));
+  getAiringToday(page = 1): Observable<ShowListResponse> {
+    return this.http.get<ShowListResponse>(`/api/tv/airingToday?page=${page}`);
   }
 
   getShowDetails(id: number | string): Observable<Show> {

@@ -9,9 +9,13 @@ import { StateService } from './state.service';
 export class PeopleService {
   constructor(private http: HttpClient, private state: StateService) {}
 
-  getPopular(): Observable<Person[]> {
-    return this.http.get<PersonListResponse>('/api/people/popular').pipe(
-      map((res) => res.results.map((p) => this._withKnownFor(p)))
+  getPopular(page = 1): Observable<{ results: Person[]; total_pages: number; page: number }> {
+    return this.http.get<PersonListResponse>(`/api/people/popular?page=${page}`).pipe(
+      map((res) => ({
+        results: res.results.map((p) => this._withKnownFor(p)),
+        total_pages: res.total_pages,
+        page: res.page,
+      }))
     );
   }
 

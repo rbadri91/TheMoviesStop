@@ -1,0 +1,13 @@
+<nav class="paginator" *ngIf="_total() > 1">
+  <button class="pageBtn" [disabled]="_current() === 1" (click)="prev()">&#8592;</button>
+
+  @for (p of pages(); track p) {
+    @if (p === '...') {
+      <span class="pageDots">…</span>
+    } @else {
+      <button class="pageBtn" [class.active]="p === _current()" (click)="go(p)">{{ p }}</button>
+    }
+  }
+
+  <button class="pageBtn" [disabled]="_current() === _total()" (click)="next()">&#8594;</button>
+</nav>
