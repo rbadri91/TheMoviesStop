@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "statusMessage": "Checking if ARCHITECTURE.md needs updating...",
+            "command": "jq -r '.tool_input.file_path // .tool_response.filePath // \"\"' | { read -r file; echo \"$file\" | grep -qE '(routes/index\\.js|app\\.routes\\.ts|\\.service\\.ts|\\.interceptor\\.ts|\\.guard\\.ts|\\.model\\.ts|\\.component\\.ts|app\\.config\\.ts)' && echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"ARCHITECTURE.md UPDATE REQUIRED: The file you just modified touches the architecture (route, service, interceptor, guard, model, or component). Before committing, review ARCHITECTURE.md and update any sections that no longer reflect the current design.\"}}' || true; }"
+          }
+        ]
+      }
+    ]
+  }
+}
