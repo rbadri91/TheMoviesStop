@@ -7,11 +7,12 @@ import { AuthService } from '../../../core/services/auth.service';
 import { StateService } from '../../../core/services/state.service';
 import { Movie } from '../../../models/movie.model';
 import { HtmlizePipe } from '../../../shared/pipes/htmlize.pipe';
+import { StarRatingComponent } from '../../../shared/components/star-rating/star-rating.component';
 
 @Component({
   selector: 'app-movie-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, HtmlizePipe],
+  imports: [CommonModule, RouterLink, HtmlizePipe, StarRatingComponent],
   templateUrl: './movie-detail.component.html',
   styleUrl: './movie-detail.component.scss',
 })
@@ -22,6 +23,7 @@ export class MovieDetailComponent implements OnInit {
   activeSection = signal('cast');
   inWatchList = signal(false);
   inFavorites = signal(false);
+  userRating = signal(0);
 
   readonly posterBase = 'https://image.tmdb.org/t/p/w300';
   readonly backdropBase = 'https://image.tmdb.org/t/p/w1280';
@@ -49,6 +51,7 @@ export class MovieDetailComponent implements OnInit {
             this.svc.getUserMediaStatus(movie.id).subscribe((status) => {
               this.inWatchList.set(status.isInWatchList);
               this.inFavorites.set(status.isInFavoritesList);
+              this.userRating.set(status.userRating ?? 0);
             });
           }
         },
@@ -105,5 +108,12 @@ export class MovieDetailComponent implements OnInit {
     if (!m) return;
     this.svc.addToFavorites(m.id).subscribe();
     this.inFavorites.set(!this.inFavorites());
+  }
+
+  onRate(rating: number): void {
+    const m = this.movie();
+    if (!m) return;
+    this.svc.rateMovie(m.id, rating).subscribe();
+    this.userRating.set(rating);
   }
 }

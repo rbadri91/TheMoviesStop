@@ -50,16 +50,9 @@ export class MoviesService {
 
   getUserMediaStatus(movieId: number): Observable<UserMediaStatus> {
     const userId = this.auth.currentUserId();
-    return this.http
-      .get<{ isInFavoritesList: string; isInWatchList: string }>(
-        `/api/user/${userId}/moviesLikedAndtoWatch/${movieId}`
-      )
-      .pipe(
-        map((res) => ({
-          isInFavoritesList: JSON.parse(res.isInFavoritesList),
-          isInWatchList: JSON.parse(res.isInWatchList),
-        }))
-      );
+    return this.http.get<UserMediaStatus>(
+      `/api/user/${userId}/moviesLikedAndtoWatch/${movieId}`
+    );
   }
 
   addToFavorites(movieId: number): Observable<unknown> {
@@ -68,5 +61,9 @@ export class MoviesService {
 
   addToWatchList(movieId: number): Observable<unknown> {
     return this.http.post('/api/user/movies/addToWatchList', { movieId });
+  }
+
+  rateMovie(movieId: number, ratingVal: number): Observable<unknown> {
+    return this.http.post('/api/user/movies/rate/', { movieId, ratingVal });
   }
 }

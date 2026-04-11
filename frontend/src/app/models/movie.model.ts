@@ -80,4 +80,5 @@ export interface MovieListResponse {
 export interface UserMediaStatus {
   isInFavoritesList: boolean;
   isInWatchList: boolean;
+  userRating: number;
 }

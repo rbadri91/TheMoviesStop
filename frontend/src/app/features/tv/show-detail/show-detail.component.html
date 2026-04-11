@@ -63,6 +63,9 @@
                   (click)="toggleFavorites()" title="Toggle Favorites">
                   &#10084;
                 </button>
+                <div class="ratingWidget">
+                  <app-star-rating [rating]="userRating()" (ratingChange)="onRate($event)" />
+                </div>
               </div>
             }
           </div>
