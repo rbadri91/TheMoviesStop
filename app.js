@@ -44,11 +44,10 @@ async function connectToDatabase() {
     try {
         await client.connect();
 
-        // Use the database connection
-        const db = client.db('theMovieAuth'); // Replace with your database name
-
-        // Setup routes
-        require('./routes/index')(app, passport, db);
+        // Mount all API routes under /api to match Angular service calls
+        const apiRouter = express.Router();
+        require('./routes/index')(apiRouter, passport);
+        app.use('/api', apiRouter);
 
         app.use('/users', users);
 
