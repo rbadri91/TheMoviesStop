@@ -125,11 +125,9 @@ module.exports = function(router, passport) {
         var userId = req.params.userId;
 
         User.findById(userId).then(function(user) {
-            var resObj = {};
+            var resObj = { isInWatchList: false, isInFavoritesList: false, userRating: 0 };
+            if (!user) return res.json(resObj);
             var currMovieId = req.params.movieId;
-            resObj.isInWatchList = false;
-            resObj.isInFavoritesList = false;
-            resObj.userRating = 0;
 
             for (var i = 0; i < user.watchList.length; i++) {
                 if (currMovieId == user.watchList[i].id) {
@@ -150,7 +148,7 @@ module.exports = function(router, passport) {
                 }
             }
             res.json(resObj);
-        });
+        }).catch(next);
     });
 
     router.post('/user/movies/addToFavorites/', auth, function(req, res, next) {
@@ -167,14 +165,12 @@ module.exports = function(router, passport) {
             if (index != -1) {
                 user.favoritesList.splice(index, 1);
             } else {
-                var favObj = { id: movieId, mediaType: "movie" };
-                user.favoritesList.push(favObj);
+                user.favoritesList.push({ id: movieId, mediaType: "movie" });
             }
-            user.save(function(err) {
-                if (err) { return next(err); }
-                return "Success";
+            return user.save().then(function() {
+                res.json({ success: true });
             });
-        });
+        }).catch(next);
     });
 
     router.post('/user/movies/rate/', ratingLimiter, auth, function(req, res, next) {
@@ -187,8 +183,7 @@ module.exports = function(router, passport) {
             }
             if (index != -1) user.ratings.splice(index, 1);
             if (ratingVal > 0) user.ratings.push({ id: movieId, mediaType: 'movie', ratingValue: ratingVal });
-            user.save(function(err) {
-                if (err) { return next(err); }
+            return user.save().then(function() {
                 res.json({ success: true, ratingVal: ratingVal });
             });
         }).catch(next);
@@ -208,15 +203,12 @@ module.exports = function(router, passport) {
             if (index != -1) {
                 user.watchList.splice(index, 1);
             } else {
-                var watchObj = { id: movieId, mediaType: "movie" };
-                user.watchList.push(watchObj);
+                user.watchList.push({ id: movieId, mediaType: "movie" });
             }
-            user.save(function(err) {
-                if (err) { return next(err); }
-                return "Success";
+            return user.save().then(function() {
+                res.json({ success: true });
             });
-        });
-
+        }).catch(next);
     });
     router.get('/tv/genre/:genreId', function(req, res, next) {
         var genreId = req.params.genreId;
@@ -250,17 +242,17 @@ module.exports = function(router, passport) {
             } else {
                 user.favoritesList.push({ id: showId, mediaType: "shows" });
             }
-            user.save(function(err) {
-                if (err) { return next(err); }
+            return user.save().then(function() {
                 res.json({ success: true });
             });
-        });
+        }).catch(next);
     });
 
     router.get('/user/:userId/tvLikedAndToWatch/:showId', function(req, res, next) {
         User.findById(req.params.userId).then(function(user) {
             var showId = req.params.showId;
             var resObj = { isInWatchList: false, isInFavoritesList: false, userRating: 0 };
+            if (!user) return res.json(resObj);
             for (var i = 0; i < user.watchList.length; i++) {
                 if (showId == user.watchList[i].id) { resObj.isInWatchList = true; break; }
             }
@@ -271,7 +263,7 @@ module.exports = function(router, passport) {
                 if (showId == user.ratings[k].id) { resObj.userRating = user.ratings[k].ratingValue; break; }
             }
             res.json(resObj);
-        });
+        }).catch(next);
     });
 
     router.get('/user/profile', auth, function(req, res, next) {
@@ -303,7 +295,7 @@ module.exports = function(router, passport) {
             } catch(e) {
                 res.json({ username: user.username, watchList: [], favoritesList: [], ratings: [] });
             }
-        });
+        }).catch(next);
     });
     router.post('/user/tv/addToWatchList', auth, function(req, res, next) {
         var showId = parseInt(req.body.showId);
@@ -318,11 +310,10 @@ module.exports = function(router, passport) {
             } else {
                 user.watchList.push({ id: showId, mediaType: "shows" });
             }
-            user.save(function(err) {
-                if (err) { return next(err); }
+            return user.save().then(function() {
                 res.json({ success: true });
             });
-        });
+        }).catch(next);
     });
 
     router.post('/user/tv/rate', ratingLimiter, auth, function(req, res, next) {
@@ -335,8 +326,7 @@ module.exports = function(router, passport) {
             }
             if (index != -1) user.ratings.splice(index, 1);
             if (ratingVal > 0) user.ratings.push({ id: showId, mediaType: 'shows', ratingValue: ratingVal });
-            user.save(function(err) {
-                if (err) { return next(err); }
+            return user.save().then(function() {
                 res.json({ success: true, ratingVal: ratingVal });
             });
         }).catch(next);
