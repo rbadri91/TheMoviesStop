@@ -7,6 +7,15 @@ const { expressjwt: jwt } = require('express-jwt');
 var http = require("https");
 var Memcached = require('memcached');
 var memcached = new Memcached('127.0.0.1:11211');
+const rateLimit = require('express-rate-limit');
+
+const ratingLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 60,                   // max 60 ratings per window per IP
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { error: 'Too many requests, please try again later.' },
+});
 
 
 var mongoose = require('mongoose');
@@ -169,7 +178,7 @@ module.exports = function(router, passport) {
         });
     });
 
-    router.post('/user/movies/rate/', auth, function(req, res, next) {
+    router.post('/user/movies/rate/', ratingLimiter, auth, function(req, res, next) {
         var movieId = parseInt(req.body.movieId);
         var ratingVal = parseInt(req.body.ratingVal);
         User.findById(req.payload._id).then(function(user) {
@@ -317,7 +326,7 @@ module.exports = function(router, passport) {
         });
     });
 
-    router.post('/user/tv/rate', auth, function(req, res, next) {
+    router.post('/user/tv/rate', ratingLimiter, auth, function(req, res, next) {
         var showId = parseInt(req.body.showId);
         var ratingVal = parseInt(req.body.ratingVal);
         User.findById(req.payload._id).then(function(user) {
