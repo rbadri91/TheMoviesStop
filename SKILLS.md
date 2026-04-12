@@ -38,7 +38,7 @@ cp .env.example .env
 ### Running the app
 
 ```bash
-# Backend with auto-reload (port 8002)
+# Backend with auto-reload (port 8000)
 npm run start:dev
 
 # Frontend Angular dev server (port 4200)
@@ -162,6 +162,31 @@ it('should set userRating signal from status response', () => {
   expect(component.userRating()).toBe(8);
 });
 ```
+
+---
+
+## Branch and Pull Request Workflow
+
+- All work must be done on a feature branch — never commit directly to `master`.
+- When a branch is ready, always open a pull request against `master`, even for small fixes.
+- After a PR is merged, delete the source branch. Do not leave stale branches around.
+
+```bash
+# Create a branch
+git checkout -b my-feature
+
+# Push and open a PR
+git push origin my-feature
+gh pr create --title "..." --body "..."
+
+# After merge, delete the branch locally and remotely
+git checkout master
+git pull origin master
+git branch -d my-feature
+git push origin --delete my-feature
+```
+
+**Why:** Short-lived branches keep the repository tidy and make it easy to see what is actively in progress. Stale merged branches create noise and confusion about whether work is still pending.
 
 ---
 
