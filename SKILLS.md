@@ -38,7 +38,7 @@ cp .env.example .env
 ### Running the app
 
 ```bash
-# Backend with auto-reload (port 8002)
+# Backend with auto-reload (port 8000)
 npm run start:dev
 
 # Frontend Angular dev server (port 4200)
@@ -162,6 +162,41 @@ it('should set userRating signal from status response', () => {
   expect(component.userRating()).toBe(8);
 });
 ```
+
+---
+
+## Branch and Pull Request Workflow
+
+- All work must be done on a feature branch — never commit directly to `master`.
+- When a branch is ready, always open a pull request against `master`, even for small fixes.
+- Every PR must include a description summarising all changes made on the branch — not just the last commit. Reviewers should be able to understand what changed and why without reading the diff.
+- After a PR is merged, delete the source branch. Do not leave stale branches around.
+
+```bash
+# Create a branch
+git checkout -b my-feature
+
+# Push and open a PR with a description
+git push origin my-feature
+gh pr create --title "Short title" --body "$(cat <<'EOF'
+## Summary
+- What was changed and why (cover all commits on the branch)
+- Note any non-obvious decisions or side effects
+
+## Test plan
+- [ ] Tested locally at localhost:4200
+- [ ] Verified the affected routes/pages work end to end
+EOF
+)"
+
+# After merge, delete the branch locally and remotely
+git checkout master
+git pull origin master
+git branch -d my-feature
+git push origin --delete my-feature
+```
+
+**Why:** A PR without a description forces reviewers to reconstruct intent from the diff. On this project that matters because many changes involve non-obvious backend/frontend interactions (proxy config, Mongoose version quirks, JWT payload shape) that are not self-evident from the code alone.
 
 ---
 
