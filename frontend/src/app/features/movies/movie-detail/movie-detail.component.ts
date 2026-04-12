@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -15,6 +15,7 @@ import { StarRatingComponent } from '../../../shared/components/star-rating/star
   imports: [CommonModule, RouterLink, HtmlizePipe, StarRatingComponent],
   templateUrl: './movie-detail.component.html',
   styleUrl: './movie-detail.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MovieDetailComponent implements OnInit {
   movie = signal<Movie | null>(null);
@@ -27,6 +28,11 @@ export class MovieDetailComponent implements OnInit {
 
   readonly posterBase = 'https://image.tmdb.org/t/p/w300';
   readonly backdropBase = 'https://image.tmdb.org/t/p/w1280';
+
+  readonly videoSrcs = computed(() => {
+    const vids = this.movie()?.videos?.results ?? [];
+    return new Map(vids.map(v => [v.key, this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${v.key}`)]));
+  });
 
   constructor(
     private route: ActivatedRoute,
@@ -58,12 +64,6 @@ export class MovieDetailComponent implements OnInit {
         error: () => { this.error.set('Failed to load movie.'); this.loading.set(false); },
       });
     });
-  }
-
-  getIframeSrc(key: string): SafeResourceUrl {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(
-      `https://www.youtube.com/embed/${key}`
-    );
   }
 
   getReleaseYear(date: string): string {

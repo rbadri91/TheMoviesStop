@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { PeopleService } from '../../../core/services/people.service';
@@ -11,6 +11,7 @@ import { Person } from '../../../models/person.model';
   imports: [CommonModule, RouterLink, PaginatorComponent],
   templateUrl: './people-list.component.html',
   styleUrl: './people-list.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PeopleListComponent implements OnInit {
   people = signal<Person[]>([]);

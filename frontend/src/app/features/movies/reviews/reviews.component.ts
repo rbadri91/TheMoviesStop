@@ -1,4 +1,4 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { StateService } from '../../../core/services/state.service';
@@ -10,6 +10,7 @@ import { Review } from '../../../models/movie.model';
   imports: [CommonModule],
   templateUrl: './reviews.component.html',
   styleUrl: './reviews.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReviewsComponent {
   readonly posterBase = 'https://image.tmdb.org/t/p/w300';

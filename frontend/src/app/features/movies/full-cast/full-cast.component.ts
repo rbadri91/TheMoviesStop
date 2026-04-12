@@ -1,4 +1,4 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { StateService } from '../../../core/services/state.service';
@@ -10,6 +10,7 @@ import { CastMember, CrewMember } from '../../../models/movie.model';
   imports: [CommonModule, RouterLink],
   templateUrl: './full-cast.component.html',
   styleUrl: './full-cast.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FullCastComponent {
   readonly posterBase = 'https://image.tmdb.org/t/p/w300';

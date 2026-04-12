@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Show } from '../../../models/show.model';
 
@@ -8,6 +8,7 @@ import { Show } from '../../../models/show.model';
   imports: [RouterLink],
   templateUrl: './show-card.component.html',
   styles: [':host { display: contents; }'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShowCardComponent {
   @Input({ required: true }) show!: Show;
