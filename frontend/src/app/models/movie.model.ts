@@ -82,3 +82,7 @@ export interface UserMediaStatus {
   isInWatchList: boolean;
   userRating: number;
 }
+
+export interface MovieSummaryResponse {
+  summary: string;
+}

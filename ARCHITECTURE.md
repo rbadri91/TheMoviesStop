@@ -179,7 +179,7 @@ core/
 └── services/
     ├── auth.service.ts        # JWT storage, login/logout, computed isLoggedIn/currentUser
     ├── state.service.ts       # In-memory signals for selected movie/show/person
-    ├── movies.service.ts      # TMDB movie endpoints + user movie actions
+    ├── movies.service.ts      # TMDB movie endpoints + user movie actions + getAISummary()
     ├── shows.service.ts       # TMDB TV endpoints + user show actions
     ├── people.service.ts      # TMDB people endpoints
     ├── genre.service.ts
