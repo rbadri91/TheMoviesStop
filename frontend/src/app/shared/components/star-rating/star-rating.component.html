@@ -1,6 +1,6 @@
 <div class="starRating" (mouseleave)="onLeave()">
   @for (star of stars; track star) {
-    <span [class]="getStarClass(star)"
+    <span [class]="star <= filledUpTo() ? 'star filled' : 'star'"
           (mouseenter)="onHover(star)"
           (click)="onClick(star)"
           [title]="star + '/10'">&#9733;</span>

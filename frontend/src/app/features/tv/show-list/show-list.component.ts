@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
@@ -21,6 +21,7 @@ const TITLES: Record<ListMode, string> = {
   standalone: true,
   imports: [CommonModule, ShowCardComponent, PaginatorComponent],
   templateUrl: './show-list.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShowListComponent implements OnInit {
   shows = signal<Show[]>([]);

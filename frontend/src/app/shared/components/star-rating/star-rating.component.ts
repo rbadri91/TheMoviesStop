@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, signal, computed } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   templateUrl: './star-rating.component.html',
   styleUrl: './star-rating.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StarRatingComponent {
   @Input() set rating(val: number) { this._rating.set(val); }
@@ -15,11 +16,7 @@ export class StarRatingComponent {
   readonly _rating = signal(0);
   readonly hovered = signal(0);
   readonly stars = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-  getStarClass(star: number): string {
-    const active = this.hovered() || this._rating();
-    return star <= active ? 'star filled' : 'star';
-  }
+  readonly filledUpTo = computed(() => this.hovered() || this._rating());
 
   onHover(star: number): void { this.hovered.set(star); }
   onLeave(): void { this.hovered.set(0); }

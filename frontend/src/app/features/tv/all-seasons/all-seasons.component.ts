@@ -1,4 +1,4 @@
-import { Component, OnInit, computed, signal } from '@angular/core';
+import { Component, OnInit, computed, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ShowsService } from '../../../core/services/shows.service';
@@ -12,6 +12,7 @@ import { HtmlizePipe } from '../../../shared/pipes/htmlize.pipe';
   imports: [CommonModule, HtmlizePipe],
   templateUrl: './all-seasons.component.html',
   styleUrl: './all-seasons.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AllSeasonsComponent implements OnInit {
   seasons = signal<SeasonDetail[]>([]);

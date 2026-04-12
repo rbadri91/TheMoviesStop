@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Movie } from '../../../models/movie.model';
 
@@ -8,6 +8,7 @@ import { Movie } from '../../../models/movie.model';
   imports: [RouterLink],
   templateUrl: './movie-card.component.html',
   styles: [':host { display: contents; }'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MovieCardComponent {
   @Input({ required: true }) movie!: Movie;
