@@ -144,6 +144,12 @@
   justify-content: center;
 }
 
+.loginPrompt {
+  font-size: 0.85rem;
+  color: #888;
+  a { color: #aaa; text-decoration: underline; }
+}
+
 // Summary / crew
 .section-wrapper .summaryWrapper {
   padding: 18px 20px;

@@ -168,6 +168,9 @@ it('should set userRating signal from status response', () => {
 ## Branch and Pull Request Workflow
 
 - All work must be done on a feature branch — never commit directly to `master`.
+- **One concern per branch**: When a new request comes in, check the current branch first:
+  - If the current branch's PR has already been merged → switch to `master`, pull, create a new branch.
+  - If the current branch has unmerged changes → push those changes to the same branch (do not open a second branch for unrelated work on top of uncommitted changes).
 - When a branch is ready, always open a pull request against `master`, even for small fixes.
 - Every PR must include a description summarising all changes made on the branch — not just the last commit. Reviewers should be able to understand what changed and why without reading the diff.
 - After a PR is merged, delete the source branch. Do not leave stale branches around.

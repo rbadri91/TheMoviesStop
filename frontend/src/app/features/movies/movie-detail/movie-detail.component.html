@@ -67,6 +67,10 @@
                   <app-star-rating [rating]="userRating()" (ratingChange)="onRate($event)" />
                 </div>
               </div>
+            } @else {
+              <div class="loginPrompt">
+                <a [routerLink]="['/login']">Sign in</a> to add to watchlist &amp; rate
+              </div>
             }
           </div>
         </div>
