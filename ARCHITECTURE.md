@@ -99,6 +99,26 @@ POST /user/tv/rate                                  → rate-limited (60/15min)
 GET  /user/profile                                  → enriched watchlist + favorites + ratings
 ```
 
+**AI summary route** (rate-limited to 10/15min per IP, no auth required):
+```
+POST /movies/:id/summary  → spawns MCP server, runs Claude agentic loop,
+                            returns { summary } as a plain-text paragraph
+```
+
+### MCP movie summary
+
+`mcp/movie-summary-server.js` is an MCP server (stdio transport) exposing one tool:
+
+- **`get_movie_details`** — fetches title, tagline, overview, genres, release date, runtime, vote average, and top-5 cast from TMDB for a given numeric movie ID.
+
+The `POST /movies/:id/summary` route:
+1. Spawns the MCP server as a child process via `StdioClientTransport`.
+2. Lists the available tools and converts them to Anthropic format (`inputSchema` → `input_schema`).
+3. Calls `claude-haiku-4-5-20251001` with the tool definitions and a summary prompt.
+4. Runs the agentic loop: on `tool_use` Claude calls `get_movie_details`, the route runs it via `mcpClient.callTool()`, pushes `tool_result` back, and re-invokes Claude.
+5. On `end_turn`, the text block is returned as `{ summary }`.
+6. The MCP client is always closed in a `finally` block to clean up the child process.
+
 ### HTTP fetching
 
 Two helpers are used to call TMDB:
