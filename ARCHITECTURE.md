@@ -84,6 +84,8 @@ GET /people/:id
 ```
 POST /register              → creates User, returns JWT
 POST /login                 → validates password, returns JWT
+POST /forgot-password       → generates 6-digit passcode, stores it (1hr expiry), emails it to user (rate-limited 5/15min)
+POST /reset-password        → validates passcode + expiry, sets new password, returns JWT (rate-limited 5/15min)
 POST /user/change-password  → validates current password, sets new password, returns new JWT (requires JWT auth, rate-limited 5/15min)
 ```
 
@@ -152,10 +154,14 @@ User {
   watchList: [{ id: Number, mediaType: String }]
   favoritesList: [{ id: Number, mediaType: String }]
   ratings: [{ id: Number, mediaType: String, ratingValue: Number }]
+  resetPasscode: String | null       (plain 6-digit code, cleared after use)
+  resetPasscodeExpiry: Date | null   (1 hour from issue time)
 }
 ```
 
 Passwords are hashed with PBKDF2 (SHA-512, 1000 iterations). JWTs are signed with `JWT_SECRET` from the environment and expire after 60 days.
+
+Password reset passcodes are 6-digit numbers generated with `crypto.randomInt()` (cryptographically secure), stored in plain text with a 1-hour expiry. They are cleared from the database immediately after a successful reset. Email inputs are sanitized (trimmed, lowercased) and queries use explicit `{ $eq: email }` to prevent NoSQL injection. Emails are sent via nodemailer using SMTP credentials from environment variables (`EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_USER`, `EMAIL_PASS`, `EMAIL_FROM`).
 
 ---
 
@@ -180,7 +186,7 @@ core/
 │   ├── auth.interceptor.ts   # Attaches Bearer token to every outgoing request
 │   └── json-parse.interceptor.ts  # Re-parses double-encoded JSON from backend
 └── services/
-    ├── auth.service.ts        # JWT storage, login/logout/changePassword, computed isLoggedIn/currentUser
+    ├── auth.service.ts        # JWT storage, login/logout/changePassword/forgotPassword/resetPassword, computed isLoggedIn/currentUser
     ├── state.service.ts       # In-memory signals for selected movie/show/person
     ├── movies.service.ts      # TMDB movie endpoints + user movie actions + getAISummary()
     ├── shows.service.ts       # TMDB TV endpoints + user show actions
@@ -191,7 +197,7 @@ core/
     └── user.service.ts        # Profile data fetch
 
 features/
-├── auth/login, register, change-password  # Login, register, and change-password forms
+├── auth/login, register, change-password, forgot-password, reset-password  # Auth forms
 ├── home/                     # Landing page (now playing, trending, top rated)
 ├── movies/
 │   ├── movie-list/           # Reused for popular, top, upcoming, etc. (mode from URL segment)
@@ -225,7 +231,7 @@ models/
 ├── show.model.ts             # Show, SeasonDetail, etc.
 ├── person.model.ts
 ├── user.model.ts             # UserProfile, UserListItem
-└── auth.model.ts             # LoginCredentials, RegisterCredentials, ChangePasswordRequest, AuthResponse, JwtPayload
+└── auth.model.ts             # LoginCredentials, RegisterCredentials, ChangePasswordRequest, ForgotPasswordRequest, ResetPasswordRequest, AuthResponse, JwtPayload
 ```
 
 ### Data flow

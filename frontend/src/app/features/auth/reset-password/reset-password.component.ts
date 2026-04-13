@@ -1,0 +1,59 @@
+import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../core/services/auth.service';
+
+function passwordsMatch(control: AbstractControl): ValidationErrors | null {
+  const newPassword = control.get('newPassword')?.value;
+  const confirmPassword = control.get('confirmPassword')?.value;
+  if (newPassword && confirmPassword && newPassword !== confirmPassword) {
+    return { passwordsMismatch: true };
+  }
+  return null;
+}
+
+@Component({
+  selector: 'app-reset-password',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  templateUrl: './reset-password.component.html',
+  styleUrl: './reset-password.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class ResetPasswordComponent {
+  form: FormGroup;
+  error = signal<string | null>(null);
+  loading = signal(false);
+
+  constructor(
+    private fb: FormBuilder,
+    private auth: AuthService,
+    private router: Router
+  ) {
+    this.form = this.fb.group(
+      {
+        email: ['', [Validators.required, Validators.email]],
+        passcode: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
+        newPassword: ['', [Validators.required, Validators.minLength(6)]],
+        confirmPassword: ['', Validators.required],
+      },
+      { validators: passwordsMatch }
+    );
+  }
+
+  onSubmit(): void {
+    if (this.form.invalid) return;
+    this.error.set(null);
+    this.loading.set(true);
+
+    const { email, passcode, newPassword } = this.form.value;
+    this.auth.resetPassword({ email, passcode, newPassword }).subscribe({
+      next: () => this.router.navigate(['/home']),
+      error: (err) => {
+        this.error.set(err?.error?.message ?? 'Failed to reset password. Please try again.');
+        this.loading.set(false);
+      },
+    });
+  }
+}
