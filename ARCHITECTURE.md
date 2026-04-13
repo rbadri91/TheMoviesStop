@@ -209,7 +209,7 @@ features/
 shared/
 ├── components/
 │   ├── navbar/               # Auth-aware navigation bar
-│   ├── movie-card/           # Poster card used in lists
+│   ├── movie-card/           # Poster card used in lists; "AI Summary" button triggers getAISummary()
 │   ├── show-card/            # Poster card for TV shows
 │   ├── star-rating/          # 10-star interactive rating widget
 │   └── paginator/            # Page navigation (prev/next + numbered pages with ellipsis)

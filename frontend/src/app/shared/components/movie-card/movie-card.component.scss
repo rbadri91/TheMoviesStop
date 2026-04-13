@@ -1,0 +1,36 @@
+:host { display: contents; }
+
+.aiSummarySection {
+  margin: 8px 0;
+}
+
+.aiSummaryBtn {
+  background: none;
+  border: 1px solid #555;
+  border-radius: 4px;
+  padding: 3px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: #333;
+
+  &:hover { background: #f0f0f0; }
+}
+
+.aiSummaryLoading {
+  font-size: 0.8rem;
+  color: #888;
+  font-style: italic;
+}
+
+.aiSummaryError {
+  font-size: 0.8rem;
+  color: #c00;
+}
+
+.aiSummaryText {
+  font-size: 0.82rem;
+  color: #333;
+  line-height: 1.5;
+  margin: 6px 0 0;
+  white-space: normal;
+}
