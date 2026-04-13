@@ -43,7 +43,7 @@ const forgotPasswordLimiter = rateLimit({
     max: 5,                    // max 5 forgot-password requests per window per IP
     standardHeaders: true,
     legacyHeaders: false,
-    message: { error: 'Too many password reset requests, please try again later.' },
+    message: { message: 'Too many password reset requests, please try again later.' },
 });
 
 const nodemailer = require('nodemailer');
@@ -168,8 +168,10 @@ module.exports = function(router, passport) {
             user.resetPasscodeExpiry = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
 
             return user.save().then(function() {
+                // Fire-and-forget: respond immediately so Heroku's 30s request
+                // timeout is not triggered by the SMTP handshake.
                 var transporter = createMailTransporter();
-                return transporter.sendMail({
+                transporter.sendMail({
                     from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
                     to: user.email,
                     subject: 'Your The Movies Stop password reset code',
@@ -180,8 +182,9 @@ module.exports = function(router, passport) {
                         '',
                         'This code expires in 1 hour. If you did not request a password reset, you can ignore this email.',
                     ].join('\n'),
+                }).catch(function(err) {
+                    console.error('Failed to send password reset email:', err);
                 });
-            }).then(function() {
                 return res.json({ message: 'If that email is registered, a passcode has been sent.' });
             });
         }).catch(function(err) {
