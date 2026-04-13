@@ -127,7 +127,7 @@ The `POST /movies/:id/summary` route:
 Two helpers are used to call TMDB:
 
 - **`getdata(options, callback)`** — uses Node's built-in `https` module. Used for most routes.
-- **`node-libcurl`** — used for `getShowingNowMovies` and `getSeasonInfo`. Introduced to fix intermittent 400 errors from TMDB on those specific endpoints.
+- **`node-libcurl`** — previously used for `getShowingNowMovies` and `getSeasonInfo` to fix intermittent 400 errors from TMDB, but has since been removed. Both functions now use `getdata()` like all other TMDB routes.
 
 A **300ms delay** (`setTimeout`) is applied before the season info fetch inside `GET /tv/:id` because consecutive requests to TMDB can trigger rate limiting, which returns HTML instead of JSON and causes a parse failure.
 
