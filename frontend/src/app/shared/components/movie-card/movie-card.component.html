@@ -15,6 +15,16 @@
       <span class="dateInfo">&#128197; {{ movie.release_date }}</span>
     </div>
     <div class="block-with-text">{{ movie.overview }}</div>
+
+    <div class="aiSummarySection">
+      <button class="aiSummaryBtn" [disabled]="summaryLoading()" (click)="loadSummary()">
+        {{ summaryLoading() ? 'Loading\u2026' : '\u2728 AI Summary' }}
+      </button>
+      @if (summaryError()) {
+        <span class="aiSummaryError">{{ summaryError() }}</span>
+      }
+    </div>
+
     <div class="moreInfoWrapper text-center">
       <a [routerLink]="['/movies/desc', movie.id]" class="moreDetails">More Info</a>
     </div>

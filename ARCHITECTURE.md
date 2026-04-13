@@ -212,7 +212,8 @@ features/
 shared/
 ├── components/
 │   ├── navbar/               # Auth-aware navigation bar
-│   ├── movie-card/           # Poster card used in lists
+│   ├── movie-card/           # Poster card used in lists; "AI Summary" button fetches via getAISummary() and opens MovieSummaryModalComponent
+│   ├── movie-summary-modal/  # NgbModal content component displaying the AI-generated summary
 │   ├── show-card/            # Poster card for TV shows
 │   ├── star-rating/          # 10-star interactive rating widget
 │   └── paginator/            # Page navigation (prev/next + numbered pages with ellipsis)
