@@ -18,28 +18,7 @@
         <h3 class="featured_info">Now Showing</h3>
         <div class="resultList flex">
           @for (movie of nowShowing(); track movie.id) {
-            <div class="list cardView">
-              <div class="cardimageWrapper">
-                <a [routerLink]="['/movies/desc', movie.id]">
-                  <img class="imageSettings" [src]="posterBase + movie.poster_path" [alt]="movie.title" />
-                </a>
-              </div>
-              <div class="resultInfo">
-                <div class="title">
-                  <a [routerLink]="['/movies/desc', movie.id]" class="resultTitle" [title]="movie.title">
-                    {{ movie.title }}
-                  </a>
-                  <span class="vote_avg">{{ movie.vote_average }} &#9733;</span>
-                </div>
-                <div>
-                  <span class="dateInfo">&#128197; {{ movie.release_date }}</span>
-                </div>
-                <div class="block-with-text">{{ movie.overview }}</div>
-                <div class="moreInfoWrapper text-center">
-                  <a [routerLink]="['/movies/desc', movie.id]" class="moreDetails">More Info</a>
-                </div>
-              </div>
-            </div>
+            <app-movie-card [movie]="movie" />
           }
         </div>
         <p class="full_view_button text-center">
@@ -52,28 +31,7 @@
         <h3 class="featured_info">Opening This Week</h3>
         <div class="resultList flex">
           @for (movie of openingThisWeek(); track movie.id) {
-            <div class="list cardView">
-              <div class="cardimageWrapper">
-                <a [routerLink]="['/movies/desc', movie.id]">
-                  <img class="imageSettings" [src]="posterBase + movie.poster_path" [alt]="movie.title" />
-                </a>
-              </div>
-              <div class="resultInfo">
-                <div class="title">
-                  <a [routerLink]="['/movies/desc', movie.id]" class="resultTitle" [title]="movie.title">
-                    {{ movie.title }}
-                  </a>
-                  <span class="vote_avg">{{ movie.vote_average }} &#9733;</span>
-                </div>
-                <div>
-                  <span class="dateInfo">&#128197; {{ movie.release_date }}</span>
-                </div>
-                <div class="block-with-text">{{ movie.overview }}</div>
-                <div class="moreInfoWrapper text-center">
-                  <a [routerLink]="['/movies/desc', movie.id]" class="moreDetails">More Info</a>
-                </div>
-              </div>
-            </div>
+            <app-movie-card [movie]="movie" />
           }
         </div>
         <p class="full_view_button text-center">
@@ -86,28 +44,7 @@
         <h3 class="featured_info">Upcoming</h3>
         <div class="resultList flex">
           @for (movie of upcoming(); track movie.id) {
-            <div class="list cardView">
-              <div class="cardimageWrapper">
-                <a [routerLink]="['/movies/desc', movie.id]">
-                  <img class="imageSettings" [src]="posterBase + movie.poster_path" [alt]="movie.title" />
-                </a>
-              </div>
-              <div class="resultInfo">
-                <div class="title">
-                  <a [routerLink]="['/movies/desc', movie.id]" class="resultTitle" [title]="movie.title">
-                    {{ movie.title }}
-                  </a>
-                  <span class="vote_avg">{{ movie.vote_average }} &#9733;</span>
-                </div>
-                <div>
-                  <span class="dateInfo">&#128197; {{ movie.release_date }}</span>
-                </div>
-                <div class="block-with-text">{{ movie.overview }}</div>
-                <div class="moreInfoWrapper text-center">
-                  <a [routerLink]="['/movies/desc', movie.id]" class="moreDetails">More Info</a>
-                </div>
-              </div>
-            </div>
+            <app-movie-card [movie]="movie" />
           }
         </div>
         <p class="full_view_button text-center">

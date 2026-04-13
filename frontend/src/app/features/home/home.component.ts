@@ -3,11 +3,12 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AllMediaService, AllMediaFeeds } from '../../core/services/all-media.service';
 import { Movie } from '../../models/movie.model';
+import { MovieCardComponent } from '../../shared/components/movie-card/movie-card.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, MovieCardComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,8 +19,6 @@ export class HomeComponent implements OnInit {
   upcoming = signal<Movie[]>([]);
   loading = signal(true);
   error = signal<string | null>(null);
-
-  readonly posterBase = 'https://image.tmdb.org/t/p/w300';
 
   constructor(private allMedia: AllMediaService) {}
 
