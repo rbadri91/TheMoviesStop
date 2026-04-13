@@ -4,6 +4,7 @@ var express = require('express');
 // var router = express.Router();
 // var passport = require('passport');
 const { expressjwt: jwt } = require('express-jwt');
+const crypto = require('crypto');
 var http = require("https");
 var Memcached = require('memcached');
 var memcached = new Memcached('127.0.0.1:11211');
@@ -60,7 +61,7 @@ function createMailTransporter() {
 }
 
 function generatePasscode() {
-    return Math.floor(100000 + Math.random() * 900000).toString();
+    return crypto.randomInt(100000, 1000000).toString();
 }
 
 var mongoose = require('mongoose');
@@ -150,13 +151,13 @@ module.exports = function(router, passport) {
     });
 
     router.post('/forgot-password', forgotPasswordLimiter, function(req, res, next) {
-        var email = req.body.email;
+        var email = (typeof req.body.email === 'string') ? req.body.email.trim().toLowerCase() : '';
 
         if (!email) {
             return res.status(400).json({ message: 'Please provide an email address' });
         }
 
-        User.findOne({ email: email }).then(function(user) {
+        User.findOne({ email: { $eq: email } }).then(function(user) {
             // Always return success to avoid leaking whether an email is registered
             if (!user) {
                 return res.json({ message: 'If that email is registered, a passcode has been sent.' });
@@ -201,7 +202,7 @@ module.exports = function(router, passport) {
             return res.status(400).json({ message: 'New password must be at least 6 characters' });
         }
 
-        User.findOne({ email: email }).then(function(user) {
+        User.findOne({ email: { $eq: email } }).then(function(user) {
             if (!user || !user.resetPasscode || !user.resetPasscodeExpiry) {
                 return res.status(400).json({ message: 'Invalid or expired passcode' });
             }
