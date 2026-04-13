@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
@@ -13,6 +13,7 @@ import { Show } from '../../../models/show.model';
   standalone: true,
   imports: [CommonModule, MovieCardComponent, ShowCardComponent],
   templateUrl: './genre.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GenreComponent implements OnInit {
   movies = signal<Movie[]>([]);

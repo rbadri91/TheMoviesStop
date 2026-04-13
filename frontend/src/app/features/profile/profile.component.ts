@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../core/services/user.service';
@@ -11,6 +11,7 @@ import { UserProfile, UserListItem } from '../../models/user.model';
   imports: [CommonModule, RouterLink],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileComponent implements OnInit {
   profile = signal<UserProfile | null>(null);

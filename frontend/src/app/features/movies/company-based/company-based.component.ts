@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CompanyService } from '../../../core/services/company.service';
@@ -12,6 +12,7 @@ import { Show } from '../../../models/show.model';
   standalone: true,
   imports: [CommonModule, MovieCardComponent, ShowCardComponent],
   templateUrl: './company-based.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CompanyBasedComponent implements OnInit {
   movies = signal<Movie[]>([]);

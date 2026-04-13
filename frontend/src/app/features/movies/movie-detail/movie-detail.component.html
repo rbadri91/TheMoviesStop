@@ -18,7 +18,7 @@
         </div>
         @if (m.videos?.results?.length) {
           <div class="watchSection">
-            <iframe class="videoLoader" [src]="getIframeSrc(m.videos!.results[0].key)"
+            <iframe class="videoLoader" [src]="videoSrcs().get(m.videos!.results[0].key)"
               allowfullscreen frameborder="0"></iframe>
           </div>
         }
@@ -161,7 +161,7 @@
             <div class="section-inner-content">
               @for (video of m.videos!.results; track video.id) {
                 <div class="watchSection">
-                  <iframe class="videoLoader" [src]="getIframeSrc(video.key)"
+                  <iframe class="videoLoader" [src]="videoSrcs().get(video.key)"
                     allowfullscreen frameborder="0"></iframe>
                 </div>
               }

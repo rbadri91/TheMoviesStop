@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { PeopleService } from '../../../core/services/people.service';
@@ -11,6 +11,7 @@ import { HtmlizePipe } from '../../../shared/pipes/htmlize.pipe';
   imports: [CommonModule, RouterLink, HtmlizePipe],
   templateUrl: './person-detail.component.html',
   styleUrl: './person-detail.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PersonDetailComponent implements OnInit {
   person = signal<Person | null>(null);

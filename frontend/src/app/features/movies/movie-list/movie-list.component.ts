@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { map } from 'rxjs/operators';
@@ -23,6 +23,7 @@ const TITLES: Record<ListMode, string> = {
   standalone: true,
   imports: [CommonModule, MovieCardComponent, PaginatorComponent],
   templateUrl: './movie-list.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MovieListComponent implements OnInit {
   movies = signal<Movie[]>([]);

@@ -164,8 +164,10 @@ Passwords are hashed with PBKDF2 (SHA-512, 1000 iterations). JWTs are signed wit
 
 - **Standalone components only** — no NgModules anywhere in the app.
 - **Signals for state** — all component state uses `signal()` and `computed()`. No `BehaviorSubject` or raw class properties for reactive state.
+- **`ChangeDetectionStrategy.OnPush` everywhere** — every component declares `changeDetection: ChangeDetectionStrategy.OnPush`. Angular only re-checks a component when one of its signal reads changes or an `@Input` reference changes, which eliminates redundant checks across the tree.
 - **Lazy-loaded routes** — every route uses `loadComponent()` so bundles are split per page.
 - **Scoped styles** — each component has its own `.scss` file. Global `styles.scss` is kept minimal. CSS class names in component files must be unique enough to avoid conflicts with the global stylesheet.
+- **`SafeResourceUrl` caching** — components that render iframes (movie-detail, show-detail) pre-compute `SafeResourceUrl` values via `computed()` keyed by video ID. Never call `DomSanitizer.bypassSecurityTrustResourceUrl()` directly in a template binding — it returns a new object every cycle and causes iframes to reload.
 
 ### Directory layout
 
