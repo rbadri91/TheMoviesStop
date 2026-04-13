@@ -9,6 +9,11 @@ export interface RegisterCredentials {
   password: string;
 }
 
+export interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
+}
+
 export interface AuthResponse {
   token: string;
 }

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import {
   LoginCredentials,
   RegisterCredentials,
+  ChangePasswordRequest,
   AuthResponse,
   JwtPayload,
 } from '../../models/auth.model';
@@ -47,6 +48,12 @@ export class AuthService {
   register(credentials: RegisterCredentials): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>('/api/register', credentials)
+      .pipe(tap((res) => this._saveToken(res.token)));
+  }
+
+  changePassword(payload: ChangePasswordRequest): Observable<AuthResponse> {
+    return this.http
+      .post<AuthResponse>('/api/user/change-password', payload)
       .pipe(tap((res) => this._saveToken(res.token)));
   }
 
