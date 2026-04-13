@@ -29,6 +29,14 @@ const summaryLimiter = rateLimit({
     message: { error: 'Too many summary requests, please try again later.' },
 });
 
+const passwordChangeLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5,                    // max 5 password change attempts per window per IP
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { error: 'Too many password change attempts, please try again later.' },
+});
+
 
 var mongoose = require('mongoose');
 var User = require('../models/users.js');
@@ -84,6 +92,36 @@ module.exports = function(router, passport) {
                 return res.status(401).json(info);
             }
         })(req, res, next);
+    });
+
+    router.post('/user/change-password', passwordChangeLimiter, auth, function(req, res, next) {
+        var currentPassword = req.body.currentPassword;
+        var newPassword = req.body.newPassword;
+
+        if (!currentPassword || !newPassword) {
+            return res.status(400).json({ message: 'Please fill out all fields' });
+        }
+
+        if (newPassword.length < 6) {
+            return res.status(400).json({ message: 'New password must be at least 6 characters' });
+        }
+
+        User.findById(req.payload._id).then(function(user) {
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+
+            if (!user.validPassword(currentPassword)) {
+                return res.status(401).json({ message: 'Current password is incorrect' });
+            }
+
+            user.setPassword(newPassword);
+            return user.save().then(function() {
+                return res.json({ token: user.generateJWT() });
+            });
+        }).catch(function(err) {
+            return next(err);
+        });
     });
 
     router.get('/movies/top', function(req, res, next) {

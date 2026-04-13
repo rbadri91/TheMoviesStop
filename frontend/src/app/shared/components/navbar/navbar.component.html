@@ -54,6 +54,9 @@
             <a class="nav-link" routerLink="/profile" (click)="collapseMenu()">{{ auth.currentUser() }}</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" routerLink="/change-password" (click)="collapseMenu()">Change Password</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" role="button" (click)="logout(); collapseMenu()">Log Out</a>
           </li>
         } @else {

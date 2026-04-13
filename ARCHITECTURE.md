@@ -82,8 +82,9 @@ GET /people/:id
 
 **User auth routes**:
 ```
-POST /register   → creates User, returns JWT
-POST /login      → validates password, returns JWT
+POST /register              → creates User, returns JWT
+POST /login                 → validates password, returns JWT
+POST /user/change-password  → validates current password, sets new password, returns new JWT (requires JWT auth, rate-limited 5/15min)
 ```
 
 **User data routes** (all require JWT auth):
@@ -179,7 +180,7 @@ core/
 │   ├── auth.interceptor.ts   # Attaches Bearer token to every outgoing request
 │   └── json-parse.interceptor.ts  # Re-parses double-encoded JSON from backend
 └── services/
-    ├── auth.service.ts        # JWT storage, login/logout, computed isLoggedIn/currentUser
+    ├── auth.service.ts        # JWT storage, login/logout/changePassword, computed isLoggedIn/currentUser
     ├── state.service.ts       # In-memory signals for selected movie/show/person
     ├── movies.service.ts      # TMDB movie endpoints + user movie actions + getAISummary()
     ├── shows.service.ts       # TMDB TV endpoints + user show actions
@@ -190,7 +191,7 @@ core/
     └── user.service.ts        # Profile data fetch
 
 features/
-├── auth/login, register      # Login and register forms
+├── auth/login, register, change-password  # Login, register, and change-password forms
 ├── home/                     # Landing page (now playing, trending, top rated)
 ├── movies/
 │   ├── movie-list/           # Reused for popular, top, upcoming, etc. (mode from URL segment)
@@ -223,7 +224,7 @@ models/
 ├── show.model.ts             # Show, SeasonDetail, etc.
 ├── person.model.ts
 ├── user.model.ts             # UserProfile, UserListItem
-└── auth.model.ts             # LoginCredentials, AuthResponse, JwtPayload
+└── auth.model.ts             # LoginCredentials, RegisterCredentials, ChangePasswordRequest, AuthResponse, JwtPayload
 ```
 
 ### Data flow
