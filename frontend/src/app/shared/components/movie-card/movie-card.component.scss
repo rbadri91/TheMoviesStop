@@ -2,9 +2,13 @@
 
 .aiSummarySection {
   margin: 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .aiSummaryBtn {
+  align-self: flex-start;
   background: none;
   border: 1px solid #555;
   border-radius: 4px;
@@ -13,24 +17,11 @@
   cursor: pointer;
   color: #333;
 
-  &:hover { background: #f0f0f0; }
-}
-
-.aiSummaryLoading {
-  font-size: 0.8rem;
-  color: #888;
-  font-style: italic;
+  &:hover:not(:disabled) { background: #f0f0f0; }
+  &:disabled { opacity: 0.6; cursor: default; }
 }
 
 .aiSummaryError {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: #c00;
-}
-
-.aiSummaryText {
-  font-size: 0.82rem;
-  color: #333;
-  line-height: 1.5;
-  margin: 6px 0 0;
-  white-space: normal;
 }

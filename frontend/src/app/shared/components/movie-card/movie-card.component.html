@@ -17,17 +17,11 @@
     <div class="block-with-text">{{ movie.overview }}</div>
 
     <div class="aiSummarySection">
-      @if (!summary() && !summaryLoading()) {
-        <button class="aiSummaryBtn" (click)="loadSummary()">&#10024; AI Summary</button>
-      }
-      @if (summaryLoading()) {
-        <span class="aiSummaryLoading">Generating summary&#8230;</span>
-      }
+      <button class="aiSummaryBtn" [disabled]="summaryLoading()" (click)="loadSummary()">
+        {{ summaryLoading() ? 'Loading\u2026' : '\u2728 AI Summary' }}
+      </button>
       @if (summaryError()) {
         <span class="aiSummaryError">{{ summaryError() }}</span>
-      }
-      @if (summary()) {
-        <p class="aiSummaryText">{{ summary() }}</p>
       }
     </div>
 
