@@ -161,7 +161,7 @@ User {
 
 Passwords are hashed with PBKDF2 (SHA-512, 1000 iterations). JWTs are signed with `JWT_SECRET` from the environment and expire after 60 days.
 
-Password reset passcodes are 6-digit numbers generated with `crypto.randomInt()` (cryptographically secure), stored in plain text with a 1-hour expiry. They are cleared from the database immediately after a successful reset. Email inputs are sanitized (trimmed, lowercased) and queries use explicit `{ $eq: email }` to prevent NoSQL injection. Emails are sent via nodemailer using SMTP credentials from environment variables (`EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_USER`, `EMAIL_PASS`, `EMAIL_FROM`).
+Password reset passcodes are 6-digit numbers generated with `crypto.randomInt()` (cryptographically secure), stored in plain text with a 1-hour expiry. They are cleared from the database immediately after a successful reset. Email inputs are sanitized (trimmed, lowercased) and queries use explicit `{ $eq: email }` to prevent NoSQL injection. Emails are sent via nodemailer using SMTP credentials from environment variables (`EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_USER`, `EMAIL_PASS`, `EMAIL_FROM`). Email sending is fire-and-forget — the HTTP response is returned immediately after the passcode is saved to avoid Heroku's 30-second request timeout blocking on the SMTP handshake.
 
 ---
 
