@@ -6,6 +6,8 @@ import {
   LoginCredentials,
   RegisterCredentials,
   ChangePasswordRequest,
+  ForgotPasswordRequest,
+  ResetPasswordRequest,
   AuthResponse,
   JwtPayload,
 } from '../../models/auth.model';
@@ -54,6 +56,16 @@ export class AuthService {
   changePassword(payload: ChangePasswordRequest): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>('/api/user/change-password', payload)
+      .pipe(tap((res) => this._saveToken(res.token)));
+  }
+
+  forgotPassword(payload: ForgotPasswordRequest): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>('/api/forgot-password', payload);
+  }
+
+  resetPassword(payload: ResetPasswordRequest): Observable<AuthResponse> {
+    return this.http
+      .post<AuthResponse>('/api/reset-password', payload)
       .pipe(tap((res) => this._saveToken(res.token)));
   }
 

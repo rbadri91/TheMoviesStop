@@ -24,7 +24,9 @@ var UserSchema = new mongoose.Schema({
     salt: String,
     favoritesList: [userFavoritesList],
     watchList: [userWatchList],
-    ratings: [userRatings]
+    ratings: [userRatings],
+    resetPasscode: { type: String, default: null },
+    resetPasscodeExpiry: { type: Date, default: null },
 });
 
 UserSchema.methods.setPassword = function(password) {

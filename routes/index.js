@@ -37,6 +37,31 @@ const passwordChangeLimiter = rateLimit({
     message: { error: 'Too many password change attempts, please try again later.' },
 });
 
+const forgotPasswordLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5,                    // max 5 forgot-password requests per window per IP
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { error: 'Too many password reset requests, please try again later.' },
+});
+
+const nodemailer = require('nodemailer');
+
+function createMailTransporter() {
+    return nodemailer.createTransport({
+        host: process.env.EMAIL_HOST,
+        port: parseInt(process.env.EMAIL_PORT) || 587,
+        secure: (process.env.EMAIL_PORT === '465'),
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS,
+        },
+    });
+}
+
+function generatePasscode() {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+}
 
 var mongoose = require('mongoose');
 var User = require('../models/users.js');
@@ -116,6 +141,87 @@ module.exports = function(router, passport) {
             }
 
             user.setPassword(newPassword);
+            return user.save().then(function() {
+                return res.json({ token: user.generateJWT() });
+            });
+        }).catch(function(err) {
+            return next(err);
+        });
+    });
+
+    router.post('/forgot-password', forgotPasswordLimiter, function(req, res, next) {
+        var email = req.body.email;
+
+        if (!email) {
+            return res.status(400).json({ message: 'Please provide an email address' });
+        }
+
+        User.findOne({ email: email }).then(function(user) {
+            // Always return success to avoid leaking whether an email is registered
+            if (!user) {
+                return res.json({ message: 'If that email is registered, a passcode has been sent.' });
+            }
+
+            var passcode = generatePasscode();
+            user.resetPasscode = passcode;
+            user.resetPasscodeExpiry = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+
+            return user.save().then(function() {
+                var transporter = createMailTransporter();
+                return transporter.sendMail({
+                    from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
+                    to: user.email,
+                    subject: 'Your The Movies Stop password reset code',
+                    text: [
+                        'Hi ' + user.username + ',',
+                        '',
+                        'Your password reset code is: ' + passcode,
+                        '',
+                        'This code expires in 1 hour. If you did not request a password reset, you can ignore this email.',
+                    ].join('\n'),
+                });
+            }).then(function() {
+                return res.json({ message: 'If that email is registered, a passcode has been sent.' });
+            });
+        }).catch(function(err) {
+            return next(err);
+        });
+    });
+
+    router.post('/reset-password', forgotPasswordLimiter, function(req, res, next) {
+        var email = req.body.email;
+        var passcode = req.body.passcode;
+        var newPassword = req.body.newPassword;
+
+        if (!email || !passcode || !newPassword) {
+            return res.status(400).json({ message: 'Please fill out all fields' });
+        }
+
+        if (newPassword.length < 6) {
+            return res.status(400).json({ message: 'New password must be at least 6 characters' });
+        }
+
+        User.findOne({ email: email }).then(function(user) {
+            if (!user || !user.resetPasscode || !user.resetPasscodeExpiry) {
+                return res.status(400).json({ message: 'Invalid or expired passcode' });
+            }
+
+            if (new Date() > user.resetPasscodeExpiry) {
+                user.resetPasscode = null;
+                user.resetPasscodeExpiry = null;
+                return user.save().then(function() {
+                    return res.status(400).json({ message: 'Passcode has expired. Please request a new one.' });
+                });
+            }
+
+            if (user.resetPasscode !== passcode) {
+                return res.status(400).json({ message: 'Invalid or expired passcode' });
+            }
+
+            user.setPassword(newPassword);
+            user.resetPasscode = null;
+            user.resetPasscodeExpiry = null;
+
             return user.save().then(function() {
                 return res.json({ token: user.generateJWT() });
             });
