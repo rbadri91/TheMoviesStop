@@ -29,6 +29,14 @@ const summaryLimiter = rateLimit({
     message: { error: 'Too many summary requests, please try again later.' },
 });
 
+const passwordChangeLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5,                    // max 5 password change attempts per window per IP
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { error: 'Too many password change attempts, please try again later.' },
+});
+
 
 var mongoose = require('mongoose');
 var User = require('../models/users.js');
@@ -86,7 +94,7 @@ module.exports = function(router, passport) {
         })(req, res, next);
     });
 
-    router.post('/user/change-password', auth, function(req, res, next) {
+    router.post('/user/change-password', passwordChangeLimiter, auth, function(req, res, next) {
         var currentPassword = req.body.currentPassword;
         var newPassword = req.body.newPassword;
 

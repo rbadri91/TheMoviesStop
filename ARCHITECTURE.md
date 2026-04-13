@@ -84,7 +84,7 @@ GET /people/:id
 ```
 POST /register              → creates User, returns JWT
 POST /login                 → validates password, returns JWT
-POST /user/change-password  → validates current password, sets new password, returns new JWT (requires JWT auth)
+POST /user/change-password  → validates current password, sets new password, returns new JWT (requires JWT auth, rate-limited 5/15min)
 ```
 
 **User data routes** (all require JWT auth):
