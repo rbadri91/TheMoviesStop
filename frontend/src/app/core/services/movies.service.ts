@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { Movie, MovieListResponse, UserMediaStatus } from '../../models/movie.model';
+import { Movie, MovieListResponse, UserMediaStatus, MovieSummaryResponse } from '../../models/movie.model';
 import { StateService } from './state.service';
 import { AuthService } from './auth.service';
 
@@ -56,5 +56,9 @@ export class MoviesService {
 
   rateMovie(movieId: number, ratingVal: number): Observable<unknown> {
     return this.http.post('/api/user/movies/rate/', { movieId, ratingVal });
+  }
+
+  getAISummary(movieId: number): Observable<MovieSummaryResponse> {
+    return this.http.post<MovieSummaryResponse>(`/api/movies/${movieId}/summary`, {});
   }
 }
