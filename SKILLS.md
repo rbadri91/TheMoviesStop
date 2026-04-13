@@ -165,7 +165,60 @@ it('should set userRating signal from status response', () => {
 
 ---
 
+## Security Checks (CodeQL)
+
+Run these checks **before every commit** on any changed `.js` or `.ts` file. They catch the same classes of issue that GitHub CodeQL flags on this repo.
+
+### 1. Insecure randomness
+
+`Math.random()` must never be used for security-sensitive values (tokens, passcodes, secrets).
+
+```bash
+grep -rn "Math\.random()" routes/ --include="*.js"
+```
+
+Expected: no matches. Use `crypto.randomInt()` or `crypto.randomBytes()` instead.
+
+### 2. NoSQL injection (user-controlled DB queries)
+
+Any `findOne` / `find` / `findOneAndUpdate` using a raw user value must wrap it in `{ $eq: value }`.
+
+```bash
+grep -rn "findOne\|find(" routes/ --include="*.js"
+```
+
+Review every match: if the value in the query object comes from `req.body`, `req.params`, or `req.query`, it must use `{ $eq: value }`, not bare `value`.
+
+### 3. XSS via innerHTML (frontend)
+
+```bash
+grep -rn "innerHTML\|bypassSecurityTrust" frontend/src --include="*.ts" --include="*.html"
+```
+
+Any `bypassSecurityTrust*` call must use a `computed()` signal — never call it inside a template binding or a function called from a template (it returns a new object every cycle, causing infinite re-renders).
+
+### Running all checks at once
+
+```bash
+echo "=== Math.random ===" && grep -rn "Math\.random()" routes/ --include="*.js"
+echo "=== DB queries ===" && grep -rn "findOne\|\.find(" routes/ --include="*.js"
+echo "=== innerHTML/bypassSecurity ===" && grep -rn "innerHTML\|bypassSecurityTrust" frontend/src --include="*.ts" --include="*.html"
+```
+
+If any result looks unsafe, fix it before committing.
+
+---
+
 ## Branch and Pull Request Workflow
+
+**After every `git push`, check whether the previous PR for the branch was already merged:**
+
+```bash
+gh pr list --head $(git branch --show-current) --state open
+```
+
+If the output is empty (no open PR), create a new one immediately with `gh pr create`. Never leave pushed commits without an open PR.
+
 
 - All work must be done on a feature branch — never commit directly to `master`.
 - **One concern per branch**: When a new request comes in, check the current branch first:

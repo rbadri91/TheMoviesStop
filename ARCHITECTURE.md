@@ -198,7 +198,7 @@ core/
 
 features/
 ├── auth/login, register, change-password, forgot-password, reset-password  # Auth forms
-├── home/                     # Landing page (now playing, trending, top rated)
+├── home/                     # Landing page (now showing, opening this week, upcoming); uses MovieCardComponent for all cards
 ├── movies/
 │   ├── movie-list/           # Reused for popular, top, upcoming, etc. (mode from URL segment)
 │   ├── movie-detail/         # Full detail page with inline section nav
