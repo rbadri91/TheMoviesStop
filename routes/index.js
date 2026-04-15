@@ -357,6 +357,95 @@ module.exports = function(router, passport) {
         }
     });
 
+    router.post('/tv/:id/summary', summaryLimiter, async function(req, res, next) {
+        const showId = parseInt(req.params.id, 10);
+        if (!showId || isNaN(showId)) {
+            return res.status(400).json({ error: 'Invalid show ID' });
+        }
+
+        const apiKey = process.env.ANTHROPIC_API_KEY;
+        if (!apiKey) {
+            return res.status(500).json({ error: 'AI summary not configured' });
+        }
+
+        const transport = new StdioClientTransport({
+            command: 'node',
+            args: [path.join(__dirname, '..', 'mcp', 'tv-summary-server.js')],
+            env: { ...process.env },
+        });
+
+        const mcpClient = new McpClient({ name: 'movies-stop-backend', version: '1.0.0' });
+
+        try {
+            await mcpClient.connect(transport);
+
+            const { tools } = await mcpClient.listTools();
+            const anthropicTools = tools.map(tool => ({
+                name: tool.name,
+                description: tool.description,
+                input_schema: tool.inputSchema,
+            }));
+
+            const anthropic = new Anthropic.default({ apiKey });
+            const messages = [
+                {
+                    role: 'user',
+                    content: `Fetch the details for TV show ID ${showId} and write a concise 3-4 sentence summary covering what the show is about, its genre and tone, and why someone might enjoy watching it.`,
+                },
+            ];
+
+            let summary = '';
+            // Agentic loop: Claude calls get_tv_show_details, we run it via MCP, then Claude writes the summary
+            for (let i = 0; i < 5; i++) {
+                const response = await anthropic.messages.create({
+                    model: 'claude-haiku-4-5-20251001',
+                    max_tokens: 512,
+                    tools: anthropicTools,
+                    messages,
+                });
+
+                if (response.stop_reason === 'end_turn') {
+                    summary = response.content
+                        .filter(b => b.type === 'text')
+                        .map(b => b.text)
+                        .join('');
+                    break;
+                }
+
+                if (response.stop_reason === 'tool_use') {
+                    messages.push({ role: 'assistant', content: response.content });
+
+                    const toolResults = [];
+                    for (const block of response.content) {
+                        if (block.type !== 'tool_use') continue;
+                        const result = await mcpClient.callTool({
+                            name: block.name,
+                            arguments: block.input,
+                        });
+                        toolResults.push({
+                            type: 'tool_result',
+                            tool_use_id: block.id,
+                            content: result.content[0]?.text ?? 'No data returned',
+                        });
+                    }
+                    messages.push({ role: 'user', content: toolResults });
+                } else {
+                    break;
+                }
+            }
+
+            if (!summary) {
+                return res.status(500).json({ error: 'Failed to generate summary' });
+            }
+
+            res.json({ summary });
+        } catch (err) {
+            next(err);
+        } finally {
+            try { await mcpClient.close(); } catch (_) {}
+        }
+    });
+
     router.get('/movies/:movie', function(req, res, next) {
         var movieId = req.params.movie;
         getMovieInfo(movieId).then((movieInfo) => {

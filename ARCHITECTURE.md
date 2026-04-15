@@ -102,23 +102,26 @@ POST /user/tv/rate                                  → rate-limited (60/15min)
 GET  /user/profile                                  → enriched watchlist + favorites + ratings
 ```
 
-**AI summary route** (rate-limited to 10/15min per IP, no auth required):
+**AI summary routes** (rate-limited to 10/15min per IP, no auth required):
 ```
 POST /movies/:id/summary  → spawns MCP server, runs Claude agentic loop,
                             returns { summary } as a plain-text paragraph
+POST /tv/:id/summary      → same pattern for TV shows
 ```
 
-### MCP movie summary
+### MCP AI summaries
 
-`mcp/movie-summary-server.js` is an MCP server (stdio transport) exposing one tool:
+Two MCP servers handle AI summaries via a stdio transport. Both follow the same pattern:
 
-- **`get_movie_details`** — fetches title, tagline, overview, genres, release date, runtime, vote average, and top-5 cast from TMDB for a given numeric movie ID.
+`mcp/movie-summary-server.js` exposes **`get_movie_details`** — fetches title, tagline, overview, genres, release date, runtime, vote average, and top-5 cast from TMDB for a given numeric movie ID.
 
-The `POST /movies/:id/summary` route:
-1. Spawns the MCP server as a child process via `StdioClientTransport`.
-2. Lists the available tools and converts them to Anthropic format (`inputSchema` → `input_schema`).
-3. Calls `claude-haiku-4-5-20251001` with the tool definitions and a summary prompt.
-4. Runs the agentic loop: on `tool_use` Claude calls `get_movie_details`, the route runs it via `mcpClient.callTool()`, pushes `tool_result` back, and re-invokes Claude.
+`mcp/tv-summary-server.js` exposes **`get_tv_show_details`** — fetches name, overview, genres, first/last air date, number of seasons/episodes, vote average, and top-5 cast from TMDB for a given numeric TV show ID.
+
+Both summary routes follow the same agentic loop:
+1. Spawn the relevant MCP server as a child process via `StdioClientTransport`.
+2. List the available tools and convert them to Anthropic format (`inputSchema` → `input_schema`).
+3. Call `claude-haiku-4-5-20251001` with the tool definitions and a summary prompt.
+4. Run the agentic loop: on `tool_use` Claude calls the fetch tool, the route runs it via `mcpClient.callTool()`, pushes `tool_result` back, and re-invokes Claude.
 5. On `end_turn`, the text block is returned as `{ summary }`.
 6. The MCP client is always closed in a `finally` block to clean up the child process.
 
@@ -220,7 +223,7 @@ shared/
 │   ├── navbar/               # Auth-aware navigation bar
 │   ├── movie-card/           # Poster card used in lists; "AI Summary" button fetches via getAISummary() and opens MovieSummaryModalComponent
 │   ├── movie-summary-modal/  # NgbModal content component displaying the AI-generated summary
-│   ├── show-card/            # Poster card for TV shows
+│   ├── show-card/            # Poster card for TV shows; "AI Summary" button fetches via getAISummary() and opens MovieSummaryModalComponent
 │   ├── star-rating/          # 10-star interactive rating widget
 │   └── paginator/            # Page navigation (prev/next + numbered pages with ellipsis)
 └── pipes/

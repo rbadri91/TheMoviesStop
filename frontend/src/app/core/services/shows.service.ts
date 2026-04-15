@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { Show, ShowListResponse, SeasonDetail } from '../../models/show.model';
+import { Show, ShowListResponse, SeasonDetail, ShowSummaryResponse } from '../../models/show.model';
 import { StateService } from './state.service';
 import { AuthService } from './auth.service';
 import { UserMediaStatus } from '../../models/movie.model';
@@ -51,5 +51,9 @@ export class ShowsService {
 
   getAllSeasonDetails(id: number | string): Observable<SeasonDetail[]> {
     return this.http.get<SeasonDetail[]>(`/api/tv/${id}/allseason`);
+  }
+
+  getAISummary(showId: number): Observable<ShowSummaryResponse> {
+    return this.http.post<ShowSummaryResponse>(`/api/tv/${showId}/summary`, {});
   }
 }
