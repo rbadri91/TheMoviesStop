@@ -75,3 +75,7 @@ export interface ShowListResponse {
   total_results: number;
   page: number;
 }
+
+export interface ShowSummaryResponse {
+  summary: string;
+}
