@@ -48,20 +48,15 @@
 }
 
 .section-wrapper .summary_info { width: 100%; }
-
 .summary { width: 100%; }
 
-.ms-row {
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-}
+.ms-row { margin: 0; display: flex; flex-wrap: wrap; }
 
 .optionsNav {
-  background: white;
+  background: var(--bg-card);
   position: relative;
   display: block;
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid var(--border-nav);
 }
 
 .menuNavSection {
@@ -77,20 +72,20 @@
   padding: 10px 0;
   display: inline-flex;
   font-family: 'Playfair Display', serif;
-  color: grey;
+  color: var(--text-secondary);
   cursor: pointer;
   margin-right: 15px;
 
   &.active {
-    border-bottom: 3px solid #104010;
-    color: black;
+    border-bottom: 3px solid var(--color-active);
+    color: var(--text-primary);
   }
 }
 
 .cardView {
-  background-color: #fff;
-  border: 1px solid #e6e7e9;
-  box-shadow: 0 2px 0 0 rgba(230, 230, 230, 0.5);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-card);
+  box-shadow: 0 2px 0 0 rgba(230, 230, 230, 0.15);
 }
 
 .detailsInfoWrapper {
@@ -118,11 +113,7 @@
   }
 }
 
-.imageWrapper {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
+.imageWrapper { width: 100%; height: 100%; position: relative; }
 
 .imageSettings {
   width: 100%;
@@ -138,7 +129,7 @@
   width: 100%;
   height: 20%;
   overflow: hidden;
-  color: #524747;
+  color: var(--text-subtle);
   opacity: 0.9;
   text-decoration: none;
 }
@@ -151,7 +142,7 @@
   flex-wrap: wrap;
   height: 100%;
   width: 100%;
-  background: #fbfafa;
+  background: var(--bg-card-inner);
 }
 
 .recoNameWrapper {
@@ -169,19 +160,15 @@
   padding-right: 4px;
 }
 
-.mediaTypeButtons {
-  display: block;
-  margin-bottom: 16px;
-}
+.mediaTypeButtons { display: block; margin-bottom: 16px; }
 
 .jobWrapper {
   font-size: 15px;
   text-decoration: none;
-
-  a { color: #00b7ff; text-decoration: none; }
+  a { color: var(--link-accent); text-decoration: none; }
 }
 
 .even {
-  border-top: 2px solid #f1e4e4;
-  background-color: #ece6e6;
+  border-top: 2px solid var(--border-even);
+  background-color: var(--bg-even);
 }

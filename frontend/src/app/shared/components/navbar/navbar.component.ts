@@ -2,6 +2,7 @@ import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgbDropdownModule, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../../core/services/auth.service';
+import { ThemeService } from '../../../core/services/theme.service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,7 +15,7 @@ import { AuthService } from '../../../core/services/auth.service';
 export class NavbarComponent {
   isMenuCollapsed = signal(true);
 
-  constructor(public auth: AuthService) {}
+  constructor(public auth: AuthService, public theme: ThemeService) {}
 
   logout(): void {
     this.auth.logout();

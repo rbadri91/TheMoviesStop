@@ -10,21 +10,22 @@
   min-width: 34px;
   height: 34px;
   padding: 0 8px;
-  border: 1px solid #ccc;
-  background: #fff;
+  border: 1px solid var(--border-card);
+  background: var(--bg-card);
   cursor: pointer;
   font-size: 14px;
   border-radius: 3px;
-  color: #333;
+  color: var(--text-primary);
+  transition: background 0.15s;
 
   &:hover:not(:disabled):not(.active) {
-    background: #f0f0f0;
+    background: var(--bg-hover);
   }
 
   &.active {
-    background: #104010;
+    background: var(--color-active);
     color: #fff;
-    border-color: #104010;
+    border-color: var(--color-active);
     cursor: default;
   }
 
@@ -36,6 +37,6 @@
 
 .pageDots {
   padding: 0 4px;
-  color: #999;
+  color: var(--text-muted);
   font-size: 14px;
 }

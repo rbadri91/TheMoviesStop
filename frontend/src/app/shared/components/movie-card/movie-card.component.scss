@@ -10,14 +10,15 @@
 .aiSummaryBtn {
   align-self: flex-start;
   background: none;
-  border: 1px solid #555;
+  border: 1px solid var(--text-label);
   border-radius: 4px;
   padding: 3px 10px;
   font-size: 0.8rem;
   cursor: pointer;
-  color: #333;
+  color: var(--text-primary);
+  transition: background 0.15s;
 
-  &:hover:not(:disabled) { background: #f0f0f0; }
+  &:hover:not(:disabled) { background: var(--bg-hover); }
   &:disabled { opacity: 0.6; cursor: default; }
 }
 

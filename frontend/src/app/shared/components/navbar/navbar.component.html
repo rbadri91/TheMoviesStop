@@ -48,7 +48,20 @@
       </ul>
 
       <!-- Right side -->
-      <ul class="navbar-nav ms-auto">
+      <ul class="navbar-nav ms-auto align-items-center">
+
+        <!-- Theme toggle -->
+        <li class="nav-item me-2">
+          <button
+            class="themeToggle"
+            (click)="theme.toggle()"
+            [attr.aria-label]="theme.theme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+            [title]="theme.theme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+          >
+            {{ theme.theme() === 'dark' ? '☀' : '🌙' }}
+          </button>
+        </li>
+
         @if (auth.isLoggedIn()) {
           <li class="nav-item">
             <a class="nav-link" routerLink="/profile" (click)="collapseMenu()">{{ auth.currentUser() }}</a>
