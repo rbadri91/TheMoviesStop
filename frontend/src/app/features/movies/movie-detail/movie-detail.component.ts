@@ -99,21 +99,33 @@ export class MovieDetailComponent implements OnInit {
   toggleWatchList(): void {
     const m = this.movie();
     if (!m) return;
-    this.svc.addToWatchList(m.id).subscribe();
-    this.inWatchList.set(!this.inWatchList());
+    if (!this.auth.isLoggedIn()) { this.router.navigate(['/login']); return; }
+    const prev = this.inWatchList();
+    this.inWatchList.set(!prev);
+    this.svc.addToWatchList(m.id).subscribe({
+      error: () => this.inWatchList.set(prev),
+    });
   }
 
   toggleFavorites(): void {
     const m = this.movie();
     if (!m) return;
-    this.svc.addToFavorites(m.id).subscribe();
-    this.inFavorites.set(!this.inFavorites());
+    if (!this.auth.isLoggedIn()) { this.router.navigate(['/login']); return; }
+    const prev = this.inFavorites();
+    this.inFavorites.set(!prev);
+    this.svc.addToFavorites(m.id).subscribe({
+      error: () => this.inFavorites.set(prev),
+    });
   }
 
   onRate(rating: number): void {
     const m = this.movie();
     if (!m) return;
-    this.svc.rateMovie(m.id, rating).subscribe();
+    if (!this.auth.isLoggedIn()) { this.router.navigate(['/login']); return; }
+    const prev = this.userRating();
     this.userRating.set(rating);
+    this.svc.rateMovie(m.id, rating).subscribe({
+      error: () => this.userRating.set(prev),
+    });
   }
 }

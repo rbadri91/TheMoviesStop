@@ -1,5 +1,5 @@
 import { Component, OnInit, signal, computed, ChangeDetectionStrategy } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ShowsService } from '../../../core/services/shows.service';
@@ -36,6 +36,7 @@ export class ShowDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private svc: ShowsService,
     public auth: AuthService,
     private state: StateService,
@@ -89,21 +90,33 @@ export class ShowDetailComponent implements OnInit {
   toggleWatchList(): void {
     const s = this.show();
     if (!s) return;
-    this.svc.addToWatchList(s.id).subscribe();
-    this.inWatchList.set(!this.inWatchList());
+    if (!this.auth.isLoggedIn()) { this.router.navigate(['/login']); return; }
+    const prev = this.inWatchList();
+    this.inWatchList.set(!prev);
+    this.svc.addToWatchList(s.id).subscribe({
+      error: () => this.inWatchList.set(prev),
+    });
   }
 
   toggleFavorites(): void {
     const s = this.show();
     if (!s) return;
-    this.svc.addToFavorites(s.id).subscribe();
-    this.inFavorites.set(!this.inFavorites());
+    if (!this.auth.isLoggedIn()) { this.router.navigate(['/login']); return; }
+    const prev = this.inFavorites();
+    this.inFavorites.set(!prev);
+    this.svc.addToFavorites(s.id).subscribe({
+      error: () => this.inFavorites.set(prev),
+    });
   }
 
   onRate(rating: number): void {
     const s = this.show();
     if (!s) return;
-    this.svc.rateShow(s.id, rating).subscribe();
+    if (!this.auth.isLoggedIn()) { this.router.navigate(['/login']); return; }
+    const prev = this.userRating();
     this.userRating.set(rating);
+    this.svc.rateShow(s.id, rating).subscribe({
+      error: () => this.userRating.set(prev),
+    });
   }
 }
