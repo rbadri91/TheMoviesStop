@@ -25,19 +25,14 @@
 }
 
 .cardView {
-  background-color: #fff;
-  border: 1px solid #e6e7e9;
-  box-shadow: 0 2px 0 0 rgba(230, 230, 230, 0.5);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-card);
+  box-shadow: 0 2px 0 0 rgba(230, 230, 230, 0.15);
   margin-bottom: 12px;
 }
 
-.setAllMargin {
-  margin: 3%;
-}
-
-.setRightPadding {
-  padding-right: 2%;
-}
+.setAllMargin { margin: 3%; }
+.setRightPadding { padding-right: 2%; }
 
 .reviewInfoWrapper {
   margin-top: 2%;
@@ -47,7 +42,7 @@
 .ReviewWrapper {
   width: 100%;
   box-sizing: border-box;
-  color: #565252;
+  color: var(--text-subtle);
 
   p { margin: 0; }
 }
@@ -55,5 +50,5 @@
 .creditsTag {
   padding-top: 10px;
   padding-left: 10%;
-  color: #565252;
+  color: var(--text-subtle);
 }

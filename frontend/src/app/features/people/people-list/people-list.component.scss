@@ -6,19 +6,16 @@
 }
 
 .profileCard {
-  background: #fff;
-  border: 1px solid #e6e7e9;
-  box-shadow: 0 2px 2px 0 rgba(191, 153, 153, 0.5);
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  box-shadow: 0 2px 2px 0 rgba(191, 153, 153, 0.3);
   display: flex;
   flex-direction: column;
 }
 
 .profileImageWrapper {
   overflow: hidden;
-
-  a {
-    display: block;
-  }
+  a { display: block; }
 }
 
 .personPhoto {
@@ -30,9 +27,9 @@
 .personInfoWrapper {
   display: block;
   padding: 6px 8px;
-  background: #fbfafa;
-  border-top: 1px solid #e6e7e9;
-  color: #524747;
+  background: var(--bg-card-inner);
+  border-top: 1px solid var(--border-card);
+  color: var(--text-subtle);
   text-decoration: none;
 }
 
@@ -46,7 +43,7 @@
 
 .knownForDesc {
   font-size: 11px;
-  color: #777;
+  color: var(--text-secondary);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

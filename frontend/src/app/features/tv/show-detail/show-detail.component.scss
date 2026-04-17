@@ -21,7 +21,7 @@
 .section-info a,
 .credits-section a,
 .details-section a {
-  color: #00b7ff;
+  color: var(--link-accent);
   text-decoration: none;
 }
 
@@ -32,7 +32,6 @@
   overflow: hidden;
 }
 
-// Poster + trailer row
 .section-wrapper .poster-wrapper {
   height: 300px;
   overflow: hidden;
@@ -54,16 +53,11 @@
   height: 300px;
 }
 
-.videoLoader {
-  height: 100%;
-  width: 100%;
-}
+.videoLoader { height: 100%; width: 100%; }
 
-// Title / desc block
 .section-wrapper .section_desc {
   padding: 20px 0;
-  background: #fff;
-
+  background: var(--bg-card);
   &:after { clear: both; }
 }
 
@@ -76,11 +70,7 @@
   box-sizing: border-box;
 }
 
-.section-titleWrapper {
-  min-height: 60px;
-  flex: 1 1 0;
-  min-width: 0;
-}
+.section-titleWrapper { min-height: 60px; flex: 1 1 0; min-width: 0; }
 
 .section-wrapper .titleYear {
   font-family: 'Lato', sans-serif;
@@ -90,11 +80,9 @@
 
 .section-wrapper .section-info {
   font-size: 14px;
-
   a { text-decoration: none; }
 }
 
-// Ratings
 .section-wrapper .ratings_Wrapper {
   position: relative;
   margin-left: 12px;
@@ -113,16 +101,9 @@
   white-space: nowrap;
 }
 
-.section-wrapper .ratings_Wrapper .ratingValue {
-  white-space: nowrap;
-}
+.section-wrapper .ratings_Wrapper .ratingValue { white-space: nowrap; }
 
-.UserMarkingWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
+.UserMarkingWrapper { display: flex; flex-direction: column; align-items: center; gap: 6px; }
 
 .toggleButtons {
   display: flex;
@@ -138,19 +119,14 @@
   }
 }
 
-.ratingWidget {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+.ratingWidget { display: flex; align-items: center; justify-content: center; }
 
 .loginPrompt {
   font-size: 0.85rem;
-  color: #888;
-  a { color: #aaa; text-decoration: underline; }
+  color: var(--text-muted);
+  a { color: var(--text-secondary); text-decoration: underline; }
 }
 
-// Summary / crew
 .section-wrapper .summaryWrapper {
   padding: 18px 20px;
   width: 100%;
@@ -160,13 +136,11 @@
 
 .section-wrapper .summary_info {
   width: 100%;
-
   .featured_info { margin-top: 30px; }
 }
 
 .summary { width: 100%; }
 
-// Featured people list (crew + cast)
 .featured_people {
   margin: 0;
   padding: 0;
@@ -196,9 +170,9 @@
     height: 300px;
     margin: 0 25px 20px 0;
     width: 20%;
-    background-color: #fff;
-    border: 1px solid #e6e7e9;
-    box-shadow: 0 2px 2px 0 rgba(191, 153, 153, 1);
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-card);
+    box-shadow: 0 2px 2px 0 rgba(191, 153, 153, 0.4);
     position: relative;
     display: flex;
     align-items: flex-start;
@@ -217,7 +191,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    background: #fbfafa;
+    background: var(--bg-card-inner);
   }
 
   li p:first-of-type { padding: 10px 10px 0; }
@@ -225,18 +199,13 @@
 
 .profile_job { font-size: 0.9rem; }
 
-// Section nav bar
-.ms-row {
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-}
+.ms-row { margin: 0; display: flex; flex-wrap: wrap; }
 
 .optionsNav {
-  background: white;
+  background: var(--bg-card);
   position: relative;
   display: block;
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid var(--border-nav);
 }
 
 .menuNavSection {
@@ -252,28 +221,27 @@
   padding: 10px 0;
   display: inline-flex;
   font-family: 'Playfair Display', serif;
-  color: grey;
+  color: var(--text-secondary);
   cursor: pointer;
   margin-right: 15px;
   margin-bottom: 0;
 
   &.active {
-    border-bottom: 3px solid #104010;
-    color: black;
+    border-bottom: 3px solid var(--color-active);
+    color: var(--text-primary);
   }
 }
 
 .cardView {
-  background-color: #fff;
-  border: 1px solid #e6e7e9;
-  box-shadow: 0 2px 0 0 rgba(230, 230, 230, 0.5);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-card);
+  box-shadow: 0 2px 0 0 rgba(230, 230, 230, 0.15);
 }
 
-// Reviews section
 .ReviewWrapper {
   width: 100%;
   box-sizing: border-box;
-  color: #565252;
+  color: var(--text-subtle);
   padding: 20px;
 
   &::before { clear: both; content: ''; display: block; }
@@ -282,10 +250,9 @@
 .creditsTag {
   padding-top: 10px;
   padding-left: 10%;
-  color: #565252;
+  color: var(--text-subtle);
 }
 
-// Videos section
 .section-content {
   height: 300px;
   width: 100%;
@@ -295,19 +262,10 @@
   box-sizing: border-box;
   font-size: 0;
 
-  .section-inner-content {
-    display: inline-block;
-    width: 100%;
-  }
-
-  div.watchSection {
-    display: inline-block;
-    width: 70%;
-    height: 300px;
-  }
+  .section-inner-content { display: inline-block; width: 100%; }
+  div.watchSection { display: inline-block; width: 70%; height: 300px; }
 }
 
-// Recommendations scrollable row
 .scollable {
   width: 100%;
   overflow-x: scroll;
@@ -326,11 +284,7 @@
   }
 }
 
-div.list.miniPhoto div.imageWrapper {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
+div.list.miniPhoto div.imageWrapper { width: 100%; height: 100%; position: relative; }
 
 .infoWrapper {
   margin-top: 5%;
@@ -339,7 +293,7 @@ div.list.miniPhoto div.imageWrapper {
   width: 100%;
   height: 20%;
   overflow: hidden;
-  color: #524747;
+  color: var(--text-subtle);
   opacity: 0.9;
   text-decoration: none;
 
@@ -354,34 +308,15 @@ div.list.miniPhoto div.imageWrapper {
   flex-wrap: wrap;
   height: 100%;
   width: 100%;
-  background: #fbfafa;
+  background: var(--bg-card-inner);
 }
 
-.recoNameWrapper {
-  margin: 1%;
-  font-size: 1.3rem;
-  flex: 0 0 50%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+.recoNameWrapper { margin: 1%; font-size: 1.3rem; flex: 0 0 50%; overflow: hidden; text-overflow: ellipsis; }
+.reco_vote_avg { align-items: center; line-height: 24px; flex: 0 0 40%; text-align: right; font-size: 1.3rem; }
+.recoReleaseInfo { font-size: 1.3rem; flex: 0 0 50%; }
 
-.reco_vote_avg {
-  align-items: center;
-  line-height: 24px;
-  flex: 0 0 40%;
-  text-align: right;
-  font-size: 1.3rem;
-}
-
-.recoReleaseInfo {
-  font-size: 1.3rem;
-  flex: 0 0 50%;
-}
-
-// Details section
 .detailsInfoWrapper {
   margin: 3% 0 3% 10%;
-
   a:hover { text-decoration: none; }
 }
 

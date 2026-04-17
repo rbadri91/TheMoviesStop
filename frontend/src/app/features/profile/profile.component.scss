@@ -15,8 +15,8 @@
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  background: #332b2b;
-  color: #f1e7e7;
+  background: var(--navbar-bg);
+  color: var(--navbar-text);
   font-size: 2.4rem;
   font-family: 'Josefin Slab', serif;
   display: flex;
@@ -32,14 +32,14 @@
 
 .profileMeta {
   margin: 0;
-  color: #666;
+  color: var(--text-secondary);
   font-size: 13px;
 }
 
 .optionsNav {
-  background: white;
+  background: var(--bg-card);
   display: block;
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid var(--border-nav);
   margin-bottom: 24px;
 }
 
@@ -52,13 +52,13 @@
   padding: 10px 0;
   display: inline-flex;
   font-family: 'Playfair Display', serif;
-  color: grey;
+  color: var(--text-secondary);
   cursor: pointer;
   margin-right: 24px;
 
   &.active {
-    border-bottom: 3px solid #104010;
-    color: black;
+    border-bottom: 3px solid var(--color-active);
+    color: var(--text-primary);
   }
 }
 
@@ -70,9 +70,9 @@
 
 .mediaCard {
   width: 160px;
-  background: #fff;
-  border: 1px solid #e6e7e9;
-  box-shadow: 0 2px 0 0 rgba(230, 230, 230, 0.5);
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  box-shadow: 0 2px 0 0 rgba(230, 230, 230, 0.15);
   border-radius: 2px;
   overflow: hidden;
 }
@@ -92,7 +92,7 @@
   display: block;
   font-size: 13px;
   font-family: 'Josefin Slab', serif;
-  color: #00b7ff;
+  color: var(--link-accent);
   text-decoration: none;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -103,20 +103,20 @@
 
 .mediaType {
   font-size: 11px;
-  color: #888;
+  color: var(--text-muted);
   display: block;
   margin-top: 2px;
 }
 
 .emptyState {
-  color: #666;
+  color: var(--text-secondary);
   padding: 20px 0;
   font-size: 14px;
 }
 
 .ratingBadge {
   font-size: 12px;
-  color: #f5a623;
+  color: var(--star-filled);
   display: block;
   margin-top: 3px;
 }

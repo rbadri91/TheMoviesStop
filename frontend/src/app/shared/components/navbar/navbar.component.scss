@@ -1,37 +1,51 @@
 .navbar {
-  background: #332b2b;
+  background: var(--navbar-bg);
   z-index: 100;
+  transition: background 0.2s;
 }
 
 .navbar-brand {
-  color: #f1e7e7;
+  color: var(--navbar-text);
   font-size: 1.3rem;
   font-weight: 400;
 
-  &:hover {
-    color: #3ec02f;
-  }
+  &:hover { color: var(--navbar-hover); }
 }
 
 .nav-link {
-  color: #f1e7e7 !important;
+  color: var(--navbar-text) !important;
   cursor: pointer;
 
+  &:hover { color: var(--navbar-hover) !important; }
+}
+
+.themeToggle {
+  background: none;
+  border: 1px solid rgba(241, 231, 231, 0.35);
+  border-radius: 20px;
+  color: var(--navbar-text);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 4px 10px;
+  transition: border-color 0.15s, background 0.15s;
+
   &:hover {
-    color: #3ec02f !important;
+    background: rgba(241, 231, 231, 0.12);
+    border-color: rgba(241, 231, 231, 0.6);
   }
 }
 
 :host ::ng-deep .dropdown-menu {
-  background: #332b2b;
-  border: 1px solid #4a3f3f;
+  background: var(--navbar-dropdown-bg);
+  border: 1px solid var(--navbar-dropdown-border);
 
   .dropdown-item {
-    color: #f1e7e7;
+    color: var(--navbar-text);
 
     &:hover {
-      background: #4a3f3f;
-      color: #3ec02f;
+      background: var(--navbar-dropdown-hover);
+      color: var(--navbar-hover);
     }
   }
 }

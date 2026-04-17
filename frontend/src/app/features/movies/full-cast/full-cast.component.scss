@@ -23,9 +23,7 @@
   padding-bottom: 40px;
 }
 
-.colSplit {
-  width: 50%;
-}
+.colSplit { width: 50%; }
 
 ol.creditWrapper {
   width: 100%;
@@ -82,7 +80,7 @@ ol.creditWrapper li div.castInfo p {
 }
 
 ol.creditWrapper li div.castInfo p a {
-  color: #000;
+  color: var(--text-primary);
   text-decoration: none;
   font-size: 1.4rem;
   font-family: 'Lato', sans-serif;
@@ -90,14 +88,14 @@ ol.creditWrapper li div.castInfo p a {
 
 .cast_actor {
   font-size: 1.2rem;
-  color: #555;
+  color: var(--text-label);
 }
 
 .crewWrapper h4 {
   font-size: 1.4rem;
   margin-top: 16px;
   margin-bottom: 4px;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .section-wrapper {
@@ -111,10 +109,7 @@ ol.creditWrapper li div.castInfo p a {
   gap: 20px;
 }
 
-.poster {
-  width: 80px;
-  flex-shrink: 0;
-}
+.poster { width: 80px; flex-shrink: 0; }
 
 .posterImageSettings {
   width: 100%;

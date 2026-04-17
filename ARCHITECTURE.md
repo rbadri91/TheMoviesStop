@@ -190,6 +190,7 @@ core/
 │   └── json-parse.interceptor.ts  # Re-parses double-encoded JSON from backend
 └── services/
     ├── auth.service.ts        # JWT storage, login/logout/changePassword/forgotPassword/resetPassword, computed isLoggedIn/currentUser
+    ├── theme.service.ts       # Light/dark theme toggle; persists choice in localStorage; reads prefers-color-scheme on first load; applies data-theme attribute to <html>
     ├── state.service.ts       # In-memory signals for selected movie/show/person
     ├── movies.service.ts      # TMDB movie endpoints + user movie actions + getAISummary()
     ├── shows.service.ts       # TMDB TV endpoints + user show actions
@@ -220,7 +221,7 @@ features/
 
 shared/
 ├── components/
-│   ├── navbar/               # Auth-aware navigation bar
+│   ├── navbar/               # Auth-aware navigation bar with ☀/🌙 theme toggle (ThemeService)
 │   ├── movie-card/           # Poster card used in lists; "AI Summary" button fetches via getAISummary() and opens MovieSummaryModalComponent
 │   ├── movie-summary-modal/  # NgbModal content component displaying the AI-generated summary
 │   ├── show-card/            # Poster card for TV shows; "AI Summary" button fetches via getAISummary() and opens MovieSummaryModalComponent
@@ -291,6 +292,20 @@ The `/allFeeds` and auth endpoints are unaffected because they construct their o
 - **Google Fonts**: Playfair Display (headings/nav labels), Josefin Slab (titles), Lato (metadata).
 - `frontend/src/styles.scss` sets `html { font-size: 14px }` — this aligns rem-based sizes with the legacy Bootstrap 3 app which used a 10px root (Bootstrap 5 defaults to 16px).
 - Component SCSS files use **encapsulated class names**. Avoid reusing class names that appear in `styles.scss` (e.g. `.imageSettings`, `.resultList`) — Angular's component encapsulation adds an attribute selector, but global styles still win on specificity for matching class names.
+
+### Light / Dark Theme
+
+All colours are expressed as CSS custom properties defined in `styles.scss`:
+
+- **`:root`** — light theme tokens (default).
+- **`[data-theme="dark"]`** — dark theme overrides applied to `<html>` by `ThemeService`.
+
+`ThemeService` (`core/services/theme.service.ts`) manages the active theme:
+- Reads `localStorage` key `moviestop-theme` on startup; falls back to `prefers-color-scheme`.
+- Exposes a `theme` signal (`'light' | 'dark'`) and a `toggle()` method.
+- An `effect()` writes the chosen value to both `localStorage` and `document.documentElement.setAttribute('data-theme', ...)` on every change.
+
+The navbar renders a ☀ (switch to light) / 🌙 (switch to dark) button that calls `theme.toggle()`. All component SCSS files use the shared CSS variables rather than hardcoded hex values, so the entire UI switches instantly without a page reload.
 
 ---
 

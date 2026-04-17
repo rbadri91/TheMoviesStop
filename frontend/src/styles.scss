@@ -1,5 +1,83 @@
 @use 'bootstrap/scss/bootstrap';
 
+// ---------------------------------------------------------------------------
+// Theme tokens — light (default) and dark
+// ---------------------------------------------------------------------------
+
+:root {
+  --bg-body:        #efefef;
+  --bg-card:        #fff;
+  --bg-card-inner:  #fbfafa;
+  --bg-hover:       #f0f0f0;
+  --bg-input:       #fff;
+  --bg-even:        #ece6e6;
+
+  --text-primary:   #333;
+  --text-subtle:    #565252;
+  --text-secondary: #666;
+  --text-muted:     #999;
+  --text-label:     #555;
+
+  --link-accent:    #00b7ff;
+  --link-auth:      #e50914;
+
+  --border-card:    #e6e7e9;
+  --border-panel:   #d7d7d7;
+  --border-divider: #ccbaba;
+  --border-nav:     grey;
+  --border-even:    #f1e4e4;
+
+  --navbar-bg:               #332b2b;
+  --navbar-text:             #f1e7e7;
+  --navbar-hover:            #3ec02f;
+  --navbar-dropdown-bg:      #332b2b;
+  --navbar-dropdown-border:  #4a3f3f;
+  --navbar-dropdown-hover:   #4a3f3f;
+
+  --color-active:   #104010;
+  --star-filled:    #f5a623;
+  --star-empty:     #ccc;
+}
+
+[data-theme="dark"] {
+  --bg-body:        #121212;
+  --bg-card:        #1e1e1e;
+  --bg-card-inner:  #252525;
+  --bg-hover:       #2e2e2e;
+  --bg-input:       #2a2a2a;
+  --bg-even:        #1a1a2a;
+
+  --text-primary:   #e0e0e0;
+  --text-subtle:    #b0a8a8;
+  --text-secondary: #aaa;
+  --text-muted:     #777;
+  --text-label:     #aaa;
+
+  --link-accent:    #4fc3f7;
+  --link-auth:      #ff6b6b;
+
+  --border-card:    #333;
+  --border-panel:   #333;
+  --border-divider: #3a3a3a;
+  --border-nav:     #444;
+  --border-even:    #2a2a3a;
+
+  --navbar-bg:               #1f1818;
+  --navbar-text:             #f1e7e7;
+  --navbar-hover:            #3ec02f;
+  --navbar-dropdown-bg:      #1f1818;
+  --navbar-dropdown-border:  #2e2222;
+  --navbar-dropdown-hover:   #2e2222;
+
+  --color-active:   #3ec02f;
+  --star-filled:    #f5a623;
+  --star-empty:     #555;
+}
+
+// ---------------------------------------------------------------------------
+// Base
+// ---------------------------------------------------------------------------
+
 html {
   font-size: 14px;
 }
@@ -7,11 +85,17 @@ html {
 body {
   padding-top: 0;
   font: 14px 'Lucida Grande', Helvetica, Arial, sans-serif;
-  background: #efefef;
+  background: var(--bg-body);
+  color: var(--text-primary);
   height: 100%;
+  transition: background 0.2s, color 0.2s;
 }
 
 a { color: inherit; }
+
+// ---------------------------------------------------------------------------
+// Layout helpers
+// ---------------------------------------------------------------------------
 
 .MoviesWrapper {
   width: 85%;
@@ -31,8 +115,8 @@ section.panel {
   width: 100%;
   display: block;
   padding: 5% 2%;
-  border-top: 1px solid #d7d7d7;
-  background: #fff;
+  border-top: 1px solid var(--border-panel);
+  background: var(--bg-card);
   margin-bottom: 12px;
 }
 
@@ -59,20 +143,24 @@ div.resultList.flex {
   justify-content: space-between;
 }
 
+// ---------------------------------------------------------------------------
+// Card layout
+// ---------------------------------------------------------------------------
+
 div.list {
   float: left;
-  color: #000;
+  color: var(--text-primary);
 }
 
 div.list.cardView {
   width: 48%;
-  background-color: #fff;
+  background-color: var(--bg-card);
   box-sizing: border-box;
   display: flex;
   align-items: center;
   position: relative;
-  border: 1px solid #e6e7e9;
-  box-shadow: 0 2px 0 0 rgba(230, 230, 230, 0.5);
+  border: 1px solid var(--border-card);
+  box-shadow: 0 2px 0 0 rgba(230, 230, 230, 0.15);
   flex-shrink: 0;
 }
 
@@ -113,7 +201,7 @@ div.list.cardView {
   justify-content: space-between;
   margin: 4px 0 2px;
   font-size: 1.1em;
-  border-bottom: 1px solid #ccbaba;
+  border-bottom: 1px solid var(--border-divider);
   padding-bottom: 4px;
 }
 
@@ -132,7 +220,7 @@ a.resultTitle {
 
 .vote_avg {
   float: right;
-  color: #000;
+  color: var(--text-primary);
   display: inline-flex;
   align-items: center;
   white-space: nowrap;
@@ -140,7 +228,7 @@ a.resultTitle {
 
 .dateInfo {
   font-size: 1em;
-  border-bottom: 1px solid #ccbaba;
+  border-bottom: 1px solid var(--border-divider);
   display: block;
   padding: 4px 0;
 }
@@ -162,7 +250,7 @@ div.resultInfo div.block-with-text {
   text-align: justify;
   font-family: 'Josefin Slab', serif;
   font-weight: 600;
-  color: #584c4c;
+  color: var(--text-subtle);
   word-wrap: break-word;
   white-space: normal;
   font-size: 1.1em;
@@ -170,7 +258,7 @@ div.resultInfo div.block-with-text {
 
 div.list.cardView div.moreInfoWrapper {
   font-family: 'Josefin Slab', serif;
-  border-top: 1px solid #ccbaba;
+  border-top: 1px solid var(--border-divider);
   text-align: center;
   position: absolute;
   bottom: 0;
@@ -179,7 +267,7 @@ div.list.cardView div.moreInfoWrapper {
   padding: 16px;
 
   a {
-    color: #000;
+    color: var(--text-primary);
     text-decoration: none;
     font-weight: 400;
     &:hover { text-decoration: underline; }
@@ -193,7 +281,7 @@ p.full_view_button {
 
   a {
     font-size: 20px;
-    color: #000;
+    color: var(--text-primary);
     font-family: 'Josefin Slab', serif;
     font-weight: 600;
     text-decoration: none;
@@ -201,17 +289,36 @@ p.full_view_button {
   }
 }
 
+// ---------------------------------------------------------------------------
+// Auth form wrapper
+// ---------------------------------------------------------------------------
+
 .formWrapper {
   max-width: 420px;
   margin: 80px auto;
   padding: 2rem 3%;
-  background: #fff;
+  background: var(--bg-card);
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 
   h3 { margin-bottom: 1.5rem; }
 
   a {
-    color: #00b7ff;
+    color: var(--link-auth);
     &:hover { text-decoration: underline; }
+  }
+
+  // Bootstrap form inputs inherit the card background in dark mode
+  input.form-control {
+    background-color: var(--bg-input);
+    color: var(--text-primary);
+    border-color: var(--border-card);
+
+    &::placeholder { color: var(--text-muted); }
+    &:focus {
+      background-color: var(--bg-input);
+      color: var(--text-primary);
+      border-color: var(--link-accent);
+      box-shadow: 0 0 0 0.2rem rgba(79, 195, 247, 0.25);
+    }
   }
 }
