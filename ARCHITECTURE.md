@@ -178,6 +178,7 @@ Password reset passcodes are 6-digit numbers generated with `crypto.randomInt()`
 - **Lazy-loaded routes** — every route uses `loadComponent()` so bundles are split per page.
 - **Scoped styles** — each component has its own `.scss` file. Global `styles.scss` is kept minimal. CSS class names in component files must be unique enough to avoid conflicts with the global stylesheet.
 - **`SafeResourceUrl` caching** — components that render iframes (movie-detail, show-detail) pre-compute `SafeResourceUrl` values via `computed()` keyed by video ID. Never call `DomSanitizer.bypassSecurityTrustResourceUrl()` directly in a template binding — it returns a new object every cycle and causes iframes to reload.
+- **Optimistic UI with rollback** — watchlist/favorites/rating toggles in movie-detail and show-detail update signals immediately before the HTTP request completes. If the server returns an error, the previous value is restored. If the user is not logged in, they are redirected to `/login` instead of making the request.
 
 ### Directory layout
 
