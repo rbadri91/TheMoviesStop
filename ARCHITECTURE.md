@@ -82,8 +82,8 @@ GET /people/:id
 
 **User auth routes**:
 ```
-POST /register              → creates User, returns JWT
-POST /login                 → validates password, returns JWT
+POST /register              → creates User, returns JWT (rate-limited 10/15min)
+POST /login                 → validates password, returns JWT (rate-limited 10/15min)
 POST /forgot-password       → generates 6-digit passcode, stores it (1hr expiry), emails it to user (rate-limited 5/15min)
 POST /reset-password        → validates passcode + expiry, sets new password, returns JWT (rate-limited 5/15min)
 POST /user/change-password  → validates current password, sets new password, returns new JWT (requires JWT auth, rate-limited 5/15min)
@@ -93,11 +93,11 @@ POST /user/change-password  → validates current password, sets new password, r
 ```
 GET  /user/:userId/moviesLikedAndtoWatch/:movieId  → watchlist/favorites/rating status
 GET  /user/:userId/tvLikedAndToWatch/:showId
-POST /user/movies/addToWatchList
-POST /user/movies/addToFavorites
+POST /user/movies/addToWatchList                    → rate-limited (60/15min)
+POST /user/movies/addToFavorites                    → rate-limited (60/15min)
 POST /user/movies/rate                              → rate-limited (60/15min)
-POST /user/tv/addToWatchList
-POST /user/tv/addToFavorites
+POST /user/tv/addToWatchList                        → rate-limited (60/15min)
+POST /user/tv/addToFavorites                        → rate-limited (60/15min)
 POST /user/tv/rate                                  → rate-limited (60/15min)
 GET  /user/profile                                  → enriched watchlist + favorites + ratings
 ```
