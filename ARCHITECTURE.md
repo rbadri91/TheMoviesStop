@@ -82,8 +82,8 @@ GET /people/:id
 
 **User auth routes**:
 ```
-POST /register              → creates User, returns JWT
-POST /login                 → validates password, returns JWT
+POST /register              → creates User, returns JWT (rate-limited 10/15min)
+POST /login                 → validates password, returns JWT (rate-limited 10/15min)
 POST /forgot-password       → generates 6-digit passcode, stores it (1hr expiry), emails it to user (rate-limited 5/15min)
 POST /reset-password        → validates passcode + expiry, sets new password, returns JWT (rate-limited 5/15min)
 POST /user/change-password  → validates current password, sets new password, returns new JWT (requires JWT auth, rate-limited 5/15min)
@@ -93,11 +93,11 @@ POST /user/change-password  → validates current password, sets new password, r
 ```
 GET  /user/:userId/moviesLikedAndtoWatch/:movieId  → watchlist/favorites/rating status
 GET  /user/:userId/tvLikedAndToWatch/:showId
-POST /user/movies/addToWatchList
-POST /user/movies/addToFavorites
+POST /user/movies/addToWatchList                    → rate-limited (60/15min)
+POST /user/movies/addToFavorites                    → rate-limited (60/15min)
 POST /user/movies/rate                              → rate-limited (60/15min)
-POST /user/tv/addToWatchList
-POST /user/tv/addToFavorites
+POST /user/tv/addToWatchList                        → rate-limited (60/15min)
+POST /user/tv/addToFavorites                        → rate-limited (60/15min)
 POST /user/tv/rate                                  → rate-limited (60/15min)
 GET  /user/profile                                  → enriched watchlist + favorites + ratings
 ```
@@ -178,6 +178,7 @@ Password reset passcodes are 6-digit numbers generated with `crypto.randomInt()`
 - **Lazy-loaded routes** — every route uses `loadComponent()` so bundles are split per page.
 - **Scoped styles** — each component has its own `.scss` file. Global `styles.scss` is kept minimal. CSS class names in component files must be unique enough to avoid conflicts with the global stylesheet.
 - **`SafeResourceUrl` caching** — components that render iframes (movie-detail, show-detail) pre-compute `SafeResourceUrl` values via `computed()` keyed by video ID. Never call `DomSanitizer.bypassSecurityTrustResourceUrl()` directly in a template binding — it returns a new object every cycle and causes iframes to reload.
+- **Optimistic UI with rollback** — watchlist/favorites/rating toggles in movie-detail and show-detail update signals immediately before the HTTP request completes. If the server returns an error, the previous value is restored. If the user is not logged in, they are redirected to `/login` instead of making the request.
 
 ### Directory layout
 
@@ -306,6 +307,24 @@ All colours are expressed as CSS custom properties defined in `styles.scss`:
 - An `effect()` writes the chosen value to both `localStorage` and `document.documentElement.setAttribute('data-theme', ...)` on every change.
 
 The navbar renders a ☀ (switch to light) / 🌙 (switch to dark) button that calls `theme.toggle()`. All component SCSS files use the shared CSS variables rather than hardcoded hex values, so the entire UI switches instantly without a page reload.
+
+---
+
+## Testing
+
+Tests live in `tests/` and run with Jest (`npm test`). All files match `**/tests/**/*.test.js`. Jest is configured with `--runInBand` so files run sequentially and share the same MongoDB instance.
+
+| File | Coverage |
+|---|---|
+| `tests/auth.test.js` | `POST /register`, `POST /login`, User password-hashing unit tests |
+| `tests/user.test.js` | Watchlist, favorites, and ratings endpoints for movies and TV (all auth-guarded) |
+| `tests/password.test.js` | `POST /user/change-password`, `POST /forgot-password`, `POST /reset-password` |
+
+`tests/helpers/app.helper.js` builds a real Express app connected to the test MongoDB (`MONGODB_URL` from `.env`) and exposes `buildApp()` / `closeApp()`. Each test file creates its own app and mongoose connection and disconnects in `afterAll`.
+
+**Rate limiters are bypassed in test mode.** All four rate limiters (`ratingLimiter`, `summaryLimiter`, `passwordChangeLimiter`, `forgotPasswordLimiter`) include `skip: () => process.env.NODE_ENV === 'test'`. This prevents 429 responses from interfering with tests that legitimately call the same endpoint multiple times.
+
+Set `NODE_ENV=test` in your `.env` (or prefix the command: `NODE_ENV=test npm test`) to activate the bypass. The bypass has no effect in production because `NODE_ENV=production` there.
 
 ---
 

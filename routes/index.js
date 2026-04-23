@@ -14,11 +14,14 @@ const { Client: McpClient } = require('@modelcontextprotocol/sdk/client/index.js
 const { StdioClientTransport } = require('@modelcontextprotocol/sdk/client/stdio.js');
 const Anthropic = require('@anthropic-ai/sdk');
 
+const skipInTest = () => process.env.NODE_ENV === 'test';
+
 const ratingLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 60,                   // max 60 ratings per window per IP
     standardHeaders: true,
     legacyHeaders: false,
+    skip: skipInTest,
     message: { error: 'Too many requests, please try again later.' },
 });
 
@@ -27,6 +30,7 @@ const summaryLimiter = rateLimit({
     max: 10,                   // max 10 AI summary requests per window per IP
     standardHeaders: true,
     legacyHeaders: false,
+    skip: skipInTest,
     message: { error: 'Too many summary requests, please try again later.' },
 });
 
@@ -35,6 +39,7 @@ const passwordChangeLimiter = rateLimit({
     max: 5,                    // max 5 password change attempts per window per IP
     standardHeaders: true,
     legacyHeaders: false,
+    skip: skipInTest,
     message: { error: 'Too many password change attempts, please try again later.' },
 });
 
@@ -43,7 +48,24 @@ const forgotPasswordLimiter = rateLimit({
     max: 5,                    // max 5 forgot-password requests per window per IP
     standardHeaders: true,
     legacyHeaders: false,
+    skip: skipInTest,
     message: { message: 'Too many password reset requests, please try again later.' },
+});
+
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 10,                   // max 10 login/register attempts per window per IP
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { message: 'Too many attempts, please try again later.' },
+});
+
+const writeLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 60,                   // max 60 watchlist/favorites writes per window per IP
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { error: 'Too many requests, please try again later.' },
 });
 
 const nodemailer = require('nodemailer');
@@ -85,7 +107,7 @@ module.exports = function(router, passport) {
         }).catch(next);
     });
 
-    router.post('/register', function(req, res, next) {
+    router.post('/register', authLimiter, function(req, res, next) {
         if (!req.body.username || !req.body.email || !req.body.password) {
             return res.status(400).json({ message: 'Please fill out all fields' });
         }
@@ -104,7 +126,7 @@ module.exports = function(router, passport) {
         });
     });
 
-    router.post('/login', function(req, res, next) {
+    router.post('/login', authLimiter, function(req, res, next) {
         if (!req.body.username || !req.body.password) {
             return res.status(400).json({ message: 'Please fill out all fields' });
         }
@@ -489,7 +511,7 @@ module.exports = function(router, passport) {
         }).catch(next);
     });
 
-    router.post('/user/movies/addToFavorites/', auth, function(req, res, next) {
+    router.post('/user/movies/addToFavorites/', writeLimiter, auth, function(req, res, next) {
         var movieId = parseInt(req.body.movieId);
         User.findById(req.payload._id).then(function(user) {
             var favoritesList = user.favoritesList;
@@ -527,7 +549,7 @@ module.exports = function(router, passport) {
         }).catch(next);
     });
 
-    router.post('/user/movies/addToWatchList', auth, function(req, res, next) {
+    router.post('/user/movies/addToWatchList', writeLimiter, auth, function(req, res, next) {
         var movieId = parseInt(req.body.movieId);
         User.findById(req.payload._id).then(function(user) {
             var watchList = user.watchList;
@@ -567,7 +589,7 @@ module.exports = function(router, passport) {
         }).catch(next);
     });
 
-    router.post('/user/tv/addToFavorites', auth, function(req, res, next) {
+    router.post('/user/tv/addToFavorites', writeLimiter, auth, function(req, res, next) {
         var showId = parseInt(req.body.showId);
         User.findById(req.payload._id).then(function(user) {
             var favoritesList = user.favoritesList;
@@ -635,7 +657,7 @@ module.exports = function(router, passport) {
             }
         }).catch(next);
     });
-    router.post('/user/tv/addToWatchList', auth, function(req, res, next) {
+    router.post('/user/tv/addToWatchList', writeLimiter, auth, function(req, res, next) {
         var showId = parseInt(req.body.showId);
         User.findById(req.payload._id).then(function(user) {
             var watchList = user.watchList;
