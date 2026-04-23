@@ -14,11 +14,14 @@ const { Client: McpClient } = require('@modelcontextprotocol/sdk/client/index.js
 const { StdioClientTransport } = require('@modelcontextprotocol/sdk/client/stdio.js');
 const Anthropic = require('@anthropic-ai/sdk');
 
+const skipInTest = () => process.env.NODE_ENV === 'test';
+
 const ratingLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 60,                   // max 60 ratings per window per IP
     standardHeaders: true,
     legacyHeaders: false,
+    skip: skipInTest,
     message: { error: 'Too many requests, please try again later.' },
 });
 
@@ -27,6 +30,7 @@ const summaryLimiter = rateLimit({
     max: 10,                   // max 10 AI summary requests per window per IP
     standardHeaders: true,
     legacyHeaders: false,
+    skip: skipInTest,
     message: { error: 'Too many summary requests, please try again later.' },
 });
 
@@ -35,6 +39,7 @@ const passwordChangeLimiter = rateLimit({
     max: 5,                    // max 5 password change attempts per window per IP
     standardHeaders: true,
     legacyHeaders: false,
+    skip: skipInTest,
     message: { error: 'Too many password change attempts, please try again later.' },
 });
 
@@ -43,6 +48,7 @@ const forgotPasswordLimiter = rateLimit({
     max: 5,                    // max 5 forgot-password requests per window per IP
     standardHeaders: true,
     legacyHeaders: false,
+    skip: skipInTest,
     message: { message: 'Too many password reset requests, please try again later.' },
 });
 

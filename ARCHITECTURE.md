@@ -310,6 +310,24 @@ The navbar renders a ☀ (switch to light) / 🌙 (switch to dark) button that c
 
 ---
 
+## Testing
+
+Tests live in `tests/` and run with Jest (`npm test`). All files match `**/tests/**/*.test.js`. Jest is configured with `--runInBand` so files run sequentially and share the same MongoDB instance.
+
+| File | Coverage |
+|---|---|
+| `tests/auth.test.js` | `POST /register`, `POST /login`, User password-hashing unit tests |
+| `tests/user.test.js` | Watchlist, favorites, and ratings endpoints for movies and TV (all auth-guarded) |
+| `tests/password.test.js` | `POST /user/change-password`, `POST /forgot-password`, `POST /reset-password` |
+
+`tests/helpers/app.helper.js` builds a real Express app connected to the test MongoDB (`MONGODB_URL` from `.env`) and exposes `buildApp()` / `closeApp()`. Each test file creates its own app and mongoose connection and disconnects in `afterAll`.
+
+**Rate limiters are bypassed in test mode.** All four rate limiters (`ratingLimiter`, `summaryLimiter`, `passwordChangeLimiter`, `forgotPasswordLimiter`) include `skip: () => process.env.NODE_ENV === 'test'`. This prevents 429 responses from interfering with tests that legitimately call the same endpoint multiple times.
+
+Set `NODE_ENV=test` in your `.env` (or prefix the command: `NODE_ENV=test npm test`) to activate the bypass. The bypass has no effect in production because `NODE_ENV=production` there.
+
+---
+
 ## Deployment (Heroku)
 
 `npm start` → `node ./bin/www` → Express listens on `process.env.PORT`.
