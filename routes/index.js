@@ -57,6 +57,7 @@ const authLimiter = rateLimit({
     max: 10,                   // max 10 login/register attempts per window per IP
     standardHeaders: true,
     legacyHeaders: false,
+    skip: skipInTest,
     message: { message: 'Too many attempts, please try again later.' },
 });
 
@@ -65,6 +66,7 @@ const writeLimiter = rateLimit({
     max: 60,                   // max 60 watchlist/favorites writes per window per IP
     standardHeaders: true,
     legacyHeaders: false,
+    skip: skipInTest,
     message: { error: 'Too many requests, please try again later.' },
 });
 
