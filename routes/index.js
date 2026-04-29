@@ -57,6 +57,7 @@ const authLimiter = rateLimit({
     max: 10,                   // max 10 login/register attempts per window per IP
     standardHeaders: true,
     legacyHeaders: false,
+    skip: skipInTest,
     message: { message: 'Too many attempts, please try again later.' },
 });
 
@@ -65,6 +66,16 @@ const writeLimiter = rateLimit({
     max: 60,                   // max 60 watchlist/favorites writes per window per IP
     standardHeaders: true,
     legacyHeaders: false,
+    skip: skipInTest,
+    message: { error: 'Too many requests, please try again later.' },
+});
+
+const readLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 120,                  // max 120 user data reads per window per IP
+    standardHeaders: true,
+    legacyHeaders: false,
+    skip: skipInTest,
     message: { error: 'Too many requests, please try again later.' },
 });
 
@@ -481,7 +492,7 @@ module.exports = function(router, passport) {
         }).catch(next);
     });
 
-    router.get('/user/:userId/moviesLikedAndtoWatch/:movieId', function(req, res, next) {
+    router.get('/user/:userId/moviesLikedAndtoWatch/:movieId', readLimiter, function(req, res, next) {
         var userId = req.params.userId;
 
         User.findById(userId).then(function(user) {
@@ -608,7 +619,7 @@ module.exports = function(router, passport) {
         }).catch(next);
     });
 
-    router.get('/user/:userId/tvLikedAndToWatch/:showId', function(req, res, next) {
+    router.get('/user/:userId/tvLikedAndToWatch/:showId', readLimiter, function(req, res, next) {
         User.findById(req.params.userId).then(function(user) {
             var showId = req.params.showId;
             var resObj = { isInWatchList: false, isInFavoritesList: false, userRating: 0 };
@@ -626,7 +637,7 @@ module.exports = function(router, passport) {
         }).catch(next);
     });
 
-    router.get('/user/profile', auth, function(req, res, next) {
+    router.get('/user/profile', readLimiter, auth, function(req, res, next) {
         User.findById(req.payload._id).then(async function(user) {
             var enrichItem = async function(item) {
                 return new Promise(function(resolve) {

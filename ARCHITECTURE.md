@@ -89,17 +89,17 @@ POST /reset-password        → validates passcode + expiry, sets new password, 
 POST /user/change-password  → validates current password, sets new password, returns new JWT (requires JWT auth, rate-limited 5/15min)
 ```
 
-**User data routes** (all require JWT auth):
+**User data routes** (all require JWT auth unless noted):
 ```
-GET  /user/:userId/moviesLikedAndtoWatch/:movieId  → watchlist/favorites/rating status
-GET  /user/:userId/tvLikedAndToWatch/:showId
+GET  /user/:userId/moviesLikedAndtoWatch/:movieId  → watchlist/favorites/rating status (rate-limited 120/15min, no JWT required)
+GET  /user/:userId/tvLikedAndToWatch/:showId        → watchlist/favorites/rating status (rate-limited 120/15min, no JWT required)
 POST /user/movies/addToWatchList                    → rate-limited (60/15min)
 POST /user/movies/addToFavorites                    → rate-limited (60/15min)
 POST /user/movies/rate                              → rate-limited (60/15min)
 POST /user/tv/addToWatchList                        → rate-limited (60/15min)
 POST /user/tv/addToFavorites                        → rate-limited (60/15min)
 POST /user/tv/rate                                  → rate-limited (60/15min)
-GET  /user/profile                                  → enriched watchlist + favorites + ratings
+GET  /user/profile                                  → enriched watchlist + favorites + ratings (rate-limited 120/15min)
 ```
 
 **AI summary routes** (rate-limited to 10/15min per IP, no auth required):
