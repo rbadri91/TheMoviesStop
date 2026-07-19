@@ -36,10 +36,7 @@ let client;
 // API error handler is registered after routes inside connectToDatabase()
 
 async function connectToDatabase() {
-    client = new MongoClient(db.url, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    });
+    client = new MongoClient(db.url);
 
     try {
         await client.connect();
